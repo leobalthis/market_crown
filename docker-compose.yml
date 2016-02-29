@@ -1,0 +1,52 @@
+app:
+  image: node:5.0.0
+  environment:
+    - PORT=3000
+  ports:
+    - "3000:3000"
+  expose:
+    - "3000"
+  links:
+#    - mongo
+#    - redis
+    - tracer
+  volumes:
+    - .:/usr/src/app
+  working_dir: /usr/src/app
+  command: "node ./index.js "
+
+
+tracer:
+  image: node:5.0.0
+  environment:
+    - PORT=5000
+  ports:
+    - "5000:5000"
+  expose:
+    - "5000"
+  volumes:
+      - .:/usr/src/app
+  working_dir: /usr/src/app
+  command: "node ./tracer.js "
+
+#
+#mongo:
+#  image: mongo:3.2.0
+#  ports:
+#    - "27017:27017"
+#  expose:
+#      - "27017"
+#  volumes:
+#    - /mongo_db:/mongo/db
+#
+#redis:
+#  image: redis:3.0.5
+#  ports:
+#    - "6379:6379"
+#  expose:
+#    - "6379"
+#  volumes:
+#    - ./redis/conf/run.sh:/conf/run.sh
+#    - ./redis/conf/redis.conf:/conf/redis.conf
+#  working_dir: /conf
+#  command: "/conf/run.sh"
