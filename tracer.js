@@ -4,8 +4,9 @@ var log 				= log4js.getLogger('tracer.js');
 var express 			= require('express');
 var app 				= express();
 
-app.get('/', function (req, res) {
-	res.send('Hello World!');
+app.all('*', function (req, res) {
+	log.info(' > [%s] %s',req.method,req.originalUrl)
+	res.json({result:'ok'});
 });
 
 var port = process.env.PORT || 3000;
