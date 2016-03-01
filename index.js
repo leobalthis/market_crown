@@ -3,17 +3,22 @@ var log 				= log4js.getLogger('index.js');
 
 var express 			= require('express');
 var app 				= express();
-var straight 			= require('./routes/straight.js');
+
+var naked 				= require('./routes/naked.js');
+var authed 				= require('./routes/authed.js');
+
 
 var prefix = '/api/v1';
 
-app.use('/', express.static(__dirname + '/static'));
-//app.get('/', function (req, res) {
-//	res.send('Hello World!');
-//});
+// parse application/x-www-form-urlencoded
+//app.use(bodyParser.urlencoded({ extended: false }))
 
-log.info(process.env)
-app.use(prefix,straight);
+// parse application/json
+//app.use(bodyParser.json())
+
+app.use('/', express.static(__dirname + '/static'));
+app.use(prefix+'/naked',naked);
+app.use(prefix+'/authed',authed);
 
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
