@@ -1,5 +1,5 @@
 var log4js 				= require('log4js');
-var log 				= log4js.getLogger('authed.js');
+var log 				= log4js.getLogger('personal.js');
 
 var express				= require('express');
 var router 				= express.Router();
@@ -7,7 +7,10 @@ var router 				= express.Router();
 var request				= require('request');
 var concat				= require('concat-stream');
 
-router.use(cookieParser('jst rndm scrt lne',{secure:true, maxAge:60*60*24*7}));
+
+
+
+
 
 router.all('*', function(req, res) {
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);

@@ -7,8 +7,7 @@ app:
   expose:
     - "3000"
   links:
-#    - mongo
-#    - redis
+    - mongo
     - tracer
   volumes:
     - .:/usr/src/app
@@ -29,24 +28,13 @@ tracer:
   working_dir: /usr/src/app
   command: "node ./tracer.js "
 
-#
-#mongo:
-#  image: mongo:3.2.0
-#  ports:
-#    - "27017:27017"
-#  expose:
-#      - "27017"
-#  volumes:
-#    - /mongo_db:/mongo/db
-#
-#redis:
-#  image: redis:3.0.5
-#  ports:
-#    - "6379:6379"
-#  expose:
-#    - "6379"
-#  volumes:
-#    - ./redis/conf/run.sh:/conf/run.sh
-#    - ./redis/conf/redis.conf:/conf/redis.conf
-#  working_dir: /conf
-#  command: "/conf/run.sh"
+
+mongo:
+  image: mongo:3.2.0
+  ports:
+    - "27017:27017"
+  expose:
+      - "27017"
+  volumes:
+    - /mongo_db:/mongo/db
+

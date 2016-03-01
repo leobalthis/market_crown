@@ -1,5 +1,5 @@
 var log4js 				= require('log4js');
-var log 				= log4js.getLogger('naked.js');
+var log 				= log4js.getLogger('common.js');
 
 var express				= require('express');
 var router 				= express.Router();
