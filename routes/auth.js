@@ -12,6 +12,20 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter');
 var GooglePlusStrategy = require('passport-google-plus');
 
+
+
+passport.serializeUser(function(user, done) {
+	done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+	User.findById(id, function(err, user) {
+		done(err, user);
+	});
+});
+
+
+
 passport.use(new FacebookStrategy({
 		clientID: 1074187149262332,
 		clientSecret: "94eed7a7170b0e2b76f4f4cc25240a51",
