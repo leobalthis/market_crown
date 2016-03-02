@@ -31,13 +31,15 @@ app.use(session({
 		url: CONFIG.SESSION_MONGO.URL
 	})
 }));
+
+app.use(passport.initialize());
 app.use(passport.session());
+
 
 app.use('/', express.static(__dirname + '/static'));
 app.use(prefix+'/common',		common);
 app.use(prefix+'/personal',		personal);
 app.use(prefix+'/auth',			auth);
-
 
 db.init(function(err){
 	if(err){

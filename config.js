@@ -1,4 +1,4 @@
-
+var _			= require('lodash');
 
 var config = {
 	SESSION_MONGO:{
@@ -11,4 +11,16 @@ var config = {
 	PORT:3848
 };
 
+var config_dev = {
+	SESSION_MONGO:{
+		URL:'mongodb://mongo/mcm-sessions'
+	},
+	USER_MONGO:{
+		URL:'mongodb://mongo/mcm-users'
+	},
+};
+
+if(process.env.NODE_ENV=='development'){
+	config = _.assign(config,config_dev);
+}
 module.exports = config;
