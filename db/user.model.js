@@ -34,14 +34,15 @@ userSchema.pre('update', function (next) {
 
 userSchema.statics.findOrCreate = function (profile,done) {
 	log.info('findOrCreate');
-	User.findOne({'$and':[{'provider.id':profile.id,'provider.name':profile.name}]},function(err,user){
+	log.info('findOrCreate - create');
+	//log.info('provider',profile.provider);
+	//log.info('profile',profile);
+	User.findOne({'$and':[{'provider.id':profile.id,'provider.name':profile.provider}]},function(err,user){
 		if(err){
 			log.info('findOrCreate - error');
 			done(err);
 		}else if(!user){
-			log.info('findOrCreate - create');
-			log.info('provider',profile.provider);
-			log.info('profile',profile);
+
 			profile.provider = {id:profile.id,name:profile.provider}
 			var newUser = new User(profile)
 			log.debug('profile',profile);
