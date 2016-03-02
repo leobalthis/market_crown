@@ -42,7 +42,12 @@ userSchema.statics.findOrCreate = function (profile,done) {
 			log.info('findOrCreate - create');
 			profile.provider = {id:profile.id,name:profile.provider}
 			var newUser = new User(profile)
-			newUser.save(done);
+			log.debug('profile',profile);
+			log.debug('user',newUser)
+			newUser.save(function(err,nu){
+				log.debug('cb ',err,nu);
+				done(err,nu);
+			});
 		}else{
 			log.info('findOrCreate - exists',user);
 			done(null, user);
