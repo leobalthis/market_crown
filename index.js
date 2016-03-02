@@ -24,7 +24,7 @@ const CONFIG				= require('./config.js');
 app.use(session({
 	secret:'jst rndm scrt lne',
 	cookie : {
-		secure: true,
+		secure: false,
 		maxAge: 1000*60*60*24*7 // see below
 	},
 	store : new MongoStore({
