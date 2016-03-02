@@ -8,7 +8,9 @@ var config = {
 	USER_MONGO:{
 		URL:'mongodb://localhost/mcm-users'
 	},
-	PUBLIC_ADDRESS:'http://104.239.245.54',
+
+	PUBLIC_ADDRESS:'http://marketcrown.com',
+	//PUBLIC_ADDRESS:'http://104.239.245.54',
 	PORT:3848
 };
 
