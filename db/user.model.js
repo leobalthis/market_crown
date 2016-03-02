@@ -33,13 +33,17 @@ userSchema.pre('update', function (next) {
 });
 
 userSchema.statics.findOrCreate = function (profile,done) {
+	log.info('findOrCreate');
 	User.find({'$and':[{'provider.id':profile.id,'provider.name':profile.name}]},function(err,user){
 		if(err){
+			log.info('findOrCreate - error');
 			done(err);
 		}else if(!user){
+			log.info('findOrCreate - create');
 			profile.provider = {id:profile.id,name:provider}
 			new User(profile).save(done);
 		}else{
+			log.info('findOrCreate - exists',user);
 			done(null, user);
 		}
 	})
