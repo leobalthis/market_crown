@@ -16,7 +16,7 @@ var userSchema = new Schema({
 	emails: [
 		Schema.Types.Mixed 										//value, type (home,work, etc)
 		],
-	photos:[String],
+	photos:[Schema.Types.Mixed ],								// value
 	createdAt: {type:Date, default: Date.now()},
 	modifiedAt: {type:Date, default: Date.now()}
 });
