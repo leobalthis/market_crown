@@ -1,6 +1,7 @@
 var _			= require('lodash');
 
 var config = {
+	COMMON_PREFIX:'/api/v1',
 	SESSION_MONGO:{
 		URL:'mongodb://localhost/mcm-sessions'
 	},

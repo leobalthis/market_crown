@@ -13,7 +13,7 @@ const auth				= require('./routes/auth.js');
 const db				= require('./db/db.js');
 
 const CONFIG				= require('./config.js');
-const prefix = '/api/v1';
+
 
 // parse application/x-www-form-urlencoded
 //app.use(bodyParser.urlencoded({ extended: false }))
@@ -37,9 +37,9 @@ app.use(passport.session());
 
 
 app.use('/', express.static(__dirname + '/static'));
-app.use(prefix+'/common',		common);
-app.use(prefix+'/personal',		personal);
-app.use(prefix+'/auth',			auth);
+app.use(CONFIG.COMMON_PREFIX+'/common',		common);
+app.use(CONFIG.COMMON_PREFIX+'/personal',		personal);
+app.use(CONFIG.COMMON_PREFIX+'/auth',			auth);
 
 db.init(function(err){
 	if(err){
