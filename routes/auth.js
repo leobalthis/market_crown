@@ -7,7 +7,9 @@ const User 					= require('../db/user.model.js');
 const CONFIG				= require('../config.js');
 //
 var passport = require('passport');
+
 var FacebookStrategy = require('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter');
 var GooglePlusStrategy = require('passport-google-plus');
 
 passport.use(new FacebookStrategy({
