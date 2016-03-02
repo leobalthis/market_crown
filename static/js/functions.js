@@ -69,4 +69,19 @@
 		});
 	});
 
+	console.log('sad');
+	 $.ajax({
+		 method: "GET",
+		 url:"api/v1/personal/me"
+		 })
+		.done(function(a,b) {
+			console.log( "success", a,b);
+		})
+		.fail(function() {
+			console.log( "error" );
+		})
+		.always(function() {
+			console.log( "complete" );
+		});
+
 })();
