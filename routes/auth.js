@@ -15,10 +15,12 @@ var GooglePlusStrategy = require('passport-google-plus');
 
 
 passport.serializeUser(function(user, done) {
+	log.info('ser ',user);
 	done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
+	log.info('deser ',id);
 	User.findById(id, function(err, user) {
 		done(err, user);
 	});
