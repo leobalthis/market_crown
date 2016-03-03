@@ -47,10 +47,11 @@ app.get(CONFIG.LANDING_PREFIX, function(req,res){
 });
 app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
 	if(req.user && req.user.mc_username){
-		log.debug('req.user.mc_username',req.user.mc_username);
-		console.log('**')
+		res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
+	}else{
+		res.sendFile(__dirname + '/static/landing/personalinfo.html')
 	}
-	res.sendFile(__dirname + '/static/landing/personalinfo.html')
+
 });
 
 db.init(function(err){

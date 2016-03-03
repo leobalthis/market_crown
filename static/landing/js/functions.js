@@ -94,10 +94,12 @@
 			type: 'POST',
 			data: $('#finishForm').serialize(),
 			success: function (a) {
+				console.log('form submitted.',a);
 				if(a.error){
 					$(".form-error").show(500);
+				}else{
+					window.location.href = a.redirect;
 				}
-				console.log('form submitted.',a);
 			},
 			error:function (a) {
 				console.log('form not submitted.',a);

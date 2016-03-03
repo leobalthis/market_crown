@@ -124,7 +124,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 			if(error){
 				return res.json({error:body})
 			}
-			
+
 			if(body=="User successfully added"){
 				User.deleteAllNonfinished();
 				req.user.saveMcUsername(req.body.user_name,function(err){
