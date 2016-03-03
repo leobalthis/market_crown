@@ -19,6 +19,8 @@ var config = {
 	},
 	//PUBLIC_ADDRESS:'http://104.239.245.54',
 	PORT:3848,
+	REDIRECT_AUTH_SUCCESS:'/landing/personalInfo',
+	REDIRECT_AUTH_FAIL:'/landing',
 	REDIRECT_URL_AFTER_SUCCESS_SIGNUP:'/app'
 };
 

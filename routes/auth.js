@@ -76,20 +76,20 @@ passport.use(new GoogleStrategy({
 router.get('/facebook',
 	passport.authenticate('facebook'));
 router.get('/facebook/callback',
-	passport.authenticate('facebook', { successRedirect: '/personalInfo',
-		failureRedirect: '/' }));
+	passport.authenticate('facebook', { successRedirect: CONFIG.REDIRECT_AUTH_SUCCESS,
+		failureRedirect: CONFIG.REDIRECT_AUTH_FAIL }));
 
 router.get('/twitter',
 	passport.authenticate('twitter'));
 router.get('/twitter/callback',
-	passport.authenticate('twitter', { successRedirect: '/personalInfo',
-			failureRedirect: '/' }));
+	passport.authenticate('twitter', { successRedirect: CONFIG.REDIRECT_AUTH_SUCCESS,
+			failureRedirect: CONFIG.REDIRECT_AUTH_FAIL }));
 
 router.get('/google',
 	passport.authenticate('google', { scope: ['profile'] }));
 router.get('/google/callback',
-	passport.authenticate('google', { successRedirect: '/personalInfo',
-		failureRedirect: '/' }));
+	passport.authenticate('google', { successRedirect: CONFIG.REDIRECT_AUTH_SUCCESS,
+		failureRedirect: CONFIG.REDIRECT_AUTH_FAIL }));
 
 
 router.get('/logout', function(req, res){
