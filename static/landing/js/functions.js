@@ -92,8 +92,11 @@
 		$.ajax({
 			url: $('#finishForm').attr('action'),
 			type: 'POST',
-			data: $('#ffinishFormorm').serialize(),
+			data: $('#finishForm').serialize(),
 			success: function (a) {
+				if(a.error){
+					$(".form-error").show(500);
+				}
 				console.log('form submitted.',a);
 			},
 			error:function (a) {
