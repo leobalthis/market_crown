@@ -37,7 +37,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new FacebookStrategy({
 		clientID: 1074187149262332,
 		clientSecret: "94eed7a7170b0e2b76f4f4cc25240a51",
-		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.COMMON_PREFIX+"/auth/facebook/callback"
+		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.API_PREFIX+"/auth/facebook/callback"
 	},
 	function(accessToken, refreshToken, profile, done) {
 		User.findOrCreate(profile, function(err, user) {
@@ -50,7 +50,7 @@ passport.use(new FacebookStrategy({
 passport.use(new TwitterStrategy({
 		consumerKey: 'HGsgXjGXU4qsGePQ3RKVLnvBy',
 		consumerSecret: '1FyIuFVfRbAogS6yF36yQvBvV5Zndy3e9OT7qjHCKnc1uj35tS',
-		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.COMMON_PREFIX+"/auth/twitter/callback"
+		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.API_PREFIX+"/auth/twitter/callback"
 	},
 	function(token, tokenSecret, profile, done) {
 		User.findOrCreate(profile, function(err, user) {
@@ -63,7 +63,7 @@ passport.use(new TwitterStrategy({
 passport.use(new GoogleStrategy({
 		clientID: '1002436193878-ba0blta375fu9bbvkuv4k883fnpa03gl.apps.googleusercontent.com',
 		clientSecret: '8lYRVEfZsQG5pcXtitAIcRUs',
-		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.COMMON_PREFIX+"/auth/google/callback"
+		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.API_PREFIX+"/auth/google/callback"
 	},
 	function(tokens, profile, done) {
 		User.findOrCreate(profile, function(err, user) {
