@@ -77,7 +77,34 @@
 	//	})
 	//});
 
-	console.log('sad');
+	//$('#finishForm')
+	//	.ajaxForm({
+	//		url : '/api/v1/auth/finish', // or whatever
+	//		dataType : 'json',
+	//		success : function (response) {
+	//			console.log("The server says: " + response);
+	//		}
+	//	})
+	//;
+
+	$('#finishForm').submit(function(e) {
+		$(".form-error").hide();
+		$.ajax({
+			url: $('#finishForm').attr('action'),
+			type: 'POST',
+			data: $('#ffinishFormorm').serialize(),
+			success: function (a) {
+				console.log('form submitted.',a);
+			},
+			error:function (a) {
+				console.log('form not submitted.',a);
+				$(".form-error").show(500);
+			}
+		});
+		console.log('e', e);
+		return false;
+	});
+	//console.log('sad');
 	 $.ajax({
 		 method: "GET",
 		 url:"/api/v1/personal/me"
@@ -94,6 +121,8 @@
 
 
 })();
+
+
 function validateForm(){
 	console.log('validation');
 	var form = document.forms["finishForm"];
