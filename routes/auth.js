@@ -114,6 +114,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 	//console.log(obj)
 	request({
 		url:finish_url+'/create/user',
+		method:'POST',
 		body:obj,
 		json:true
 	},function (error, response, body) {
