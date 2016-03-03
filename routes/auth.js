@@ -127,7 +127,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 
 			if(body=="User successfully added"){
 				User.deleteAllNonfinished();
-				req.user.saveMcUsername(req.body.user_name,function(err,res){
+				req.user.saveMcUsername(req.body.user_name,function(err){
 					return res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
 				});
 			}
