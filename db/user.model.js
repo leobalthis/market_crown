@@ -3,10 +3,13 @@ var log 				= log4js.getLogger('user.model.js');
 
 var mongoose 			= require('mongoose');
 var Schema 				= mongoose.Schema;
+const CONFIG			= require('../config.js');
 
+var _					= require('lodash')
 
 var userSchema = new Schema({
 	provider: {name:String, id:String},
+	mc_username: {type:String, index: true},
 	displayName: String,
 	name:{
 		familyName:String,
@@ -17,7 +20,7 @@ var userSchema = new Schema({
 		Schema.Types.Mixed 										//value, type (home,work, etc)
 		],
 	photos:[Schema.Types.Mixed ],								// value
-	createdAt: {type:Date, default: Date.now()},
+	createdAt: {type:Date, default: Date.now(), index: true},
 	modifiedAt: {type:Date, default: Date.now()}
 });
 
@@ -58,6 +61,39 @@ userSchema.statics.findOrCreate = function (profile,done) {
 	})
 };
 
+userSchema.statics.deleteAllNonfinished = function (done) {
+	if(!done){
+		done = function(err){if(err){log.error(err);}}
+	}
+	User.remove(
+		{
+			$and:[
+				{
+					createdAt: {$lt: new Date().getTime() - CONFIG.NON_FINISHED_USER_EXP_MSEC}
+				},
+				{
+					mc_username:{$exists:false}
+				}
+			]
+		}).exec(done)
+}
+
+userSchema.methods.saveMcUsername = function(username,done){
+	this.mc_username = username;
+	this.save(done);
+}
+
+userSchema.methods.getEmail = function(){
+	if(this.emails && this.emails.length > 0){
+		if(this.emails[0].value){
+			return this.emails[0].value;
+		}else{
+			return '';
+		}
+	}else{
+		return '';
+	}
+};
 
 
 var User = mongoose.model('User', userSchema);

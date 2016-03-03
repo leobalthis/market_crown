@@ -3,17 +3,22 @@ const log 					= log4js.getLogger('auth.js');
 
 const express				= require('express');
 const router 				= express.Router();
+var request					= require('request');
+
+
 const User 					= require('../db/user.model.js');
 const CONFIG				= require('../config.js');
 //
-var passport = require('passport');
-
-var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy = require('passport-twitter');
-//var GooglePlusStrategy = require('passport-google-plus');
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var passport 				= require('passport');
+var bodyParser 				= require('body-parser')
 
 
+var FacebookStrategy 		= require('passport-facebook').Strategy;
+var TwitterStrategy 		= require('passport-twitter');
+//var GooglePlusStrategy 	= require('passport-google-plus');
+var GoogleStrategy 			= require('passport-google-oauth20').Strategy;
+
+var urlencodedParser 		= bodyParser.urlencoded({ extended: false })
 
 passport.serializeUser(function(user, done) {
 	log.info('ser ',user);
@@ -92,9 +97,40 @@ router.get('/logout', function(req, res){
 	res.redirect('/');
 });
 
-router.post('/finish',function(req,res){
-	console.log('post finish');
-	res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
-})
 
+var finish_url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT;
+router.post('/finish',urlencodedParser, function(req,res){
+	//console.log('post finish',req.body);
+	if(!req.user){
+		return res.status(401).send('no cookies');
+	}
+	var obj = {
+		"username": req.body.user_name,
+		"email":req.user.getEmail(),
+		"location":"San Francisco",
+		"sector":["technology","financial"],
+		"marketcap":["mega"]
+	};
+	//console.log(obj)
+	request({
+		url:finish_url+'/create/user',
+		body:obj,
+		json:true
+	},function (error, response, body) {
+			//console.log('error',error);
+			//console.log('response',response);
+			//console.log('body',body);
+			if(error){
+				return res.json({error:body})
+			}
+
+			if(body=="User successfully added"){
+				User.deleteAllNonfinished();
+				req.user.saveMcUsername(req.body.user_name,function(err,res){
+					return res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
+				});
+			}
+			res.json({error:body})
+	});
+});
 module.exports = router;

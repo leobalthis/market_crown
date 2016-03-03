@@ -29,7 +29,6 @@ function usernameReplacement(req,res, next){
 router.get('/me',function(req, res){
 	log.info('user',req.user);
 	res.send(JSON.stringify(req.user));
-	//profile/us/jcramer
 });
 
 router.all('*', function(req, res) {

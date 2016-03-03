@@ -4,6 +4,7 @@ var config = {
 	API_PREFIX:'/api/v1',
 	LANDING_PREFIX:'/landing',
 	APP_PREFIX:'/app',
+	NON_FINISHED_USER_EXP_MSEC:1000*60*60*24*7,
 	SESSION_MONGO:{
 		URL:'mongodb://localhost/mcm-sessions'
 	},
@@ -28,10 +29,10 @@ var config_dev = {
 	USER_MONGO:{
 		URL:'mongodb://mongo/mcm-users'
 	},
-	PYTHON_API:{
-		HOST:'tracer',
-		PORT:'5000'
-	},
+	//PYTHON_API:{
+	//	HOST:'tracer',
+	//	PORT:'5000'
+	//},
 };
 
 if(process.env.NODE_ENV=='development'){

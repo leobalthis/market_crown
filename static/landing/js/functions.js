@@ -80,7 +80,7 @@
 	console.log('sad');
 	 $.ajax({
 		 method: "GET",
-		 url:"api/v1/personal/me"
+		 url:"/api/v1/personal/me"
 		 })
 		.done(function(a,b) {
 			console.log( "success", a,b);
@@ -92,4 +92,18 @@
 			console.log( "complete" );
 		});
 
+
 })();
+function validateForm(){
+	console.log('validation');
+	var form = document.forms["finishForm"];
+	var nick = form['user_name'].value;
+	if(!nick || nick.length<4 || nick=='admin' || nick=='all'){
+		$(".form-error").show(500);
+		return false;
+	}else{
+		$(".form-error").hide();
+		return true;
+	}
+
+}

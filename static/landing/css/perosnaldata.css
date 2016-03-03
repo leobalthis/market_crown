@@ -16,3 +16,10 @@
     height:40px !important;
     margin:10px auto !important;
 }
+
+.form-error{
+    display: none;
+    color: #E96464;
+    padding: 0;
+    margin-top: 10px;
+}

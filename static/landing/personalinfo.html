@@ -63,7 +63,7 @@
   <div class = "mc-personaldata">
     <div class = "container">
       <div class = "mc-optui">
-        <form method="post"  action="api/v1/auth/finish">
+        <form method="post" name="finishForm" action="/api/v1/auth/finish" onsubmit="return validateForm()">
           <h2 class = "mc-opttitle ">LAST STEP</h2>
           <div class = "mc-member" id="mc-member">
             <!--<span><p>Not yet a member?</p></span>-->
@@ -75,6 +75,7 @@
           <!--<a class="" href="#"><img class = "mc-smicons" src = "images/mc-gplus.png"></a>-->
         <!--</div>-->
         <!--<h4>or</h4>-->
+          <div class="form-error">Enter valid username</div>
         <div class = "input-envelope">
           <!--<span><img src = "images/user.png" ></span>-->
           <input type="text" id="form-username" name="user_name" placeholder = "Username">
