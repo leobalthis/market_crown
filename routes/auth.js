@@ -65,7 +65,7 @@ passport.use(new GoogleStrategy({
 		clientSecret: '8lYRVEfZsQG5pcXtitAIcRUs',
 		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.API_PREFIX+"/auth/google/callback"
 	},
-	function(tokens, profile, done) {
+	function(accessToken, refreshToken, profile, done) {
 		User.findOrCreate(profile, function(err, user) {
 			if (err) { return done(err); }
 			done(null, user);
