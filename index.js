@@ -1,4 +1,4 @@
-const log4js 				= require('log4js');
+const log4js 			= require('log4js');
 const log 				= log4js.getLogger('index.js');
 
 const express 			= require('express');
@@ -12,7 +12,7 @@ const personal			= require('./routes/personal.js');
 const auth				= require('./routes/auth.js');
 const db				= require('./db/db.js');
 
-const CONFIG				= require('./config.js');
+const CONFIG			= require('./config.js');
 
 
 // parse application/x-www-form-urlencoded
@@ -36,10 +36,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use('/', express.static(__dirname + '/static'));
-app.use(CONFIG.COMMON_PREFIX+'/common',		common);
-app.use(CONFIG.COMMON_PREFIX+'/personal',		personal);
-app.use(CONFIG.COMMON_PREFIX+'/auth',			auth);
+app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
+app.use(CONFIG.APP_PREFIX, express.static(__dirname + '/static/app'));
+
+app.use(CONFIG.API_PREFIX+'/common',		common);
+app.use(CONFIG.API_PREFIX+'/personal',		personal);
+app.use(CONFIG.API_PREFIX+'/auth',			auth);
+app.get(CONFIG.LANDING_PREFIX, function(req,res){
+	res.sendFile(__dirname + '/static/landing/marketcrown.html')
+});
+app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
+	if(req.user && req.user.mc_username){
+		log.debug('req.user.mc_username',req.user.mc_username);
+		console.log('**')
+	}
+	res.sendFile(__dirname + '/static/landing/personalinfo.html')
+});
 
 db.init(function(err){
 	if(err){

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Market Crown - Forecast stock movement in multiple world markets</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!--custom css-->
+	<link rel="stylesheet" type="text/css" href="assets/styles/css/main.css">
+
+	<!--Google Feeds-->
+	<script type="text/javascript" src="https://www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22feeds%22%2C%22version%22%3A%221.0%22%2C%22nocss%22%3Atrue%7D%5D%7D"></script>
+
+	<!--js libraries-->
+	<script src="lib/js/jquery.js"></script>
+	<script src="lib/js/jquery-ui-date-picker.js"></script>
+	<script src="lib/js/Chart.js"></script>
+
+
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.js"></script>
+	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.0.js"></script>
+	<script src="lib/angular/angular-sanitize.min.js"></script>
+	<script src="lib/angular/angular-chart.min.js"></script>
+	<script src="lib/angular/angular-ui-router.min.js"></script>
+	<script src="lib/angular/angular-date-picker.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.min.js"></script>
+	<script src="lib/angular/angular-utils-pagination.js"></script>
+	<script src='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+
+	<script src="lib/js/d3.min.js"></script>
+	<script src="lib/js/nv.d3.min.js"></script>
+	<script src="lib/angular/angular-nvd3.min.js"></script>
+
+	<!--controllers-->
+	<script src="controllers/app.js"></script>
+	<script src="controllers/StockInfoWrapperCtrl.js"></script>
+	<script src="controllers/StockInfoCtrl.js"></script>
+	<script src="controllers/CreateForecastCtrl.js"></script>
+	<script src="controllers/UserInfoCtrl.js"></script>
+	<script src="controllers/ForecastsCtrl.js"></script>
+	<script src="controllers/QueriesCtrl.js"></script>
+	<script src="controllers/UserCtrl.js"></script>
+
+	<!--services-->
+	<script src="services/UserService.js"></script>
+
+	<!--Favicons-->
+	<link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+	<!--Favicons-->
+
+</head>
+<body ng-app="App">
+<div id="dashboard">
+	<header class="navbar-fixed-top">
+		<div class="">
+			<div class="full-container">
+				<div class="col-md-9">
+					<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-header">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+							</div><!-- navbar header-->
+
+							<div class="collapse navbar-collapse" id="top-header">
+								<ul class="nav navbar-nav navbar-right">
+									<li> <a href="#">Home</a> </li>
+									<li><a href="#">About</a></li>
+									<li class="app"><a href="#"><img src="assets/images/app.png" alt=""/>APP</a></li>
+
+								</ul>
+							</div><!--navbar-collapse-->
+						</div><!--container fluid-->
+					</nav>
+				</div>
+
+				<div class="col-md-3">
+					<nav class="navbar navbar-default navbar-profile">
+						<div class="container-fluid">
+							<div class="collapse navbar-collapse" id="user-profile">
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Andrew Cramer <span class="caret"></span></a>
+										<ul class="dropdown-menu">
+
+											<li><a href="#">Profile</a></li>
+											<li><a href="#">Settings</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#">Log Out</a></li>
+										</ul>
+									</li>
+								</ul>
+							</div><!--navbar-collapse-->
+
+						</div><!--container fluid-->
+					</nav>
+				</div>
+			</div>
+		</div><!--container-->
+	</header>
+
+	<aside id="sidebar">
+		<div class="full-container">
+			<div class="row logo hidden-sm hidden-xs">
+				<img src="assets/images/logo.png">
+			</div>
+
+
+			<div class="row make-a-forecast" ng-controller="CreateForecastCtrl">
+				<h2>Create a Forecast</h2>
+
+				<div class="col-lg-12">
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<span class="field-name">Select a Market</span>
+								<select class="form-control" name="selectMarket" ng-model="data.selectMarket">
+									<option value="">-- Select --</option>
+									<option value="{{marketData.option1}}">US</option>
+									<option value="{{marketData.option2}}">CA</option>
+									<option value="{{marketData.option3}}">UK</option>
+									<option value="{{marketData.option4}}">DE</option>
+									<option value="{{marketData.option5}}">HK</option>
+								</select>
+							</label>
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<span class="field-name">Stock Symbol</span>
+								<input type="text" placeholder="Enter the symbol..." ng-model="stockSymbol" uib-typeahead="symbol.name for symbol in symbols | filter:$viewValue | limitTo:8" class="form-control">
+							</label>
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<div class="row">
+								<label>
+									<span class="field-name">Date Selection</span>
+									<div class="col-md-10 no-padding">
+										<input type="text" ui-date ui-date-format="mm/dd/y" ng-model="forecastDate" ng-required="true" placeholder="Select a date...">
+									</div>
+
+
+									<div class="col-md-2 no-padding field-img">
+										<img src="assets/images/calendar.png" alt=""/>
+									</div>
+
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<span class="field-name">Goes Up or Down?</span>
+								<select class="form-control" name="selectMarketMovement" ng-model="data.selectMarketMovement">
+									<option value="">-- Select --</option>
+									<option value="{{marketMovement.option1}}">Up</option>
+									<option value="{{marketMovement.option2}}">Down</option>
+								</select>
+							</label>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<span class="field-name">Time of the day</span>
+								<select class="form-control" name="selectDayTime" ng-model="data.selectDayTime">
+									<option value="">-- Select --</option>
+									<option value="{{dayTime.option1}}">Morning</option>
+									<option value="{{dayTime.option2}}">Midday</option>
+									<option value="{{dayTime.option3}}">Close</option>
+								</select>
+							</label>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<span class="field-name">Percentage</span>
+								<select class="form-control" name="selectMarketMovementPercentage" ng-model="data.selectMarketMovementPercentage">
+									<option value="">-- Select --</option>
+									<option value="{{marketMovementPercentage.option1}}">.2-.9%</option>
+									<option value="{{marketMovementPercentage.option2}}">1-5%</option>
+									<option value="{{marketMovementPercentage.option3}}">6-15%</option>
+									<option value="{{marketMovementPercentage.option4}}">16-30%</option>
+									<option value="{{marketMovementPercentage.option5}}">31+%</option>
+								</select>
+							</label>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<span class="field-name">Analysis</span>
+								<textarea maxlength="350"  rows="4" type="text" placeholder="Type your analysis (350 chars max)." ng-model="forecastAnalysis" class="form-control"></textarea>
+							</label>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 field">
+							<label>
+								<button ng-click="createForecast();" class="btn btn-success"> Submit </button>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</aside>
+
+	<div class="full-container dashboard-content-wrapper">
+		<div class="row">
+			<div class="col-lg-12 navigation">
+				<nav>
+					<ul>
+						<li ui-sref-active="active" ><a ui-sref="stock-info">Stock Info</a>
+						</li><li  ui-sref-active="active" ><a ui-sref="forecasts">Forecasts</a>
+						</li><li  ui-sref-active="active" ><a ui-sref="queries">Queries</a>
+						</li><li  ui-sref-active="active"><a ui-sref="pods">Pods</a>
+						</li><li  ui-sref-active="active"><a ui-sref="user">Profile</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+
+		<div class="row">
+			<div ui-view="section" ></div>
+			<div ui-view="sidebar"></div>
+		</div>
+	</div>
+</div><!--dashboard-->
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

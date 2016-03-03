@@ -1,0 +1,552 @@
+<div ng-controller="UserCtrl">
+	<div class="col-lg-9 user-page">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="customization">
+
+					<div class="row">
+						<div class="title clearfix">
+
+							<div class="col-lg-2">
+								<div class="selection search-switch-selection">
+									<ui-select ng-model="profileStats.usersSelection.active" theme="bootstrap" ng-disabled="disabled">
+										<ui-select-match placeholder="All users">{{$select.selected.name}}</ui-select-match>
+
+										<ui-select-choices repeat="selection in profileStats.usersSelection | filter: $select.search">
+											{{selection.name}}
+										</ui-select-choices>
+									</ui-select>
+								</div>
+
+								<!--<div class="btn-group search-switch">-->
+									<!---->
+									<!---->
+									<!--<label class="btn btn-primary" ng-model="profileStats.searchStatus" uib-btn-radio="'all'" ng-click="">-->
+										<!--<ul>-->
+											<!--<li class="img">-->
+												<!--<img ng-src="{{profileStats.searchStatus == 'all' && 'assets/images/active.png' || 'assets/images/details.png'}}"/>-->
+											<!--</li>-->
+
+											<!--<li>-->
+												<!--All Users-->
+											<!--</li>-->
+										<!--</ul>-->
+
+									<!--</label>-->
+									<!--<label class="btn btn-primary" ng-model="profileStats.searchStatus" uib-btn-radio="'fromGroup'" ng-click="">-->
+										<!--<ul>-->
+											<!--<li class="img">-->
+												<!--<img ng-src="{{profileStats.searchStatus == 'fromGroup' && 'assets/images/active.png' || 'assets/images/details.png' }}"/>-->
+											<!--</li>-->
+
+											<!--<li>-->
+												<!--From My Groups-->
+											<!--</li>-->
+										<!--</ul>-->
+									<!--</label>-->
+								<!--</div>-->
+							</div>
+
+							<div class="col-lg-2" ng-show="profileStats.usersSelection.active.call === 'group'">
+								<div class="selection search-switch-selection">
+									<ui-select ng-model="profileStats.usersGroup.chosen" theme="bootstrap" ng-disabled="disabled" on-select="changeMarket()">
+										<ui-select-match placeholder="Group selection">{{$select.selected.name}}</ui-select-match>
+
+										<ui-select-choices repeat="selection in profileStats.usersGroups | filter: $select.search">
+											{{selection.name}}
+										</ui-select-choices>
+									</ui-select>
+								</div>
+
+							</div>
+
+							<div class="col-lg-3 input-search" ng-show="profileStats.usersSelection.active.call === 'all'">
+								<input type="text" placeholder="Search for users..." ng-keyup="$event.keyCode == 13 && redirectToUser()" ng-model="username.search" uib-typeahead="user for user in users | filter:$viewValue | limitTo:8" class="form-control">
+								<img ng-src="assets/images/search-icon.png" alt="">
+							</div>
+
+							<div class="col-lg-3" ng-show="profileStats.usersSelection.active.call === 'group'">
+								<div class="selection search-switch-selection">
+									<ui-select ng-model="username.search" theme="bootstrap" ng-disabled="disabled" on-select="redirectToUser()">
+										<ui-select-match placeholder="Select user">{{$select.selected}}</ui-select-match>
+
+										<ui-select-choices repeat="selection in profileStats.usersGroup.chosen.members | filter: $select.search">
+											{{selection}}
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+
+							<div class="col-lg-4">
+								<h1>
+									{{username.display}} <span>profile details</span>
+								</h1>
+							</div>
+						</div>
+					</div>
+					<div class="master-customization">
+						<div class="row">
+							<div class="col-lg-3">
+								<h4>Market</h4>
+								<div class="market-selection selection">
+									<ui-select ng-model="profileStats.market.selected" theme="bootstrap" ng-disabled="disabled" on-select="changeMarket()">
+										<ui-select-match placeholder="Market selection..."><img ng-src="assets/images/flags/{{$select.selected.flag}}" alt=""/> {{$select.selected.name}}</ui-select-match>
+
+										<ui-select-choices repeat="market in profileStats.markets | filter: $select.search">
+											<img ng-src="assets/images/flags/{{market.flag}}" alt=""/>{{market.name}}
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+
+							<div class="col-lg-3">
+								<h4>Period:</h4>
+								<div class="forecasts-from selection">
+									<ui-select ng-model="profileStats.date.selected" theme="bootstrap" ng-disabled="disabled" on-select="profileStats.dateSelection()">
+										<ui-select-match placeholder="Forecast results..."> {{$select.selected.name}}</ui-select-match>
+
+										<ui-select-choices repeat="date in profileStats.dates | filter: $select.search" position='down'>
+											{{date.name}}
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+
+							<div class="col-lg-2 " ng-show="profileStats.date.selected.call === 'custom'">
+								<div class="date-picker">
+									<h4>Start Date:</h4>
+									<input type="text" ui-date ui-date-format="mm-dd-y" ng-model="profileStats.customDateStart" ng-required="true" placeholder="From date...">
+								</div>
+							</div>
+
+							<div class="col-lg-2" ng-show="profileStats.date.selected.call === 'custom'">
+								<div class="date-picker">
+									<h4>End Date</h4>
+									<input type="text" ui-date ui-date-format="mm-dd-y" ng-model="profileStats.customDateEnd" ng-required="true" placeholder="From date...">
+								</div>
+							</div>
+
+							<div class="col-lg-6" ng-class="{ collg2 : profileStats.date.selected.call === 'custom' }">
+								<div class="btn-container">
+									<button ng-click="refreshData()" class="btn submit">Submit</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12">
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#stats" data-toggle="tab" aria-expanded="true" target="_self">Statistics</a></li>
+									<li class=""><a href="#forecasts" data-toggle="tab" aria-expanded="false" target="_self">Forecasts</a></li>
+									<li class=""><a href="#followers" data-toggle="tab" aria-expanded="false" target="_self">Followers</a></li>
+									<li class=""><a href="#following" data-toggle="tab" aria-expanded="false" target="_self">Following</a></li>
+									<li class=""><a href="#groups" data-toggle="tab" aria-expanded="false" target="_self">Groups</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="user-profile-content" class="tab-content">
+			<div class="tab-pane fade active in" id="stats">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Sector Preference</h2>
+							</div>
+							<nvd3 options="options.barChart" data="profileStats.chart.sectorPreference"></nvd3>
+						</div>
+					</div>
+
+					<div class="col-lg-12">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Market Cap Preference</h2>
+							</div>
+							<nvd3 options="options.barChart" data="profileStats.chart.marketCapPreference"></nvd3>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Total % Correct</h2>
+							</div>
+							<nvd3 options="options" data="profileStats.chart.totalCorrect"></nvd3>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Forecast Sentiment</h2>
+							</div>
+							<nvd3 options="options" data="profileStats.chart.forecastSentiment"></nvd3>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Forecast Pending Sentiment</h2>
+							</div>
+							<nvd3 options="options" data="profileStats.chart.forecastPendingSentiment"></nvd3>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Time of Day Preference</h2>
+							</div>
+							<nvd3 options="options" data="profileStats.chart.timeOfDayPreference"></nvd3>
+						</div>
+					</div>
+
+
+
+					<div class="col-lg-12">
+						<div class="compare-users">
+							<div class="row">
+								<div class="col-sm-3">
+									<h4>Compare With Other Users</h4>
+								</div>
+
+								<div class="col-sm-4">
+									<ui-select multiple ng-model="multiselect.users" theme="bootstrap">
+										<ui-select-match placeholder="Select users...">{{$item}}</ui-select-match>
+										<ui-select-choices repeat="user in users | filter:$select.search | limitTo: 10" position="down">
+											{{user}}
+										</ui-select-choices>
+									</ui-select>
+								</div>
+
+								<div class="col-lg-5">
+									<div class="btn-container">
+										<button class="btn submit">Submit</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-12">
+						<div class="chart-element">
+							<div class="header">
+								<h2>Market Rank</h2>
+							</div>
+							<nvd3 options="lineOptions" data="lineData"></nvd3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="forecasts">
+				<div class="row forecasts-elements">
+					<div class="col-md-12">
+						<div class="btn-group">
+							<label class="btn btn-primary" ng-model="profileStats.forecastStatus" uib-btn-radio="'pending'" ng-click="getForecasts()">
+								<ul>
+									<li class="img">
+										<img ng-src="{{profileStats.forecastStatus == 'pending' && 'assets/images/active.png' || 'assets/images/details.png'}}"/>
+									</li>
+
+									<li>
+										Pending
+									</li>
+								</ul>
+
+							</label>
+							<label class="btn btn-primary" ng-model="profileStats.forecastStatus" uib-btn-radio="'validated'" ng-click="getForecasts()">
+								<ul>
+									<li class="img">
+										<img ng-src="{{profileStats.forecastStatus == 'validated' && 'assets/images/active.png' || 'assets/images/details.png' }}"/>
+									</li>
+
+									<li>
+										Validated
+									</li>
+								</ul>
+							</label>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-lg-6" dir-paginate="forecast in profileStats.forecasts  | itemsPerPage: 15">
+						<div class="element-wrapper">
+							<div class="element" ng-mouseenter="getClickedObject(forecast)" ng-mouseleave="cleanAnalysis()" ng-class="{ 'forecast-correct': forecast.correct == true , 'forecast-incorrect': forecast.correct == false }">
+
+								<div class="element-overlay">
+									<div class="forecast-details-element">
+										<div class="top">
+											<div class="header row">
+												<div class="col-lg-12">
+													<div class="description">
+
+														<p ng-show="!analysisOutput">
+															{{selectedItem.summary}}
+														</p>
+
+														<p ng-show="analysisOutput" ng-repeat="item in forecastAnalysis">
+															{{item.analysis}}
+														</p>
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="loading-small">
+									<div class="ball"></div>
+									<div class="ball1"></div>
+								</div>
+
+								<div class="top-element">
+
+									<div class="header">
+										<h3>
+											{{forecast.company}}
+										</h3>
+									</div>
+
+									<div class="body">
+
+										<div class="row">
+											<div class="col-lg-4">
+												<div class="profile">
+													<img ng-src="assets/images/thumb.jpg" alt="">
+													<h5>{{forecast.user}}</h5>
+												</div>
+											</div>
+
+											<div class="col-lg-8">
+												<div class="details">
+													<p>
+														<b>{{forecast.symbol | uppercase}}</b> will be <img ng-src="{{forecast.movement == 'up' && 'assets/images/up.png' || 'assets/images/down.png'}}"/>	<b>{{forecast.percentage}}</b> from <b>${{forecast.currentprice}}</b> during <b>{{forecast.timeofday | uppercase}}</b> on <b>{{forecast.predictiondate}}</b>
+													</p>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-12">
+												<p ng-show="{{forecast.correct == false}}">{{forecast.summary}} <span class="label label-danger">False</span></p>
+												<p ng-show="{{forecast.correct == true}}" >{{forecast.summary}} <span class="label label-success">True</span></p>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="footer">
+
+									<table class="table">
+										<tbody>
+										<tr>
+											<td>Created:<b>{{forecast.timestamp_str}}</b></td>
+											<td>Realization time: <b>{{roundNumbers(forecast.latency)}} hours</b></td>
+										</tr>
+
+										<tr>
+											<td>Market Cap: <b>{{forecast.mcapcategory}}</b></td>
+											<td>Sector: <b>{{forecast.sector}}</b></td>
+										</tr>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+							<button class="delete" ng-show="{{currentUser == forecast.user && profileStats.forecastStatus == 'pending'}}" ng-click="deleteClickedObject(forecast)">
+								<img ng-src="assets/images/x.png" alt=""/>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="pagination clearfix">
+							<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)">
+
+								<ul class="pagination" ng-if="1 < pages.length || !autoHide">
+									<li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+										<a href="" ng-click="setCurrent(1)">&laquo;</a>
+									</li>
+									<li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+										<a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+									</li>
+									<li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+										<a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+									</li>
+
+									<li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+										<a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+									</li>
+									<li ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }">
+										<a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+									</li>
+								</ul>
+							</dir-pagination-controls>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade following-users" id="followers">
+				<div class="row">
+					<div class="col-md-3" dir-paginate="user in profileStats.followers  | itemsPerPage: 16">
+						<a href="#/user/{{user}}" ng-mouseenter="profileStats.hoveredUser(user)">
+							<div class="element">
+								<div class="over">
+									<ul>
+										<li>Market Rank{{profileStats.hoveredUser.data.community_rank}}</li>
+										<li>User Performance Score {{profileStats.hoveredUser.data.user_performance_index}}</li>
+
+									</ul>
+								</div>
+
+								<img ng-src="assets/images/thumb.jpg" alt="">
+								<h5>{{user}}</h5>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade following-users" id="following">
+				<div class="row">
+					<div class="col-md-3" dir-paginate="user in profileStats.following  | itemsPerPage: 16">
+						<a href="#/user/{{user}}">
+							<div class="element">
+								<img ng-src="assets/images/thumb.jpg" alt="">
+								<h5>{{user}}</h5>
+							</div>
+						</a>
+					</div>
+				</div>
+
+			</div>
+			<div class="tab-pane fade following-users" id="groups">
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3">
+		<div class="user-info user-info-profile">
+			<div class="dashboard-element">
+
+				<div class="user-info-header">
+					<img src="assets/images/thumb.jpg" alt=""/>
+					<h2>{{profileStats.atGlance.user || upercase}}</h2>
+					<h2 class="subtitle">CNBC Analysis</h2>
+					<p>Former hedge fund manager and CNBC analysis</p>
+
+					<div class="btn-container">
+						<button class="btn btn-primary">
+							Follow
+						</button>
+					</div>
+
+				</div>
+
+
+				<div class="user-info-elements">
+					<div id="at-a-glance" class="table-container">
+						<table class="table">
+							<tbody>
+							<tr>
+								<td>
+									<span>Community Rank:</span>
+									<span class="value">{{profileStats.atGlance.community_rank}}</span>
+								</td>
+								<td>
+									<span>Rank Length:</span>
+									<span class="value">{{profileStats.atGlance.reign_length}} days</span>
+								</td>
+							</tr>
+
+							<tr>
+
+								<td>
+									<span>Validated Forecasts:</span>
+									<span class="value">{{profileStats.atGlance.Forecasts}}</span>
+								</td>
+
+								<td>
+									<span>Pending Forecasts:</span>
+									<span class="value">{{profileStats.atGlance.pending_forecasts}}</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<span>Forecast Style:</span>
+									<span class="value">{{profileStats.atGlance.forecast_style}}</span>
+								</td>
+
+								<td>
+									<span>Performance score:</span>
+									<span class="value">{{profileStats.atGlance.user_performance_index}}</span>
+								</td>
+
+							</tr>
+
+							<tr>
+								<td>
+									<span>Favourite Market Cap:</span>
+									<span class="value">{{profileStats.atGlance.favorite_marketcap}}</span>
+								</td>
+
+								<td>
+									<span>
+										Favourite Sector:
+									</span>
+
+									<span class="value">
+										{{profileStats.atGlance.favorite_sector}}
+									</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<span>Following:</span>
+									<span class="value">{{profileStats.followingCount}}</span>
+								</td>
+
+								<td>
+									<span>
+										Followers:
+									</span>
+
+									<span class="value">
+										<span class="value">{{profileStats.followersCount}}</span>
+									</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<span>Average Forecasts Per Day:</span>
+									<span class="value">{{profileStats.atGlance.forecasts_per_day.toFixed(1)}}</span>
+								</td>
+
+								<td>
+									<span>
+										Average Latency:
+									</span>
+
+									<span class="value">
+											<span class="value">{{profileStats.atGlance.average_latency.toFixed(1)}} hours</span>
+									</span>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

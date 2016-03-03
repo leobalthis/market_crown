@@ -1,0 +1,221 @@
+
+	<div class="col-lg-5 stock-info-page" ng-controller="StockInfoCtrl" >
+		<div class="row">
+			<div class="col-lg-12 stock-info-details" >
+				<div class="dashboard-element">
+					<div class="customization row">
+						<div class="col-lg-8 market-selection">
+							<div class="btn-group">
+								<label class="btn btn-dark" ng-click="loadFeed($event)" ng-model="marketSelectionSwitcher" uib-btn-radio="'us'" uncheckable> <img src=assets/images/flags/us-flag.png> US</label>
+								<label class="btn btn-dark" ng-click="loadFeed($event)" ng-model="marketSelectionSwitcher" uib-btn-radio="'to'" uncheckable> <img src=assets/images/flags/ca-flag.png> CA</label>
+								<label class="btn btn-dark" ng-click="loadFeed($event)" ng-model="marketSelectionSwitcher" uib-btn-radio="'l'" uncheckable> <img src=assets/images/flags/uk-flag.png> UK</label>
+								<label class="btn btn-dark" ng-click="loadFeed($event)" ng-model="marketSelectionSwitcher" uib-btn-radio="'de'" uncheckable> <img src=assets/images/flags/de-flag.png> DE</label>
+								<label class="btn btn-dark" ng-click="loadFeed($event)" ng-model="marketSelectionSwitcher" uib-btn-radio="'hk'" uncheckable> <img src=assets/images/flags/hk-flag.png> HK</label>
+							</div>
+						</div>
+
+						<div class="col-lg-4 period-selection">
+							<label>
+								<select name="chartPeriod" ng-model="chartPeriodSelected" ng-options="period.name for period in chartPeriod">
+								</select>
+							</label>
+
+						</div>
+					</div>
+
+					<div class="header row">
+						<div class="overlay overlay-hugeinc" ng-class="{true: 'open', false: 'close'}[loadingStockInfo]">
+							<div class="ball"></div>
+							<div class="ball1"></div>
+							<h6>Loading...</h6>
+						</div>
+
+
+						<div class="col-lg-6 title clearfix">
+							<h3>{{stock.symbol}}</h3>
+							<h5>{{stock.name}}</h5>
+						</div>
+
+
+						<div class="col-lg-6 enter-symbol">
+							<div class="row">
+								<div class="col-lg-8 input-field">
+									<input type="text" placeholder="Enter new symbol..." ng-model="stock_info_symbol_input" uib-typeahead="symbol.name for symbol in symbols | filter:$viewValue | limitTo:8" class="form-control">
+								</div>
+
+								<div class="col-lg-4 button">
+									<button class="btn btn-dark" ng-click="updateStockInfo(); loadFeed($event)">Get Info</button>
+								</div>
+							</div>
+
+						</div>
+					</div><!--header-->
+
+
+					<div class="top-chart">
+						<img ng-src="http://chart.finance.yahoo.com/{{chartPeriodSelected.link + stock.symbol}}" alt="Chart"/>
+					</div>
+
+					<div class="stock-data" >
+						<div class="table-responsive">
+							<table class="table table-striped ">
+								<tbody>
+								<tr>
+									<td>Price</td>
+									<td class="second"><span>{{stock.price}}</span></td>
+
+									<td>% Change</td>
+									<td class="second"><span>{{stock.percentchange}}</span></td>
+								</tr>
+
+
+								<tr>
+									<td>Market Cap</td>
+									<td class="second"><span>{{stock.marketcap}}</span></td>
+
+									<td>Market Cap Category</td>
+									<td class="second"><span>{{stock.mcapcategory}}</span></td>
+								</tr>
+
+
+								<tr>
+									<td>Sector</td>
+									<td class="second"><span>{{stock.sector}}</span></td>
+
+									<td>Exchange</td>
+									<td class="second"><span>{{stock.exchange}}</span></td>
+								</tr>
+
+
+								<tr>
+									<td>Volume</td>
+									<td class="second"><span>{{stock.volume}}</span></td>
+
+									<td>Avg Daily Volume</td>
+									<td class="second"><span>{{stock.averagedailyvol}}</span></td>
+								</tr>
+
+
+								<tr>
+									<td>Open</td>
+									<td class="second"><span>{{stock.open}}</span></td>
+
+									<td>Days Range</td>
+									<td class="second"><span>{{stock.daysrange}}</span></td>
+								</tr>
+
+
+								<tr>
+									<td>52 Week High</td>
+									<td class="second"><span>{{stock.weekhigh52}}</span></td>
+
+									<td>52 Week Low</td>
+									<td class="second"><span>{{stock.weeklow52}}</span></td>
+								</tr>
+
+								<tr>
+									<td>One Year Target Price</td>
+									<td class="second"><span>{{stock.oneyeartargetprice}}</span></td>
+
+									<td>LastTradeDate</td>
+									<td class="second"><span>{{stock.lasttradetime}}</span></td>
+								</tr>
+
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div><!--dashboard-element-->
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12 stock-info-rss">
+				<div class="dashboard-element">
+					<div class="dashboard-element-header">
+						<h3><img src="assets/images/rss.png" alt=""/>Stock Feed</h3>
+					</div>
+					<!------------------->
+
+					<div class="row rss-elements">
+						<div class="col-xs-6" ng-repeat="feed in feeds | limitTo : 4">
+							<div class="rss-element">
+								<h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
+								<!--<p class="text-left">{{feed.contentSnippet}}</p>-->
+								<span class="small">{{feed.publishedDate}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-4 site-feed">
+		<div class="dashboard-element">
+			<div class="dashboard-element-header">
+				<h3>News Feed</h3>
+			</div>
+
+			<div class="row">
+				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
+					<a href="#">
+						<div class="img-container">
+							<img src="assets/images/bg-2.jpg" alt=""/>
+						</div>
+
+						<div class="content">
+							<h2>US shale industry braced for bankruptcies</h2>
+							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
+						</div>
+
+					</a>
+				</div>
+
+				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
+					<a href="#">
+						<div class="img-container">
+							<img src="assets/images/article-img.jpg" alt=""/>
+						</div>
+
+						<div class="content">
+							<h2>U5 Top Biotech Stocks That Ran This Past Week</h2>
+							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
+						</div>
+
+					</a>
+				</div>
+
+				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
+					<a href="#">
+						<div class="img-container">
+							<img src="assets/images/article-img-2.jpg" alt=""/>
+						</div>
+
+						<div class="content">
+							<h2>US shale industry braced for bankruptcies</h2>
+							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
+						</div>
+
+					</a>
+				</div>
+
+				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
+					<a href="#">
+						<div class="img-container">
+							<img src="assets/images/article-img-3.jpg" alt=""/>
+						</div>
+
+						<div class="content">
+							<h2>U5 Top Biotech Stocks That Ran This Past Week</h2>
+							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
+						</div>
+
+					</a>
+				</div>
+			</div>
+
+		</div><!--dashboard--element-->
+	</div>
+

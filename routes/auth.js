@@ -10,7 +10,8 @@ var passport = require('passport');
 
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter');
-var GooglePlusStrategy = require('passport-google-plus');
+//var GooglePlusStrategy = require('passport-google-plus');
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
 
@@ -54,8 +55,8 @@ passport.use(new TwitterStrategy({
 	}
 ));
 
-passport.use(new GooglePlusStrategy({
-		clientId: '1002436193878-ba0blta375fu9bbvkuv4k883fnpa03gl.apps.googleusercontent.com',
+passport.use(new GoogleStrategy({
+		clientID: '1002436193878-ba0blta375fu9bbvkuv4k883fnpa03gl.apps.googleusercontent.com',
 		clientSecret: '8lYRVEfZsQG5pcXtitAIcRUs',
 		callbackURL: CONFIG.PUBLIC_ADDRESS+CONFIG.COMMON_PREFIX+"/auth/google/callback"
 	},
@@ -70,19 +71,19 @@ passport.use(new GooglePlusStrategy({
 router.get('/facebook',
 	passport.authenticate('facebook'));
 router.get('/facebook/callback',
-	passport.authenticate('facebook', { successRedirect: '/',
+	passport.authenticate('facebook', { successRedirect: '/personalInfo',
 		failureRedirect: '/' }));
 
 router.get('/twitter',
 	passport.authenticate('twitter'));
 router.get('/twitter/callback',
-	passport.authenticate('twitter', { successRedirect: '/',
+	passport.authenticate('twitter', { successRedirect: '/personalInfo',
 			failureRedirect: '/' }));
 
 router.get('/google',
-	passport.authenticate('google'));
+	passport.authenticate('google', { scope: ['profile'] }));
 router.get('/google/callback',
-	passport.authenticate('google', { successRedirect: '/',
+	passport.authenticate('google', { successRedirect: '/personalInfo',
 		failureRedirect: '/' }));
 
 
@@ -90,5 +91,10 @@ router.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/');
 });
+
+router.post('/finish',function(req,res){
+	console.log('post finish');
+	res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
+})
 
 module.exports = router;

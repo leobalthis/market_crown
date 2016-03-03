@@ -1,0 +1,1071 @@
+var newUsername;
+var dashDate = {};
+var dateRange = {};
+dashDate.today = Date.parse('today').toString('MM-dd-yy');
+dashDate.yesterday = Date.parse('yesterday').toString('MM-dd-yy');
+dashDate.lastMonday = Date.parse('last monday').toString('MM-dd-yy');
+dashDate.lastWeekMonday = Date.monday().addDays(-7).toString('MM-dd-yy');
+dashDate.lastWeekFriday = Date.friday().addDays(-7).toString('MM-dd-yy');
+dashDate.lastWeekSunday = Date.sunday().addDays(-7).toString('MM-dd-yy');
+dashDate.last7Days = Date.today().addDays(-7).toString('MM-dd-yy');
+dashDate.last14Days =  Date.today().addDays(-14).toString('MM-dd-yy');
+dashDate.last30Days =  Date.today().addDays(-30).toString('MM-dd-yy');
+dashDate.firstDayOfCurrentMonth = Date.today().moveToFirstDayOfMonth().toString('MM-dd-yy');
+dashDate.firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().toString('MM-dd-yy');
+dashDate.lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM-dd-yy');
+
+App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService){
+
+	//pie chart options
+	$scope.options = {
+		chart: {
+			type: 'pieChart',
+			height: 300,
+			x: function(d){return d.key;},
+			y: function(d){return d.y;},
+			showLabels: false,
+			duration: 350,
+			transitionDuration: 1000,
+			labelThreshold: 0.01,
+			labelSunbeamLayout: true,
+			legend: {
+				margin: {
+					top: 5,
+					right: 35,
+					bottom: 0,
+					left: 0
+				}
+			}
+		}
+	};
+	$scope.profileStats = {};
+	$scope.username = {};
+	$scope.profileStats.chart = {};
+
+
+	//line chart options
+	$scope.lineOptions = {
+		chart: {
+			type: 'lineChart',
+			height: 300,
+			margin : {
+				top: 20,
+				right: 20,
+				bottom: 40,
+				left: 55
+			},
+			x: function(d){ return d.x; },
+			y: function(d){ return d.y; },
+			useInteractiveGuideline: true,
+			dispatch: {
+				stateChange: function(e){ console.log("stateChange"); },
+				changeState: function(e){ console.log("changeState"); },
+				tooltipShow: function(e){ console.log("tooltipShow"); },
+				tooltipHide: function(e){ console.log("tooltipHide"); }
+			},
+			xAxis: {
+				axisLabel: 'Dates',
+				tickFormat: function(d) {
+					return d3.time.format('%x')(new Date(new Date() - (20000 * 86400000) + (d * 86400000)));
+				},
+				showMaxMin: false
+			},
+			yAxis: {
+				axisLabel: 'Score',
+				tickFormat: function(d){
+					return d3.format('.02f')(d);
+				},
+				axisLabelDistance: -10
+			},
+			callback: function(chart){
+				console.log("!!! lineChart callback !!!");
+			}
+		},
+		title: {
+			enable: false,
+			text: 'Title for Line Chart'
+		},
+		subtitle: {
+			enable: false,
+			text: 'Subtitle for simple line chart. Lorem ipsum dolor sit amet, at eam blandit sadipscing, vim adhuc sanctus disputando ex, cu usu affert alienum urbanitas.',
+			css: {
+				'text-align': 'center',
+				'margin': '10px 13px 0px 7px'
+			}
+		},
+		caption: {
+			enable: false,
+			css: {
+				'text-align': 'justify',
+				'margin': '10px 13px 0px 7px'
+			}
+		}
+	};
+	$scope.lineData = sinAndCos();
+	/*Random Data Generator */
+	function sinAndCos() {
+		var user1 = [
+			{
+				x: 1,
+				y: 5,
+
+			},
+
+			{
+				x: 2,
+				y: 10
+			},
+			{
+				x: 3,
+				y: 10
+			},
+
+			{
+				x: 4,
+				y: 10
+			}
+		];
+		var user2 = [
+			{
+				x: 1,
+				y: 12
+			},
+
+			{
+				x: 2,
+				y: 5
+			},
+			{
+				x: 3,
+				y: 12
+			},
+
+			{
+				x: 4,
+				y: 4
+			}
+		];
+
+		var user3 = [
+			{
+				x: 1,
+				y: 4
+			},
+
+			{
+				x: 2,
+				y: 3
+			},
+			{
+				x: 3,
+				y: 2
+			},
+
+			{
+				x: 4,
+				y: 5
+			}
+		];
+
+
+		//Line chart data should be sent as an array of series objects.
+		return [
+			{
+				values: user1,      //values - represents the array of {x,y} data points
+				key: 'Sine Wave', //key  - the name of the series.
+				color: '#ff7f0e',  //color - optional: choose your own line color.
+				strokeWidth: 2,
+				classed: 'dashed',
+				area: true
+
+			},
+			{
+				values: user2,
+				key: 'Cosine Wave',
+				color: '#2ca02c',
+				area: true
+			},
+			{
+				values: user3,
+				key: 'Another sine wave',
+				color: '#7777ff',
+				area: true
+			},
+		];
+	};
+
+	//market selection
+	$scope.profileStats.market = {};
+	$scope.profileStats.markets = [
+		{name: 'US Market', symbol: 'us', flag: 'us-flag.png'},
+		{name: 'CA Market', symbol: 'ca', flag: 'ca-flag.png'},
+		{name: 'UK Market', symbol: 'uk', flag: 'uk-flag.png'},
+		{name: 'DE Market', symbol: 'de', flag: 'de-flag.png'},
+		{name: 'HK Market', symbol: 'hk', flag: 'hk-flag.png'}
+	];
+	$scope.profileStats.market.selected = $scope.profileStats.markets[0];
+
+	$scope.users = [
+		"jeangrey",
+		"sonic",
+		"godzilla",
+		"onslaught",
+		"rony",
+		"agustus",
+		"kaushik",
+		"gordongekko",
+		"superman",
+		"test",
+		"ccline",
+		"spiderman",
+		"tmcpeak",
+		"shahdhruvin",
+		"jimcramer",
+		"glen",
+		"vputin",
+		"stocklord"
+	];
+
+
+	$scope.profileStats.date = {};
+	$scope.profileStats.dates = [
+		{name: 'Today', call: 'today'},
+		{name: 'Yesterday', call: 'yesterday'},
+		{name: 'Last 7 Days', call: 'last-7-days'},
+		{name: 'Last Week (Mon - Sun)', call: 'last-week'},
+		{name: 'Last Working Week (Mon - Fri)', call: 'last-working-week'},
+		{name: 'Last 14 Days', call: 'last-14-days'},
+		{name: 'This Month', call: 'this-month'},
+		{name: 'Last 30 Days', call: 'last-30-days'},
+		{name: 'Last Month', call: 'last-month'},
+		{name: 'All Time', call: 'all-time'},
+		{name: 'Custom', call: 'custom'}
+	];
+
+	//default selected date is "All"
+	$scope.profileStats.date.selected = $scope.profileStats.dates[9];
+
+	$scope.redirectToUser = function () {
+		newUsername = $scope.username.search;
+		currentUser = newUsername;
+		$scope.refreshData();
+		$location.path('/user/' + $scope.username.search);
+		console.log("redirected to user")
+	};
+
+	$scope.options.barChart = {
+		chart: {
+			type: 'discreteBarChart',
+			height: 300,
+			margin : {
+				top: 20,
+				right: 20,
+				bottom: 50,
+				left: 55
+			},
+
+			x: function(d){return d.label;},
+			y: function(d){return d.value;},
+			showValues: true,
+			//valueFormat: function(d){
+			//	return d3.format(',.4f')(d);
+			//},
+
+			valueFormat: function(d){
+				return d.toFixed(0);
+			},
+			duration: 500
+		}
+	};
+	$scope.profileStats.chart.sectorPreference = [];
+	$scope.profileStats.dateSelection = function () {
+		if ($scope.profileStats.date.selected.call === "today") {
+			dateRange.start = dashDate.today;
+			dateRange.end = dashDate.today
+		}
+
+		else if ($scope.profileStats.date.selected.call === "yesterday"){
+			dateRange.start = dashDate.yesterday;
+			dateRange.end = dashDate.yesterday;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "last-7-days") {
+			dateRange.start = dashDate.last7Days;
+			dateRange.end = dashDate.today;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "last-week") {
+			dateRange.start = dashDate.lastWeekMonday;
+			dateRange.end = dashDate.lastWeekSunday
+		}
+
+		else if ($scope.profileStats.date.selected.call === "last-working-week") {
+			dateRange.start = dashDate.lastWeekMonday;
+			dateRange.end = dashDate.lastWeekFriday;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "last-14-days") {
+			dateRange.start = dashDate.last14Days;
+			dateRange.end = dashDate.today;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "this-month") {
+			dateRange.start = dashDate.firstDayOfCurrentMonth;
+			dateRange.end = dashDate.today;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "last-30-days") {
+			dateRange.start = dashDate.last30Days;
+			dateRange.end = dashDate.today;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "last-month") {
+			dateRange.start = dashDate.firstDayOfLastMonth;
+			dateRange.end = dashDate.lastDayOfLastMonth;
+		}
+
+		else if ($scope.profileStats.date.selected.call === "all-time") {
+			dateRange.start = "01-01-14";
+			dateRange.end ="01-01-20";
+		}
+
+		console.log(dateRange.start + " " + dateRange.end)
+	};
+
+	$scope.profileStats.customDateStart = "01-01-14";
+	$scope.profileStats.customDateEnd = dashDate.today;
+
+	var ifCustomDate = function() {
+		if ($scope.profileStats.date.selected.call === "custom") {
+			dateRange.start = $scope.profileStats.customDateStart;
+			dateRange.end = $scope.profileStats.customDateEnd;
+			console.log(dateRange.start);
+		}
+	};
+
+	//default forecast status
+	$scope.profileStats.forecastStatus = "pending";
+
+	//controlling clicked items
+	$scope.getClickedObject = function(clickedForecast) {
+		$scope.selectedItem = clickedForecast;
+		clickedUser = $scope.selectedItem.user;
+		$scope.getAnalysis();
+	};
+	$scope.getAnalysis = function () {
+		$http.get("http://204.12.206.202:1935/find/analysis/" + $scope.selectedItem.guid, {
+					ignoreLoadingBar: true
+				})
+				.success(function (data) {
+					$scope.forecastAnalysis = data;
+					console.log($scope.forecastAnalysis);
+					if ($scope.forecastAnalysis.length <= 0) {
+						console.log("Equals 0");
+						$scope.analysisOutput = false;
+					}
+
+					else {
+						console.log("Not zero");
+						$scope.analysisOutput = true;
+					}
+				})
+
+				.error (function(){
+					console.log("Analysis error");
+				});
+	};
+
+	$scope.cleanAnalysis = function () {
+		$scope.forecastAnalysis = "";
+		console.log("Cleaned!!");
+	};
+
+	$scope.displayedUser = {};
+	$scope.getHoveredUserData = function (user) {
+		$http.get("http://204.12.206.202:1935/imfollowing/list/" + user)
+			.success(function (data) {
+				$scope.displayedUser = data;
+				console.log($scope.profileStats.followingCount);
+			})
+
+			.error (function(){
+				console.log("Get Call Error");
+				$scope.profileStats.following = [];
+				$scope.profileStats.followingCount = null;
+				console.log("Get Call Error");
+			});
+	};
+
+	//default user selection
+	$scope.profileStats.searchStatus = "all";
+
+	//users search selection choices
+	$scope.profileStats.usersSelection = [
+		{"name":"All users", "call":"all"},
+		{"name":"User's groups", "call": "group"}
+	];
+	$scope.profileStats.usersSelection.active = $scope.profileStats.usersSelection[0];
+
+	//get users group
+	$scope.profileStats.getUsersGroups = function () {
+		var request = {
+			method: 'POST',
+			url: "http://204.12.206.202:1935/group/find",
+
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			data: {
+				"owner": currentUser
+			}
+		};
+
+
+		$http(request)
+				.success(function(data){
+					console.log(data);
+					$scope.profileStats.usersGroups = data;
+				})
+
+				.error(function(){
+					console.log("get groups error");
+				});
+	};
+	$scope.profileStats.getUsersGroups();
+
+	//extract users from a selected group
+	var getUsersFromGroup = function () {
+		$scope.users = profileStats.usersGroup.chosen.members
+	};
+
+	//get hovered user
+	$scope.profileStats.hoveredUser = function (user) {
+		$http.get("http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + user)
+			.success(function (data) {
+				$scope.profileStats.hoveredUser.data = data;
+				console.log("User info got for " + user);
+			})
+
+			.error (function(){
+				console.log("Hovered user error");
+			});
+	};
+
+	$scope.profileStats.cleanHoveredUser = function() {
+		$scope.profileStats.hoveredUser.data = "";
+	};
+
+
+	var initializeData = function() {
+		//setting up the initial date
+		$scope.profileStats.dateSelection();
+
+		//if custom date is selected
+		ifCustomDate();
+
+		var sectorPreference = {};
+		var fillChartSectorPreference = function() {
+			$scope.profileStats.chart.sectorPreference = [
+				{
+					key: "Cumulative Return",
+					values: [
+						{
+							"label": "Healthcare",
+							"value": sectorPreference.healthcare
+						},
+						{
+							"label": "Financial",
+							"value": sectorPreference.financial
+						},
+						{
+							"label": "Industrial Goods",
+							"value": sectorPreference.industrialGoods
+						},
+						{
+							"label": "Services",
+							"value": sectorPreference.services
+						},
+
+						{
+							"label": "Consumer Goods",
+							"value": sectorPreference.conumerGoods
+						},
+
+						{
+							"label": "Conglomerates",
+							"value": sectorPreference.conglomerates
+						},
+
+						{
+							"label": "Basic Materials",
+							"value": sectorPreference.basicMaterials
+						},
+
+						{
+							"label": "Technology",
+							"value": sectorPreference.technology
+						},
+						{
+							"label": "Utilities",
+							"value": sectorPreference.utilities
+						}
+					]
+				}
+			];
+		};
+		var assignChartSectorPreference = function (fnData) {
+			sectorPreference.healthcare = fnData.healthcare;
+			sectorPreference.financial = fnData.financial;
+			sectorPreference.industrialGoods = fnData["industrial goods"];
+			sectorPreference.services = fnData.services;
+			sectorPreference.conumerGoods = fnData["consumer goods"];
+			sectorPreference.conglomerates = fnData.conglomerates;
+			sectorPreference.basicMaterials = fnData["basic materials"];
+			sectorPreference.technology = fnData.technology;
+			sectorPreference.utilities = fnData.utilities;
+			fillChartSectorPreference();
+		};
+		var sectorPreferenceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
+
+		var marketCapPreference = {};
+		var fillChartMarketCapPreference = function() {
+			$scope.profileStats.chart.marketCapPreference = [
+				{
+					key: "Market Cap Preference",
+					values: [
+						{
+							"label": "Mega",
+							"value": marketCapPreference.mega
+						},
+						{
+							"label": "Large",
+							"value": marketCapPreference.large
+						},
+						{
+							"label": "Mid",
+							"value": marketCapPreference.mid
+						},
+
+						{
+							"label": "Small",
+							"value": marketCapPreference.small
+						},
+
+						{
+							"label": "Micro",
+							"value": marketCapPreference.micro
+						},
+
+						{
+							"label": "Nano",
+							"value": marketCapPreference.nano
+						}
+					]
+				}
+			];
+		};
+		var assignMarketCapPreference = function (fnData) {
+			marketCapPreference.mega = fnData.mega;
+			marketCapPreference.nano = fnData.nano;
+			marketCapPreference.mid = fnData.mid;
+			marketCapPreference.large = fnData.large;
+			marketCapPreference.micro = fnData.micro;
+			marketCapPreference.small = fnData.small;
+			fillChartMarketCapPreference();
+		};
+		var marketCapPreferenceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
+
+		var totalCorrect = {};
+		var fillChartTotalCorrect = function() {
+			$scope.profileStats.chart.totalCorrect = [
+				{
+					key: "True",
+					y: totalCorrect.true,
+					color: "#66bb6a"
+
+				},
+				{
+					key: "False",
+					y: totalCorrect.false,
+					color: "#d5473e"
+				}
+			];
+		};
+		var assignTotalCorrect = function (fnData) {
+			totalCorrect.true = fnData.true;
+			totalCorrect.false = fnData.false;
+			fillChartTotalCorrect();
+		};
+		var  totalCorrectCall = $http({method: 'GET', url: "http://204.12.206.202:2197/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
+
+		var forecastSentiment = {};
+		var fillChartForecastSentiment = function() {
+			$scope.profileStats.chart.forecastSentiment = [
+				{
+					key: "Bearish",
+					y: forecastSentiment.bearish
+				},
+				{
+					key: "Bullish",
+					y: forecastSentiment.bullish
+				}
+			];
+		};
+		var assignForecastSentiment = function (fnData) {
+			forecastSentiment.bearish = fnData.bearish;
+			forecastSentiment.bullish = fnData.bullish;
+			fillChartForecastSentiment();
+		};
+		var forecastSentimentCall = $http({method: 'GET', url: "http://204.12.206.202:2197/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
+
+		var forecastPendingSentiment = {};
+		var fillChartForecastPendingSentiment = function() {
+			$scope.profileStats.chart.forecastPendingSentiment = [
+				{
+					key: "Bearish",
+					y: forecastPendingSentiment.bearish
+				},
+				{
+					key: "Bullish",
+					y: forecastPendingSentiment.bullish
+				}
+
+			];
+		};
+		var assignForecastPendingSentiment = function (fnData) {
+			forecastPendingSentiment.bearish = fnData.bearish;
+			forecastPendingSentiment.bullish = fnData.bullish;
+			fillChartForecastPendingSentiment();
+		};
+		var forecastPendingSentimentCall = $http({method: 'GET', url: "http://204.12.206.202:2197/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
+
+		var timeOfDayPreference = {};
+		var fillChartTimeOfDayPreference = function() {
+			$scope.profileStats.chart.timeOfDayPreference = [
+				{
+					key: "Morning",
+					y: timeOfDayPreference.morning
+				},
+				{
+					key: "Midday",
+					y: timeOfDayPreference.midday
+				},
+
+				{
+					key: "Close",
+					y: timeOfDayPreference.close
+				}
+
+			];
+		};
+		var assignTimeOfDayPreference = function (fnData) {
+			timeOfDayPreference.morning = fnData.morning;
+			timeOfDayPreference.midday = fnData.midday;
+			timeOfDayPreference.close = fnData.close;
+			fillChartTimeOfDayPreference();
+		};
+		var timeOfDayPreferenceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
+
+
+		var atGlanceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser});
+		var assignAtGlance = function(fnData) {
+			$scope.profileStats.atGlance = fnData;
+			$scope.username.display = fnData.user;
+			console.log($scope.profileStats.atGlance);
+		};
+
+		var currentUserFollowingCountCall = $http({method: 'GET', url: "http://204.12.206.202:1935/imfollowing/list/" + currentUser});
+		var assignCurrentUserFollowingCount = function(fnData) {
+			$scope.profileStats.followingCount = fnData.length;
+		};
+
+		var currentUserFollowersCountCall = $http({method: 'GET', url: "http://204.12.206.202:1935/follow/list/" + currentUser});
+		var assignCurrentUserFollowersCount = function(fnData) {
+			$scope.profileStats.followersCount = fnData.length;
+		};
+
+
+
+		//assign selected date range
+		$scope.profileStats.dateSelection();
+		$q.all([
+			sectorPreferenceCall,
+			marketCapPreferenceCall,
+			totalCorrectCall,
+			forecastSentimentCall,
+			forecastPendingSentimentCall,
+			timeOfDayPreferenceCall,
+			atGlanceCall,
+			currentUserFollowingCountCall,
+			currentUserFollowersCountCall
+		]).then(function(data){
+				assignChartSectorPreference(data[0].data);
+				assignMarketCapPreference(data[1].data);
+				assignTotalCorrect(data[2].data);
+				assignForecastSentiment(data[3].data);
+				assignForecastPendingSentiment(data[4].data);
+				assignTimeOfDayPreference(data[5].data);
+				assignAtGlance(data[6].data);
+				assignCurrentUserFollowersCount(data[7].data);
+				assignCurrentUserFollowingCount(data[8].data);
+				console.log("Initialize data called")
+		});
+	};
+
+	//initializeData();
+
+	$scope.getUpdatedCharts = function() {
+		initializeData()
+	};
+
+
+	//calling services which contain data. Services handle errors
+	var service = {};
+	//setting up the initial date
+	$scope.profileStats.dateSelection();
+	//if custom date is selected
+	ifCustomDate();
+
+
+	service.getAtGlance = function(url) {
+		UserService.getAtGlanceService(url)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service atGlance",  data);
+				$scope.profileStats.atGlance = data;
+				$scope.username.display = data.user;
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service atGlance Error', error);
+			});
+
+	};
+
+	service.getUserSectorPreference = function (url) {
+		UserService.getSectorPreferenceChartService(url)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Sector Preference",  data);
+				$scope.profileStats.dateSelection();
+				//if custom date is selected
+				ifCustomDate();
+
+				var sectorPreference = {};
+				var fillChartSectorPreference = function() {
+					$scope.profileStats.chart.sectorPreference = [
+						{
+							key: "Cumulative Return",
+							values: [
+								{
+									"label": "Healthcare",
+									"value": sectorPreference.healthcare
+								},
+								{
+									"label": "Financial",
+									"value": sectorPreference.financial
+								},
+								{
+									"label": "Industrial Goods",
+									"value": sectorPreference.industrialGoods
+								},
+								{
+									"label": "Services",
+									"value": sectorPreference.services
+								},
+
+								{
+									"label": "Consumer Goods",
+									"value": sectorPreference.conumerGoods
+								},
+
+								{
+									"label": "Conglomerates",
+									"value": sectorPreference.conglomerates
+								},
+
+								{
+									"label": "Basic Materials",
+									"value": sectorPreference.basicMaterials
+								},
+
+								{
+									"label": "Technology",
+									"value": sectorPreference.technology
+								},
+								{
+									"label": "Utilities",
+									"value": sectorPreference.utilities
+								}
+							]
+						}
+					];
+				};
+				fillChartSectorPreference();
+				var assignChartSectorPreference = function () {
+					sectorPreference.healthcare = data.healthcare;
+					sectorPreference.financial = data.financial;
+					sectorPreference.industrialGoods = data["industrial goods"];
+					sectorPreference.services = data.services;
+					sectorPreference.conumerGoods = data["consumer goods"];
+					sectorPreference.conglomerates = data.conglomerates;
+					sectorPreference.basicMaterials = data["basic materials"];
+					sectorPreference.technology = data.technology;
+					sectorPreference.utilities = data.utilities;
+					fillChartSectorPreference();
+				};
+				assignChartSectorPreference();
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('error', error);
+			});
+	};
+
+	service.getMarketCapPreference = function (url) {
+		UserService.getMarketCapPreferenceService(url)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Market Cap Preference",  data);
+				var marketCapPreference = {};
+				var fillChartMarketCapPreference = function() {
+					$scope.profileStats.chart.marketCapPreference = [
+						{
+							key: "Market Cap Preference",
+							values: [
+								{
+									"label": "Mega",
+									"value": marketCapPreference.mega
+								},
+								{
+									"label": "Large",
+									"value": marketCapPreference.large
+								},
+								{
+									"label": "Mid",
+									"value": marketCapPreference.mid
+								},
+
+								{
+									"label": "Small",
+									"value": marketCapPreference.small
+								},
+
+								{
+									"label": "Micro",
+									"value": marketCapPreference.micro
+								},
+
+								{
+									"label": "Nano",
+									"value": marketCapPreference.nano
+								}
+							]
+						}
+					];
+				};
+
+				var assignMarketCapPreference = function () {
+					marketCapPreference.mega = data.mega;
+					marketCapPreference.nano = data.nano;
+					marketCapPreference.mid = data.mid;
+					marketCapPreference.large = data.large;
+					marketCapPreference.micro = data.micro;
+					marketCapPreference.small = data.small;
+					fillChartMarketCapPreference();
+				};
+				assignMarketCapPreference();
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Market Cap Preference Error', error);
+			});
+	};
+
+	service.getTotalCorrect = function(url) {
+		UserService.getTotalCorrectService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Total Correct",  data);
+					var totalCorrect = {};
+					var fillChartTotalCorrect = function() {
+						$scope.profileStats.chart.totalCorrect = [
+							{
+								key: "True",
+								y: totalCorrect.true,
+								color: "#66bb6a"
+
+							},
+							{
+								key: "False",
+								y: totalCorrect.false,
+								color: "#d5473e"
+							}
+						];
+					};
+					var assignTotalCorrect = function () {
+						totalCorrect.true = data.true;
+						totalCorrect.false = data.false;
+						fillChartTotalCorrect();
+					};
+					assignTotalCorrect();
+
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Total Correct Error', error);
+				});
+	};
+
+	service.getForecastSentiment = function(url) {
+		UserService.getForecastSentimentService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Forecast Sentiment",  data);
+					var forecastSentiment = {};
+					var fillChartForecastSentiment = function() {
+						$scope.profileStats.chart.forecastSentiment = [
+							{
+								key: "Bearish",
+								y: forecastSentiment.bearish
+							},
+							{
+								key: "Bullish",
+								y: forecastSentiment.bullish
+							}
+						];
+					};
+					var assignForecastSentiment = function () {
+						forecastSentiment.bearish = data.bearish;
+						forecastSentiment.bullish = data.bullish;
+						fillChartForecastSentiment();
+					};
+
+					assignForecastSentiment()
+
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Forecast Sentiment Error', error);
+				});
+	};
+
+	service.getForecastPendingSentiment = function(url) {
+		UserService.getForecastPendingSentimentService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Forecast Pending Sentiment",  data);
+					if ((data.bearish == 0) && (data.bullish == 0)) {
+						data.bearich = 1;
+						data.bullish = 1;
+					}
+
+					var forecastPendingSentiment = {};
+					var fillChartForecastPendingSentiment = function() {
+						$scope.profileStats.chart.forecastPendingSentiment = [
+							{
+								key: "Bearish",
+								y: forecastPendingSentiment.bearish
+							},
+							{
+								key: "Bullish",
+								y: forecastPendingSentiment.bullish
+							}
+
+						];
+					};
+					var assignForecastPendingSentiment = function () {
+						forecastPendingSentiment.bearish = data.bearish;
+						forecastPendingSentiment.bullish = data.bullish;
+						fillChartForecastPendingSentiment();
+					};
+					assignForecastPendingSentiment()
+
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Forecast Pending Sentiment Error', error);
+				});
+	};
+
+	service.getTimeOfDayPreference = function(url) {
+		UserService.getTimeOfDayPreferenceService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Time Of Day Preference",  data);
+
+					var timeOfDayPreference = {};
+					var fillChartTimeOfDayPreference = function() {
+						$scope.profileStats.chart.timeOfDayPreference = [
+							{
+								key: "Morning",
+								y: timeOfDayPreference.morning
+							},
+							{
+								key: "Midday",
+								y: timeOfDayPreference.midday
+							},
+
+							{
+								key: "Close",
+								y: timeOfDayPreference.close
+							}
+
+						];
+					};
+					var assignTimeOfDayPreference = function () {
+						timeOfDayPreference.morning = data.morning;
+						timeOfDayPreference.midday = data.midday;
+						timeOfDayPreference.close = data.close;
+						fillChartTimeOfDayPreference();
+					};
+
+					assignTimeOfDayPreference();
+
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Time Of Day Preference Error', error);
+				});
+	};
+
+	service.getAtGlance("http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+	service.getUserSectorPreference("http://204.12.206.202:2197/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getMarketCapPreference("http://204.12.206.202:2197/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTotalCorrect("http://204.12.206.202:2197/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastSentiment("http://204.12.206.202:2197/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastPendingSentiment("http://204.12.206.202:2197/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTimeOfDayPreference("http://204.12.206.202:2197/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+
+	$scope.refreshData = function() {
+		console.log("data refresh called");
+		$scope.profileStats.dateSelection();
+		//if custom date is selected
+		ifCustomDate();
+
+		service.getAtGlance("http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+		service.getUserSectorPreference("http://204.12.206.202:2197/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getMarketCapPreference("http://204.12.206.202:2197/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTotalCorrect("http://204.12.206.202:2197/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastSentiment("http://204.12.206.202:2197/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastPendingSentiment("http://204.12.206.202:2197/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	};
+
+	//displaying charts correctly if they were in the hidden tab
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		window.dispatchEvent(new Event('resize'));
+	});
+
+	/*
+		TODO: Make pagination work on user following
+	 */
+});

@@ -7,6 +7,22 @@ var router 				= express.Router();
 var request				= require('request');
 var concat				= require('concat-stream');
 
+router.use(usernameReplacement);
+var pattern = '#username#';
+function replacer(req,field){
+	req[field].replace(pattern,req.user.mc_username);
+}
+
+function usernameReplacement(req,res, next){
+	if(req.user){
+		replacer(req,'baseUrl');
+		replacer(req,'originalUrl');
+		replacer(req,'path');
+	}else{
+		log.warn('No user in /personal');
+		next();
+	}
+}
 
 
 
@@ -18,7 +34,7 @@ router.get('/me',function(req, res){
 
 router.all('*', function(req, res) {
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
-	var url = 'http://tracer:5000' + req.url;
+	var url = 'http://'+PYTHON_API.HOST+':'+PYTHON_API.PORT + req.url;
 
 	var  write = concat(function(completeResponse) {
 		// here is where you can modify the resulting response before passing it back to the client.
