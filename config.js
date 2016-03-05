@@ -21,7 +21,8 @@ var config = {
 	PORT:3848,
 	REDIRECT_AUTH_SUCCESS:'/landing/personalInfo',
 	REDIRECT_AUTH_FAIL:'/landing',
-	REDIRECT_URL_AFTER_SUCCESS_SIGNUP:'/app'
+	REDIRECT_URL_AFTER_SUCCESS_SIGNUP:'/app',
+	REDIRECT_URL_AFTER_FAILED_SIGNUP:'/landing'
 };
 
 var config_dev = {

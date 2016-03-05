@@ -50,14 +50,17 @@ app.get(CONFIG.LANDING_PREFIX, function(req,res){
 	res.sendFile(__dirname + '/static/landing/marketcrown.html')
 });
 app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
-	if(req.user && req.user.mc_username){
+	if(!req.user){
+		res.redirect(CONFIG.REDIRECT_URL_AFTER_FAILED_SIGNUP);
+	}else if(req.user.mc_username){
 		res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
 	}else{
 		var email = (req.user)?req.user.getEmail():'';
-		//res.sendFile(__dirname + '/static/landing/personalinfo.html')
 		res.render('personalinfo',{email:email});
+		//res.sendFile(__dirname + '/static/landing/personalinfo.html')
 	}
 });
+
 
 db.init(function(err){
 	if(err){
