@@ -15,6 +15,7 @@ app.use(bodyParser.json())
 app.all('*', function (req, res) {
 	log.info(' > [%s] %s',req.method,req.originalUrl);
 	log.info('body',req.body);
+	log.info('header',req.headers);
 	log.info('formData',req.formData);
 
 	log.info('headers',req.headers.user);

@@ -41,7 +41,7 @@ router.all('*', function(req, res) {
 	}else if(!req.user.mc_username){
 		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
 	}
-
+	//req.user = {mc_username:'rooborn'};
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 
@@ -57,14 +57,14 @@ router.all('*', function(req, res) {
 
 		if(obj){
 				obj.user = req.user.mc_username;
-				request({url:url,body: obj, json:true,method:req.method,headers: [{name:'mc-username',value:req.user.mc_username}]}).pipe(res)
+				request({url:url,body: obj, json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res)
 		}else{
 			//if no body, just send as is
 			request({url:url}).pipe(res);
 		}
 	});
 	if(req.method == 'GET'){
-		request({url:url,headers: [{name:'mc-username',value:req.user.mc_username}]}).pipe(res);
+		request({url:url,headers: {'mc-username':req.user.mc_username}}).pipe(res);
 	}else{
 		req.pipe(write);
 	}
