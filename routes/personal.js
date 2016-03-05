@@ -45,6 +45,7 @@ router.all('*', function(req, res) {
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 
+
 	var  write = concat(function(completeResponse) {
 		// here is where you can modify the resulting response before passing it back to the client.
 		try{
@@ -57,7 +58,7 @@ router.all('*', function(req, res) {
 		if(obj){
 				obj.user = req.user.mc_username;
 				log.debug('user send',obj);
-				request({url:url,body: obj, json:true}).pipe(res)
+				request({url:url,body: obj, json:true,method:req.method}).pipe(res)
 		}else{
 			//if no body, just send as is
 			request({url:url}).pipe(res);
