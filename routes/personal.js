@@ -56,6 +56,7 @@ router.all('*', function(req, res) {
 
 		if(obj){
 				obj.user = req.user.mc_username;
+				log.debug('user send',obj);
 				request({url:url,body: obj, json:true}).pipe(res)
 		}else{
 			//if no body, just send as is
