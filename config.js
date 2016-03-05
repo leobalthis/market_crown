@@ -1,7 +1,7 @@
 var _			= require('lodash');
 
 var config = {
-	PYTHON_UNSECURE_ENDPOINT:'/unsecure',
+	PYTHON_UNSECURE_ENDPOINT:'/insecure',
 	API_PREFIX:'/api/v1',
 	LANDING_PREFIX:'/landing',
 	APP_PREFIX:'/app',
