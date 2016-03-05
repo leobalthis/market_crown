@@ -6,7 +6,7 @@ var router 				= express.Router();
 
 var request				= require('request');
 var concat				= require('concat-stream');
-var CONFIG				= require('../config.js')
+var CONFIG				= require('../config.js');
 
 router.use(usernameReplacement);
 var pattern = '$$username$$';
@@ -57,14 +57,14 @@ router.all('*', function(req, res) {
 
 		if(obj){
 				obj.user = req.user.mc_username;
-				request({url:url,body: obj, json:true,method:req.method}).pipe(res)
+				request({url:url,body: obj, json:true,method:req.method,headers: [{name:'mc-username',value:req.user.mc_username}]).pipe(res)
 		}else{
 			//if no body, just send as is
 			request({url:url}).pipe(res);
 		}
 	});
 	if(req.method == 'GET'){
-		request({url:url}).pipe(res);
+		request({url:url,headers: [{name:'mc-username',value:req.user.mc_username}]}).pipe(res);
 	}else{
 		req.pipe(write);
 	}
