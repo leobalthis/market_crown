@@ -106,7 +106,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 	}
 	var obj = {
 		"username": req.body.user_name,
-		"email":req.user.getEmail(),
+		"email": (req.body.email && req.body.email.length>0)?req.body.email:req.user.getEmail(),
 		"location":"San Francisco",
 		"sector":["technology","financial"],
 		"marketcap":["mega"]

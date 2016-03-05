@@ -6,6 +6,7 @@ const app 				= express();
 const session 			= require('express-session');
 const MongoStore 		= require('connect-mongo')(session);
 const passport 			= require('passport');
+const mustacheExpress 	= require('mustache-express');
 
 const common 			= require('./routes/common.js');
 const personal			= require('./routes/personal.js');
@@ -21,6 +22,9 @@ const CONFIG			= require('./config.js');
 // parse application/json
 //app.use(bodyParser.json())
 // cookieParser('jst rndm scrt lne',{secure:true, maxAge:60*60*24*7})
+app.engine('html', mustacheExpress());
+app.set('view engine', 'html');
+app.set('views', __dirname + '/static/landing');
 app.use(session({
 	secret:'jst rndm scrt lne',
 	cookie : {
@@ -49,9 +53,10 @@ app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
 	if(req.user && req.user.mc_username){
 		res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
 	}else{
-		res.sendFile(__dirname + '/static/landing/personalinfo.html')
+		var email = (req.user)?req.user.getEmail():'';
+		//res.sendFile(__dirname + '/static/landing/personalinfo.html')
+		res.render('personalinfo',{email:email});
 	}
-
 });
 
 db.init(function(err){

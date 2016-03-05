@@ -132,12 +132,21 @@ function validateForm(){
 	console.log('validation');
 	var form = document.forms["finishForm"];
 	var nick = form['user_name'].value;
-	if(!nick || nick.length<4 || nick=='admin' || nick=='all'){
-		$(".form-error").show(500);
+	var email = form['email'].value;
+	var re = /^\w+$/;
+	var remail = /^.+@.+\..+$/;
+	var errors = false;
+	if(!nick || nick.length<4 || nick=='admin' || nick=='all' || !re.test(nick)) {
+		$(".form-error-nick").show(500);
+		errors = true;
+	}else if(!email || !remail.test(email)){
+		$(".form-error-email").show(500);
+		errors=true;
+	}
+	if(errors){
 		return false;
 	}else{
 		$(".form-error").hide();
 		return true;
 	}
-
 }
