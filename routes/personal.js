@@ -36,6 +36,12 @@ router.get('/me',function(req, res){
 });
 
 router.all('*', function(req, res) {
+	if(!req.user){
+		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
+	}else if(!req.user.mc_username){
+		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
+	}
+
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 

@@ -41,7 +41,7 @@ app.use(passport.session());
 
 
 app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
-app.use(CONFIG.APP_PREFIX, express.static(__dirname + '/static/app'));
+app.use(CONFIG.APP_PREFIX, checkIfAuthed, express.static(__dirname + '/static/app'));
 
 app.use(CONFIG.API_PREFIX+'/common',		common);
 app.use(CONFIG.API_PREFIX+'/personal',		personal);
@@ -77,3 +77,12 @@ function startServer(){
 	});
 }
 
+
+function checkIfAuthed(req,res,next){
+	if(!req.user){
+		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
+	}else if(!req.user.mc_username){
+		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
+	}
+	next()
+}

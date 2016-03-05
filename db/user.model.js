@@ -76,12 +76,18 @@ userSchema.statics.deleteAllNonfinished = function (done) {
 				}
 			]
 		}).exec(done)
-}
+};
 
-userSchema.methods.saveMcUsername = function(username,done){
+userSchema.methods.saveMcUsername = function(username, email, done){
 	this.mc_username = username;
+	var existEmail = _.findLast(this.emails,{value:email});
+	if(!existEmail){
+		if(!this.emails){this.emails=[]};
+		this.emails.push({value:email})
+	}
+	this.markModified('emails');
 	this.save(done);
-}
+};
 
 userSchema.methods.getEmail = function(){
 	if(this.emails && this.emails.length > 0){
