@@ -55,14 +55,14 @@ router.all('*', function(req, res) {
 		}
 
 		if(obj){
-			getUser(req,function(err,user){
-				obj.user = user;
+
+				obj.user = req.user.mc_username;
 				if(err){
 					return res.json({error:{desc:err}});
 				}else{
 					request({url:url,body: obj, json:true}).pipe(res)
 				}
-			});
+
 		}else{
 			//if no body, just send as is
 			request({url:url}).pipe(res);
@@ -75,16 +75,16 @@ router.all('*', function(req, res) {
 	}
 
 });
-
-
-function getUser(req,done){
-	console.log('req.signedCookies.session_id',req.signedCookies.session_id);
-
-	if(!req.signedCookies.session_id){
-		return done('')
-	}
-
-	done(null,{id:'huemeie',nickname:'awsome'})
-}
+//
+//
+//function getUser(req,done){
+//	console.log('req.signedCookies.session_id',req.signedCookies.session_id);
+//
+//	//if(!req.signedCookies.session_id){
+//	//	return done('')
+//	//}
+//
+//	done(null,req,user.mc_username)
+//}
 
 module.exports = router;
