@@ -8,7 +8,7 @@ var request				= require('request');
 var concat				= require('concat-stream');
 var CONFIG				= require('../config.js');
 
-router.use(usernameReplacement);
+//router.use(usernameReplacement);
 var pattern = '$$username$$';
 function replacer(req,field){
 	req[field] = req[field].replace(pattern,req.user.mc_username);
