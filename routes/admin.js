@@ -8,7 +8,7 @@ const User 					= require('../db/user.model.js');
 var request					= require('request');
 var CONFIG					= require('../config.js');
 var bodyParser 				= require('body-parser');
-var urlencodedParser 		= bodyParser.urlencoded({ extended: false });
+var urlencodedParser 		=  bodyParser.json({ type: 'application/json'});//bodyParser.urlencoded({ extended: false });
 
 router.post('/ban', urlencodedParser, function(req, res) {
 

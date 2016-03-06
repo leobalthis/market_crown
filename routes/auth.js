@@ -18,7 +18,7 @@ var TwitterStrategy 		= require('passport-twitter');
 //var GooglePlusStrategy 	= require('passport-google-plus');
 var GoogleStrategy 			= require('passport-google-oauth20').Strategy;
 
-var urlencodedParser 		= bodyParser.urlencoded({ extended: false });
+var urlencodedParser 		= bodyParser.json({ type: 'application/json'});//bodyParser.urlencoded({ extended: false });
 
 passport.serializeUser(function(user, done) {
 	done(null, user._id);
