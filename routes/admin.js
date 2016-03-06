@@ -5,7 +5,6 @@ var express					= require('express');
 var router 					= express.Router();
 const User 					= require('../db/user.model.js');
 
-var request					= require('request');
 var CONFIG					= require('../config.js');
 var bodyParser 				= require('body-parser');
 var urlencodedParser 		=  bodyParser.json({ type: 'application/json'});//bodyParser.urlencoded({ extended: false });
@@ -17,7 +16,8 @@ router.post('/ban', urlencodedParser, function(req, res) {
 		if(!req.body.username){
 			return res.json({error:'no username'});
 		}else{
-			User.markBan(req.body.username, req.body.isBanned,function(err,гыук){
+			User.markBan(req.body.username, req.body.isBanned,function(err,user){
+				log.debug(user);
 				if(err){
 					res.json({error:err});
 				}else{

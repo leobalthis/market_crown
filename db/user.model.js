@@ -80,7 +80,7 @@ userSchema.statics.deleteAllNonfinished = function (done) {
 };
 
 userSchema.statics.markBan = function(username, isBanned, done){
-	User.findOneAndUpdate({mc_userame:username},{banned:isBanned},done);
+	User.findOneAndUpdate({mc_userame:username},{banned:Boolean(isBanned)},done);
 };
 
 userSchema.methods.saveMcUsername = function(username, email, done){
