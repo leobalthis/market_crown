@@ -17,7 +17,7 @@ router.post('/ban', urlencodedParser, function(req, res) {
 		if(!req.body.username){
 			return res.json({error:'no username'});
 		}else{
-			User.markBan(req.body.username, req.body.isBanned,function(err,res){
+			User.markBan(req.body.username, req.body.isBanned,function(err,гыук){
 				if(err){
 					res.json({error:err});
 				}else{
