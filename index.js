@@ -11,6 +11,7 @@ const mustacheExpress 	= require('mustache-express');
 const common 			= require('./routes/common.js');
 const personal			= require('./routes/personal.js');
 const auth				= require('./routes/auth.js');
+const admin				= require('./routes/admin.js');
 const db				= require('./db/db.js');
 
 const CONFIG			= require('./config.js');
@@ -44,6 +45,7 @@ app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
 app.use(CONFIG.APP_PREFIX, [checkIfAuthed, express.static(__dirname + '/static/app')]);
 
 //app.use(CONFIG.API_PREFIX+'/common',		common);
+app.use(CONFIG.API_PREFIX+'/admin',			admin);
 app.use(CONFIG.API_PREFIX+'/personal',		personal);
 app.use(CONFIG.API_PREFIX+'/auth',			auth);
 app.get(CONFIG.LANDING_PREFIX, function(req,res){
@@ -57,7 +59,6 @@ app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
 	}else{
 		var email = (req.user)?req.user.getEmail():'';
 		res.render('personalinfo',{email:email});
-		//res.sendFile(__dirname + '/static/landing/personalinfo.html')
 	}
 });
 

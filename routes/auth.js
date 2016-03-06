@@ -10,7 +10,7 @@ const User 					= require('../db/user.model.js');
 const CONFIG				= require('../config.js');
 //
 var passport 				= require('passport');
-var bodyParser 				= require('body-parser')
+var bodyParser 				= require('body-parser');
 
 
 var FacebookStrategy 		= require('passport-facebook').Strategy;
@@ -18,17 +18,20 @@ var TwitterStrategy 		= require('passport-twitter');
 //var GooglePlusStrategy 	= require('passport-google-plus');
 var GoogleStrategy 			= require('passport-google-oauth20').Strategy;
 
-var urlencodedParser 		= bodyParser.urlencoded({ extended: false })
+var urlencodedParser 		= bodyParser.urlencoded({ extended: false });
 
 passport.serializeUser(function(user, done) {
-	log.info('ser ',user);
 	done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-	log.info('deser ',id);
 	User.findById(id, function(err, user) {
-		done(err, user);
+		if(user.banned){
+			done(err,null);
+		}else{
+			done(err, user);
+		}
+
 	});
 });
 

@@ -55,13 +55,13 @@ router.all('*', function(req, res) {
 			return res.json({error:{desc:e}});
 		}
 
-		if(obj){
-				obj.user = req.user.mc_username;
-				request({url:url,body: obj, json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res)
-		}else{
+		if(!obj){obj = {}};
+		//		obj.user = req.user.mc_username;
+		//		request({url:url,body: obj, json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res)
+		//}else{
 			//if no body, just send as is
-			request({url:url}).pipe(res);
-		}
+		request({url:url,body:obj,json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res);
+		//}
 	});
 	if(req.method == 'GET'){
 		request({url:url,headers: {'mc-username':req.user.mc_username}}).pipe(res);

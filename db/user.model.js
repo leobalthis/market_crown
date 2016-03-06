@@ -11,6 +11,7 @@ var userSchema = new Schema({
 	provider: {name:String, id:String},
 	mc_username: {type:String, index: true},
 	displayName: String,
+	banned:{type: Boolean, default:false},
 	name:{
 		familyName:String,
 		givenName:String,
@@ -78,6 +79,10 @@ userSchema.statics.deleteAllNonfinished = function (done) {
 		}).exec(done)
 };
 
+userSchema.statics.markBan = function(username, isBanned, done){
+	User.findOneAndUpdate({mc_userame:username},{banned:isBanned},done);
+};
+
 userSchema.methods.saveMcUsername = function(username, email, done){
 	this.mc_username = username;
 	var existEmail = _.findLast(this.emails,{value:email});
@@ -100,6 +105,8 @@ userSchema.methods.getEmail = function(){
 		return '';
 	}
 };
+
+
 
 
 var User = mongoose.model('User', userSchema);
