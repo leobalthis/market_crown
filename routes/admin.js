@@ -12,6 +12,7 @@ var urlencodedParser 		= bodyParser.urlencoded({ extended: false });
 
 router.post('/ban', urlencodedParser, function(req, res) {
 
+	console.log('req.body',req.body);
 	if(req.headers['sword']=='onlyme'){
 		if(!req.body.username){
 			return res.json({error:'no username'});
