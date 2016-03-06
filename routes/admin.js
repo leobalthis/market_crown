@@ -11,17 +11,21 @@ var bodyParser 				= require('body-parser');
 var urlencodedParser 		= bodyParser.urlencoded({ extended: false });
 
 router.post('/ban', urlencodedParser, function(req, res) {
-	if(!req.body.username){
-		return res.json({error:'no username'});
-	}
+
 	if(req.headers['sword']=='onlyme'){
-		User.markBan(req.body.username, req.body.isBanned,function(err,res){
-			if(err){
-				res.json({error:err});
-			}else{
-				res.json({user:req.body.username, banned:req.body.isBanned});
-			}
-		})
+		if(!req.body.username){
+			return res.json({error:'no username'});
+		}else{
+			User.markBan(req.body.username, req.body.isBanned,function(err,res){
+				if(err){
+					res.json({error:err});
+				}else{
+					res.json({user:req.body.username, banned:req.body.isBanned});
+				}
+			})
+		}
+	}else{
+		res.status(401).json({error:'unauthed'});
 	}
 });
 
