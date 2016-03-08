@@ -80,10 +80,10 @@ function startServer(){
 
 
 function checkIfAuthed(req,res,next){
-	if(!req.user){
-		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
-	}else if(!req.user.mc_username){
-		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
-	}
+	//if(!req.user){
+	//	return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
+	//}else if(!req.user.mc_username){
+	//	return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
+	//}
 	next();
 }
