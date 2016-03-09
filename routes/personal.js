@@ -3,6 +3,7 @@ var log 				= log4js.getLogger('personal.js');
 
 var express				= require('express');
 var router 				= express.Router();
+var _					= require('lodash');
 
 var request				= require('request');
 var concat				= require('concat-stream');
@@ -45,11 +46,11 @@ router.all('*', function(req, res) {
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 
-
+	var obj;
 	var  write = concat(function(completeResponse) {
 		// here is where you can modify the resulting response before passing it back to the client.
 		try{
-			var obj = JSON.parse(completeResponse.toString())
+			 obj = JSON.parse(completeResponse.toString())
 		}catch(e){
 			log.error(e);
 			return res.json({error:{desc:e}});

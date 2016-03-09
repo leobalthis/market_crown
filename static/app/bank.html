@@ -106,7 +106,8 @@
         $.ajax({
             url: '/api/v1/personal/stripe/bank',
             type: 'POST',
-            data: {token:token},
+            processData:false,
+            data: JSON.stringify({token:token}),
             success: function (a) {
                 console.log('Token submitted to server.',a);
             },
