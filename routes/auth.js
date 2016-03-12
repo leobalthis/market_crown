@@ -97,7 +97,7 @@ router.get('/google/callback',
 
 router.get('/logout', function(req, res){
 	req.logout();
-	res.redirect('/');
+	res.redirect(CONFIG.REDIRECT_URL_AFTER_FAILED_SIGNUP);
 });
 
 
