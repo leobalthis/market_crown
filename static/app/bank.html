@@ -104,7 +104,7 @@
 
     function sendTokenToServer(token){
         $.ajax({
-            url: '/api/v1/personal/stripe/bank',
+            url: '/api/v1/personal/stripe/bank/form',
             type: 'POST',
             processData:false,
             data: JSON.stringify({token:token}),

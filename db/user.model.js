@@ -5,7 +5,7 @@ var mongoose 			= require('mongoose');
 var Schema 				= mongoose.Schema;
 const CONFIG			= require('../config.js');
 
-var _					= require('lodash')
+var _					= require('lodash');
 
 var userSchema = new Schema({
 	provider: {name:String, id:String},

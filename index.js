@@ -26,6 +26,7 @@ const CONFIG			= require('./config.js');
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/static/landing');
+app.set('views', __dirname + '/static/app');
 app.use(session({
 	secret:'jst rndm scrt lne',
 	cookie : {
@@ -59,6 +60,18 @@ app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
 	}else{
 		var email = (req.user)?req.user.getEmail():'';
 		res.render('personalinfo',{email:email});
+	}
+});
+
+
+app.get(CONFIG.APP_PREFIX+'/purchase', function(req,res){
+	if(!req.user){
+		res.redirect(CONFIG.REDIRECT_URL_AFTER_FAILED_SIGNUP);
+	}else if(req.user.mc_username){
+		res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
+	}else{
+		var email = (req.user)?req.user.getEmail():'';
+		res.render('purchase', req.query);
 	}
 });
 
