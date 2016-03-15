@@ -3,7 +3,7 @@ var _			= require('lodash');
 var config = {
 	PYTHON_UNSECURE_ENDPOINT:'/insecure',
 	API_PREFIX:'/api/v1',
-	LANDING_PREFIX:'/landing',
+	LANDING_PREFIX:'/',
 	APP_PREFIX:'/app',
 	NON_FINISHED_USER_EXP_MSEC:1000*60*60*24*7,
 	SESSION_MONGO:{
@@ -20,10 +20,10 @@ var config = {
 	},
 	//PUBLIC_ADDRESS:'http://104.239.245.54',
 	PORT:3848,
-	REDIRECT_AUTH_SUCCESS:'/landing/personalInfo',
-	REDIRECT_AUTH_FAIL:'/landing',
+	REDIRECT_AUTH_SUCCESS:'/personalInfo',
+	REDIRECT_AUTH_FAIL:'/',
 	REDIRECT_URL_AFTER_SUCCESS_SIGNUP:'/app',
-	REDIRECT_URL_AFTER_FAILED_SIGNUP:'/landing'
+	REDIRECT_URL_AFTER_FAILED_SIGNUP:'/'
 };
 
 var config_dev = {
