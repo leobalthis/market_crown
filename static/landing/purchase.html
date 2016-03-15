@@ -14,21 +14,22 @@
 <body>
 
 <div style="padding: 20px;">
-    <button id="customButton">Purchase for {{item}}</button>
+    <button id="customButton">Purchase for {{name}}</button>
 
 </div>
 
 <script type="text/javascript">
-var handler = StripeCheckout.configure({
-    key: 'pk_test_9A2D4S5sU8JlTiAnvrEYsV4G',
-    image: 'assets/images/logo_small.png',
-    locale: 'auto',
-    token: function(token) {
-        sendTokenToServer(token)
-        // Use the token to create the charge with a server-side script.
-        // You can access the token ID with `token.id`
-    }
-});
+//var handler = StripeCheckout.configure({
+//    key: 'pk_test_9A2D4S5sU8JlTiAnvrEYsV4G',
+//    data-name="Mikes Super Pod"
+//    image: 'assets/images/logo_small.png',
+//    locale: 'auto',
+//    token: function(token) {
+//        sendTokenToServer(token)
+//        // Use the token to create the charge with a server-side script.
+//        // You can access the token ID with `token.id`
+//    }
+//});
 
 $('#customButton').on('click', function(e) {
     // Open Checkout with further options
@@ -45,23 +46,34 @@ $(window).on('popstate', function() {
     handler.close();
 });
 
-function sendTokenToServer(token){
-    $.ajax({
-        url: '/api/v1/personal/stripe/purchase',
-        type: 'POST',
-        processData:false,
-        data: JSON.stringify({token:token}),
-        success: function (a) {
-            console.log('Token submitted to server.',a);
-        },
-        error:function (a) {
-            console.error('Token not submitted.',a);
-        }
-    });
-}
+//function sendTokenToServer(token){
+//    $.ajax({
+//        url: '/api/v1/personal/stripe/purchase',
+//        type: 'POST',
+//        processData:false,
+//        data: JSON.stringify({token:token}),
+//        success: function (a) {
+//            console.log('Token submitted to server.',a);
+//        },
+//        error:function (a) {
+//            console.error('Token not submitted.',a);
+//        }
+//    });
+//}
 
 </script>
 
+<form action="/api/v1/personal/stripe/purchase" method="POST">
+    <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_9A2D4S5sU8JlTiAnvrEYsV4G"
+            data-image="{{image}}"
+            data-name="{{name}}"
+            data-description="{{description}}"
+            data-amount="{{amount}}"
+            data-label="Sign Me Up!" >
+    </script>
+</form>
 
 </body>
 </html>
