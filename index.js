@@ -26,7 +26,7 @@ const CONFIG			= require('./config.js');
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/static/landing');
-app.set('views', __dirname + '/static/app');
+//app.set('views', __dirname + '/static/app');
 app.use(session({
 	secret:'jst rndm scrt lne',
 	cookie : {
