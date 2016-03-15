@@ -65,12 +65,9 @@ app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
 
 
 app.get(CONFIG.APP_PREFIX+'/purchase', function(req,res){
-	if(!req.user){
+	if(!req.user || !req.user.mc_username){
 		res.redirect(CONFIG.REDIRECT_URL_AFTER_FAILED_SIGNUP);
-	}else if(req.user.mc_username){
-		res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
 	}else{
-		var email = (req.user)?req.user.getEmail():'';
 		res.render('purchase', req.query);
 	}
 });
