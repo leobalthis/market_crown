@@ -8,6 +8,7 @@ var _					= require('lodash');
 var request				= require('request');
 var concat				= require('concat-stream');
 var CONFIG				= require('../config.js');
+var qs 					= require('querystring')
 
 //router.use(usernameReplacement);
 var pattern = '$$username$$';
@@ -52,10 +53,11 @@ router.all('*', function(req, res) {
 		try{
 			 obj = JSON.parse(completeResponse.toString())
 		}catch(e){
-			log.error(e);
-			return res.json({error:{desc:'responce not json',resp:completeResponse.toString()}});
+			//log.error(e);
+			//return res.json({error:{desc:'responce not json',resp:completeResponse.toString()}});
+			obj = qs.parse(completeResponse.toString());
 		}
-
+		console.log('python>',obj);
 		if(!obj){obj = {}};
 		//		obj.user = req.user.mc_username;
 		//		request({url:url,body: obj, json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res)
