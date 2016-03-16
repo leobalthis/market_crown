@@ -53,7 +53,7 @@ router.all('*', function(req, res) {
 			 obj = JSON.parse(completeResponse.toString())
 		}catch(e){
 			log.error(e);
-			return res.json({error:{desc:e}});
+			return res.json({error:{desc:'responce not json',resp:completeResponse.toString()}});
 		}
 
 		if(!obj){obj = {}};
