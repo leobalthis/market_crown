@@ -114,7 +114,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 		"sector":["technology","financial"],
 		"marketcap":["mega"]
 	};
-	console.log('reg user',obj)
+	console.log('reg user',obj);
 	request({
 		url:finish_url+'/create/user',
 		method:'POST',
@@ -123,17 +123,14 @@ router.post('/finish',urlencodedParser, function(req,res){
 	},function (error, response, body) {
 			//console.log('error',error);
 			//console.log('response',response);
-			//console.log('body',body);
+			console.log('body',body);
 			if(error){
 				return res.json({error:body})
 			}
-
 			if(body=="User successfully added"){
-				User.deleteAllNonfinished();
-
-				req.user.saveMcUsername(req.body.user_name,req.body.email,function(err){
+				req.user.saveMcUsername(req.body.username,req.body.email,function(err){
+					User.deleteAllNonfinished();
 					return res.json({redirect:CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP});
-					//return res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
 				});
 			}else{
 				return res.json({error:body})
