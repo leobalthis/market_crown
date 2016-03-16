@@ -3,7 +3,7 @@ var _			= require('lodash');
 var config = {
 	PYTHON_UNSECURE_ENDPOINT:'/insecure',
 	API_PREFIX:'/api/v1',
-	LANDING_PREFIX:'/',
+	LANDING_PREFIX:'',
 	APP_PREFIX:'/app',
 	NON_FINISHED_USER_EXP_MSEC:1000*60*60*24*7,
 	SESSION_MONGO:{

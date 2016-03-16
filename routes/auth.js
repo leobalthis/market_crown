@@ -114,7 +114,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 		"sector":["technology","financial"],
 		"marketcap":["mega"]
 	};
-	//console.log(obj)
+	console.log('reg user',obj)
 	request({
 		url:finish_url+'/create/user',
 		method:'POST',
