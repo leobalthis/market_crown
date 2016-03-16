@@ -18,8 +18,8 @@ var TwitterStrategy 		= require('passport-twitter');
 //var GooglePlusStrategy 	= require('passport-google-plus');
 var GoogleStrategy 			= require('passport-google-oauth20').Strategy;
 
-var urlencodedParser 		= bodyParser.json({ type: 'application/json'});//bodyParser.urlencoded({ extended: false });
-
+var urlencodedParser 		= bodyParser.urlencoded({ extended: false });
+//bodyParser.json({ type: 'application/json'});//
 passport.serializeUser(function(user, done) {
 	done(null, user._id);
 });
@@ -108,7 +108,7 @@ router.post('/finish',urlencodedParser, function(req,res){
 		return res.status(401).send('no cookies');
 	}
 	var obj = {
-		"username": req.body.user_name,
+		"username": req.body.username,
 		"email": (req.body.email && req.body.email.length>0)?req.body.email:req.user.getEmail(),
 		"location":"San Francisco",
 		"sector":["technology","financial"],
