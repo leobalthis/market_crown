@@ -34,7 +34,7 @@ function usernameReplacement(req,res, next){
 
 router.get('/me',function(req, res){
 	log.info('user',req.user);
-	res.send(JSON.stringify(req.user));
+	res.json(req.user);
 });
 
 router.all('*', function(req, res) {
