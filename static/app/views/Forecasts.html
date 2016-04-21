@@ -209,7 +209,7 @@
 	</div>
 
 	<div class="row forecasts-elements">
-		<div class="col-lg-4 col-lg-6" dir-paginate="forecast in forecastsData  | itemsPerPage: 15">
+		<div class="col-lg-4 col-lg-6" dir-paginate="forecast in forecastsData  | itemsPerPage: 15" >
 			<div class="element-wrapper">
 				<div class="element" ng-mouseenter="getClickedObject(forecast)" ng-mouseleave="cleanAnalysis()" ng-class="{ 'forecast-correct': forecast.correct == true , 'forecast-incorrect': forecast.correct == false }">
 

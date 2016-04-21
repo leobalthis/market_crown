@@ -47,7 +47,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 		var request = {
 			method: 'POST',
-			url: 'http://204.12.206.202:1935/masterquery/us/jeangrey',
+			url: 'https://marketcrown.com/api/v1/personal/masterquery/us/jeangrey',
 
 			headers: {
 				'Content-Type': 'application/json'
@@ -130,7 +130,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		});
 	};
 
-	$scope.getUserResultsFollowing("http://204.12.206.202:1935/imfollowing/list/jeangrey");
+	$scope.getUserResultsFollowing("https://marketcrown.com/api/v1/personal/imfollowing/list/jeangrey");
 
 	//initialized user group
 	$scope.forecastUserGroupResult = {};
@@ -205,7 +205,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 	//returning at a glance section data. Called on initial load
 	$scope.getAtGlance = function () {
-		$http.get("http://204.12.206.202:2197/profile/" + market + "/" + clickedUser, {
+		$http.get("https://marketcrown.com/api/v1/personal/profile/" + market + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
 			.success(function (data) {
@@ -219,7 +219,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 	};
 
 	$scope.getUsers = function() {
-		$http.get("http://204.12.206.202:2197/profile/" + market + "/" + clickedUser)
+		$http.get("https://marketcrown.com/api/v1/personal/profile/" + market + "/" + clickedUser)
 			.success(function (data) {
 				$scope.atGlanceData = data;
 				console.log("user info got");
@@ -260,7 +260,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 		else if ($scope.forecastUserResult.selected.call == "usersGroup") {
 			$scope.resetInputs();
-			$scope.getUserResultsGroups("http://204.12.206.202:1935/group/find");
+			$scope.getUserResultsGroups("https://marketcrown.com/api/v1/personal/group/find");
 			//once the groups are loaded
 			if (groupsLoaded) {
 				finalUserResult = $scope.forecastUserGroupResult.selected.members;
@@ -301,12 +301,12 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 		//checking the correct api link
 		if ($scope.forecastUserResult.selected.call == "podsSubscribedTo") {
-			postCallLink = "http://204.12.206.202:1935/pod/subscriptions/" + market + "/sonic";//current user will be here
+			postCallLink = "https://marketcrown.com/api/v1/personal/pod/subscriptions/" + market + "/sonic";//current user will be here
 			finalUserResult = "all";
 		}
 
 		else {
-			postCallLink = 'http://204.12.206.202:1935/masterquery/' + market + '/jeangrey'; //current user will be here
+			postCallLink = 'https://marketcrown.com/api/v1/personal/masterquery/' + market + '/jeangrey'; //current user will be here
 		}
 
 		//assigning a default date range if not custom
@@ -370,7 +370,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		$scope.getAnalysis();
 	};
 	$scope.getAnalysis = function () {
-		$http.get("http://204.12.206.202:1935/find/analysis/" + $scope.selectedItem.guid, {
+		$http.get("https://marketcrown.com/api/v1/personal/find/analysis/" + $scope.selectedItem.guid, {
 			ignoreLoadingBar: true
 		})
 				.success(function (data) {
@@ -399,7 +399,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 
 	$scope.getUserFollowingInfo = function () {
-		$http.get("http://204.12.206.202:1935/ifollow/" + currentUser + "/" + clickedUser, {
+		$http.get("https://marketcrown.com/api/v1/personal/ifollow/" + currentUser + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
 			.success(function (data) {
@@ -420,7 +420,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 	$scope.deleteClickedObject = function(clickedForecast) {
 		$scope.selectedItemForDelete = clickedForecast;
 		forecastId = $scope.selectedItemForDelete.guid;
-		$http.get("http://204.12.206.202:1935/delete/" + currentUser + "/" + forecastId)
+		$http.get("https://marketcrown.com/api/v1/personal/delete/" + currentUser + "/" + forecastId)
 			.success(function () {
 				alert("Forecast for " + $scope.selectedItemForDelete.company + " Successfully deleted");
 				$scope.getUpdatedForecasts();
@@ -435,12 +435,12 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		var followUnfollowLink;
 
 		if ($scope.followingData == "no") {
-			followUnfollowLink = "http://204.12.206.202:1935/follow/add";
+			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/add";
 			$scope.followButton = "Unfollow";
 		}
 
 		else {
-			followUnfollowLink = "http://204.12.206.202:1935/follow/remove";
+			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/remove";
 			$scope.followButton = "Follow";
 		}
 
@@ -471,7 +471,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 	//custom query
 	$scope.liveSearchSymbol = function() {
-		$http.get("http://204.12.206.202:1935/getsymbols/" + market)
+		$http.get("https://marketcrown.com/api/v1/personal/getsymbols/" + market)
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;

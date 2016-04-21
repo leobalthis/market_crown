@@ -298,7 +298,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	};
 
 	$scope.getUserFollowingInfo = function () {
-		$http.get("http://204.12.206.202:1935/ifollow/" + currentUser + "/" + selectedToFollow, {
+		$http.get("https://marketcrown.com/api/v1/personal/ifollow/" + currentUser + "/" + selectedToFollow, {
 					ignoreLoadingBar: true
 				})
 
@@ -319,7 +319,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	};
 
 	$scope.getAtGlance = function () {
-		$http.get("http://204.12.206.202:2197/profile/" + "us" + "/" + selectedToFollow, {
+		$http.get("https://marketcrown.com/api/v1/personal/profile/" + "us" + "/" + selectedToFollow, {
 					ignoreLoadingBar: true
 				})
 
@@ -337,12 +337,12 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 		var followUnfollowLink;
 
 		if ($scope.followingData == "no") {
-			followUnfollowLink = "http://204.12.206.202:1935/follow/add";
+			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/add";
 			$scope.followButton = "Unfollow";
 		}
 
 		else {
-			followUnfollowLink = "http://204.12.206.202:1935/follow/remove";
+			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/remove";
 			$scope.followButton = "Follow";
 		}
 
@@ -394,7 +394,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 
 		var request = {
 			method: 'POST',
-			url: 'http://204.12.206.202:3800/query/tla',
+			url: 'https://marketcrown.com/api/v1/personal/query/tla',
 
 			headers: {
 				'Content-Type': 'application/json'
@@ -433,7 +433,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 
 		var request = {
 			method: 'POST',
-			url: 'http://204.12.206.202:3800/query/tla',
+			url: 'https://marketcrown.com/api/v1/personal/query/tla',
 
 			headers: {
 				'Content-Type': 'application/json'
@@ -648,7 +648,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 
 		var request = {
 			method: 'POST',
-			url: 'http://204.12.206.202:3891/query/bla',
+			url: 'https://marketcrown.com/api/v1/personal/query/bla',
 
 			headers: {
 				'Content-Type': 'application/json'
@@ -698,7 +698,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 
 		var request = {
 			method: 'POST',
-			url: 'http://204.12.206.202:3891/query/bla',
+			url: 'https://marketcrown.com/api/v1/personal/query/bla',
 
 			headers: {
 				'Content-Type': 'application/json'
@@ -736,7 +736,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	$scope.liveSearchSymbol = function() {
 		market = $scope.queryMarket.selected.symbol;
 
-		$http.get("http://204.12.206.202:1935/getsymbols/" + market)
+		$http.get("https://marketcrown.com/api/v1/personal/getsymbols/" + market)
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
@@ -749,7 +749,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	};
 
 	$scope.getDefaultSymbolList = function () {
-		$http.get("http://204.12.206.202:1935/getsymbols/us")
+		$http.get("https://marketcrown.com/api/v1/personal/getsymbols/us")
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
@@ -831,7 +831,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 			$scope.showUsers = false;
 			$scope.showGroups = true;
 			isGroup = "true";
-			$scope.getCustomQueryUserGroups("http://204.12.206.202:1935/group/find");
+			$scope.getCustomQueryUserGroups("https://marketcrown.com/api/v1/personal/group/find");
 			//doesn't work as a default, neds fix
 			customQueryCommunity = $scope.customQuery.group.name;
 		}

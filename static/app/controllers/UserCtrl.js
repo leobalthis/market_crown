@@ -14,7 +14,7 @@ dashDate.firstDayOfCurrentMonth = Date.today().moveToFirstDayOfMonth().toString(
 dashDate.firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().toString('MM-dd-yy');
 dashDate.lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM-dd-yy');
 
-App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService){
+App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsService, UserDetailsService, ForecastService, GeneralDataService){
 
 	//pie chart options
 	$scope.options = {
@@ -41,7 +41,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 	$scope.profileStats = {};
 	$scope.username = {};
 	$scope.profileStats.chart = {};
-
+	$scope.group = {};
 
 	//line chart options
 	$scope.lineOptions = {
@@ -194,6 +194,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 		];
 	};
 
+
 	//market selection
 	$scope.profileStats.market = {};
 	$scope.profileStats.markets = [
@@ -204,29 +205,6 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 		{name: 'HK Market', symbol: 'hk', flag: 'hk-flag.png'}
 	];
 	$scope.profileStats.market.selected = $scope.profileStats.markets[0];
-
-	$scope.users = [
-		"jeangrey",
-		"sonic",
-		"godzilla",
-		"onslaught",
-		"rony",
-		"agustus",
-		"kaushik",
-		"gordongekko",
-		"superman",
-		"test",
-		"ccline",
-		"spiderman",
-		"tmcpeak",
-		"shahdhruvin",
-		"jimcramer",
-		"glen",
-		"vputin",
-		"stocklord"
-	];
-
-
 	$scope.profileStats.date = {};
 	$scope.profileStats.dates = [
 		{name: 'Today', call: 'today'},
@@ -244,15 +222,6 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 
 	//default selected date is "All"
 	$scope.profileStats.date.selected = $scope.profileStats.dates[9];
-
-	$scope.redirectToUser = function () {
-		newUsername = $scope.username.search;
-		currentUser = newUsername;
-		$scope.refreshData();
-		$location.path('/user/' + $scope.username.search);
-		console.log("redirected to user")
-	};
-
 	$scope.options.barChart = {
 		chart: {
 			type: 'discreteBarChart',
@@ -344,7 +313,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 	};
 
 	//default forecast status
-	$scope.profileStats.forecastStatus = "pending";
+	$scope.profileStats.forecastStatus = "";
 
 	//controlling clicked items
 	$scope.getClickedObject = function(clickedForecast) {
@@ -352,8 +321,9 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 		clickedUser = $scope.selectedItem.user;
 		$scope.getAnalysis();
 	};
+
 	$scope.getAnalysis = function () {
-		$http.get("http://204.12.206.202:1935/find/analysis/" + $scope.selectedItem.guid, {
+		$http.get("https://marketcrown.com/api/v1/personal/find/analysis/" + $scope.selectedItem.guid, {
 					ignoreLoadingBar: true
 				})
 				.success(function (data) {
@@ -374,27 +344,12 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 					console.log("Analysis error");
 				});
 	};
-
 	$scope.cleanAnalysis = function () {
 		$scope.forecastAnalysis = "";
 		console.log("Cleaned!!");
 	};
 
 	$scope.displayedUser = {};
-	$scope.getHoveredUserData = function (user) {
-		$http.get("http://204.12.206.202:1935/imfollowing/list/" + user)
-			.success(function (data) {
-				$scope.displayedUser = data;
-				console.log($scope.profileStats.followingCount);
-			})
-
-			.error (function(){
-				console.log("Get Call Error");
-				$scope.profileStats.following = [];
-				$scope.profileStats.followingCount = null;
-				console.log("Get Call Error");
-			});
-	};
 
 	//default user selection
 	$scope.profileStats.searchStatus = "all";
@@ -410,7 +365,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 	$scope.profileStats.getUsersGroups = function () {
 		var request = {
 			method: 'POST',
-			url: "http://204.12.206.202:1935/group/find",
+			url: "https://marketcrown.com/api/v1/personal/group/find",
 
 			headers: {
 				'Content-Type': 'application/json'
@@ -422,14 +377,14 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 
 
 		$http(request)
-				.success(function(data){
-					console.log(data);
-					$scope.profileStats.usersGroups = data;
-				})
+			.success(function(data){
+				console.log(data);
+				$scope.profileStats.usersGroups = data;
+			})
 
-				.error(function(){
-					console.log("get groups error");
-				});
+			.error(function(){
+				console.log("get groups error");
+			});
 	};
 	$scope.profileStats.getUsersGroups();
 
@@ -440,455 +395,192 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 
 	//get hovered user
 	$scope.profileStats.hoveredUser = function (user) {
-		$http.get("http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + user)
-			.success(function (data) {
-				$scope.profileStats.hoveredUser.data = data;
-				console.log("User info got for " + user);
-			})
+		$http.get("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + user)
+				.success(function (data) {
+					$scope.profileStats.hoveredUser.data = data;
+					console.log("User info got for " + user);
+				})
 
-			.error (function(){
-				console.log("Hovered user error");
-			});
+				.error (function(){
+					console.log("Hovered user error");
+				});
 	};
 
 	$scope.profileStats.cleanHoveredUser = function() {
 		$scope.profileStats.hoveredUser.data = "";
 	};
 
-
-	var initializeData = function() {
-		//setting up the initial date
-		$scope.profileStats.dateSelection();
-
-		//if custom date is selected
-		ifCustomDate();
-
-		var sectorPreference = {};
-		var fillChartSectorPreference = function() {
-			$scope.profileStats.chart.sectorPreference = [
-				{
-					key: "Cumulative Return",
-					values: [
-						{
-							"label": "Healthcare",
-							"value": sectorPreference.healthcare
-						},
-						{
-							"label": "Financial",
-							"value": sectorPreference.financial
-						},
-						{
-							"label": "Industrial Goods",
-							"value": sectorPreference.industrialGoods
-						},
-						{
-							"label": "Services",
-							"value": sectorPreference.services
-						},
-
-						{
-							"label": "Consumer Goods",
-							"value": sectorPreference.conumerGoods
-						},
-
-						{
-							"label": "Conglomerates",
-							"value": sectorPreference.conglomerates
-						},
-
-						{
-							"label": "Basic Materials",
-							"value": sectorPreference.basicMaterials
-						},
-
-						{
-							"label": "Technology",
-							"value": sectorPreference.technology
-						},
-						{
-							"label": "Utilities",
-							"value": sectorPreference.utilities
-						}
-					]
-				}
-			];
-		};
-		var assignChartSectorPreference = function (fnData) {
-			sectorPreference.healthcare = fnData.healthcare;
-			sectorPreference.financial = fnData.financial;
-			sectorPreference.industrialGoods = fnData["industrial goods"];
-			sectorPreference.services = fnData.services;
-			sectorPreference.conumerGoods = fnData["consumer goods"];
-			sectorPreference.conglomerates = fnData.conglomerates;
-			sectorPreference.basicMaterials = fnData["basic materials"];
-			sectorPreference.technology = fnData.technology;
-			sectorPreference.utilities = fnData.utilities;
-			fillChartSectorPreference();
-		};
-		var sectorPreferenceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
-
-		var marketCapPreference = {};
-		var fillChartMarketCapPreference = function() {
-			$scope.profileStats.chart.marketCapPreference = [
-				{
-					key: "Market Cap Preference",
-					values: [
-						{
-							"label": "Mega",
-							"value": marketCapPreference.mega
-						},
-						{
-							"label": "Large",
-							"value": marketCapPreference.large
-						},
-						{
-							"label": "Mid",
-							"value": marketCapPreference.mid
-						},
-
-						{
-							"label": "Small",
-							"value": marketCapPreference.small
-						},
-
-						{
-							"label": "Micro",
-							"value": marketCapPreference.micro
-						},
-
-						{
-							"label": "Nano",
-							"value": marketCapPreference.nano
-						}
-					]
-				}
-			];
-		};
-		var assignMarketCapPreference = function (fnData) {
-			marketCapPreference.mega = fnData.mega;
-			marketCapPreference.nano = fnData.nano;
-			marketCapPreference.mid = fnData.mid;
-			marketCapPreference.large = fnData.large;
-			marketCapPreference.micro = fnData.micro;
-			marketCapPreference.small = fnData.small;
-			fillChartMarketCapPreference();
-		};
-		var marketCapPreferenceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
-
-		var totalCorrect = {};
-		var fillChartTotalCorrect = function() {
-			$scope.profileStats.chart.totalCorrect = [
-				{
-					key: "True",
-					y: totalCorrect.true,
-					color: "#66bb6a"
-
-				},
-				{
-					key: "False",
-					y: totalCorrect.false,
-					color: "#d5473e"
-				}
-			];
-		};
-		var assignTotalCorrect = function (fnData) {
-			totalCorrect.true = fnData.true;
-			totalCorrect.false = fnData.false;
-			fillChartTotalCorrect();
-		};
-		var  totalCorrectCall = $http({method: 'GET', url: "http://204.12.206.202:2197/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
-
-		var forecastSentiment = {};
-		var fillChartForecastSentiment = function() {
-			$scope.profileStats.chart.forecastSentiment = [
-				{
-					key: "Bearish",
-					y: forecastSentiment.bearish
-				},
-				{
-					key: "Bullish",
-					y: forecastSentiment.bullish
-				}
-			];
-		};
-		var assignForecastSentiment = function (fnData) {
-			forecastSentiment.bearish = fnData.bearish;
-			forecastSentiment.bullish = fnData.bullish;
-			fillChartForecastSentiment();
-		};
-		var forecastSentimentCall = $http({method: 'GET', url: "http://204.12.206.202:2197/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
-
-		var forecastPendingSentiment = {};
-		var fillChartForecastPendingSentiment = function() {
-			$scope.profileStats.chart.forecastPendingSentiment = [
-				{
-					key: "Bearish",
-					y: forecastPendingSentiment.bearish
-				},
-				{
-					key: "Bullish",
-					y: forecastPendingSentiment.bullish
-				}
-
-			];
-		};
-		var assignForecastPendingSentiment = function (fnData) {
-			forecastPendingSentiment.bearish = fnData.bearish;
-			forecastPendingSentiment.bullish = fnData.bullish;
-			fillChartForecastPendingSentiment();
-		};
-		var forecastPendingSentimentCall = $http({method: 'GET', url: "http://204.12.206.202:2197/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
-
-		var timeOfDayPreference = {};
-		var fillChartTimeOfDayPreference = function() {
-			$scope.profileStats.chart.timeOfDayPreference = [
-				{
-					key: "Morning",
-					y: timeOfDayPreference.morning
-				},
-				{
-					key: "Midday",
-					y: timeOfDayPreference.midday
-				},
-
-				{
-					key: "Close",
-					y: timeOfDayPreference.close
-				}
-
-			];
-		};
-		var assignTimeOfDayPreference = function (fnData) {
-			timeOfDayPreference.morning = fnData.morning;
-			timeOfDayPreference.midday = fnData.midday;
-			timeOfDayPreference.close = fnData.close;
-			fillChartTimeOfDayPreference();
-		};
-		var timeOfDayPreferenceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end});
-
-
-		var atGlanceCall = $http({method: 'GET', url: "http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser});
-		var assignAtGlance = function(fnData) {
-			$scope.profileStats.atGlance = fnData;
-			$scope.username.display = fnData.user;
-			console.log($scope.profileStats.atGlance);
-		};
-
-		var currentUserFollowingCountCall = $http({method: 'GET', url: "http://204.12.206.202:1935/imfollowing/list/" + currentUser});
-		var assignCurrentUserFollowingCount = function(fnData) {
-			$scope.profileStats.followingCount = fnData.length;
-		};
-
-		var currentUserFollowersCountCall = $http({method: 'GET', url: "http://204.12.206.202:1935/follow/list/" + currentUser});
-		var assignCurrentUserFollowersCount = function(fnData) {
-			$scope.profileStats.followersCount = fnData.length;
-		};
-
-
-
-		//assign selected date range
-		$scope.profileStats.dateSelection();
-		$q.all([
-			sectorPreferenceCall,
-			marketCapPreferenceCall,
-			totalCorrectCall,
-			forecastSentimentCall,
-			forecastPendingSentimentCall,
-			timeOfDayPreferenceCall,
-			atGlanceCall,
-			currentUserFollowingCountCall,
-			currentUserFollowersCountCall
-		]).then(function(data){
-				assignChartSectorPreference(data[0].data);
-				assignMarketCapPreference(data[1].data);
-				assignTotalCorrect(data[2].data);
-				assignForecastSentiment(data[3].data);
-				assignForecastPendingSentiment(data[4].data);
-				assignTimeOfDayPreference(data[5].data);
-				assignAtGlance(data[6].data);
-				assignCurrentUserFollowersCount(data[7].data);
-				assignCurrentUserFollowingCount(data[8].data);
-				console.log("Initialize data called")
-		});
-	};
-
-	//initializeData();
-
 	$scope.getUpdatedCharts = function() {
 		initializeData()
 	};
 
-
-	//calling services which contain data. Services handle errors
+	//calling services containing data. Services handle errors
 	var service = {};
 	//setting up the initial date
 	$scope.profileStats.dateSelection();
 	//if custom date is selected
 	ifCustomDate();
 
-
-	service.getAtGlance = function(url) {
-		UserService.getAtGlanceService(url)
+	service.getAllUsers = function(url) {
+		GeneralDataService.getAllUsersService(url)
 			// then() called when son gets back
 			.then(function(data) {
 				// promise fulfilled
-				console.log("Service atGlance",  data);
-				$scope.profileStats.atGlance = data;
-				$scope.username.display = data.user;
+				console.log("Service Get All Usersr",  data);
+				$scope.users = data;
 
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
-				console.log('Service atGlance Error', error);
+				console.log('Service Get All Users Error', error);
 			});
-
 	};
+	service.getAllUsers("https://marketcrown.com/api/v1/personal/return/users");
 
+	//charts
 	service.getUserSectorPreference = function (url) {
-		UserService.getSectorPreferenceChartService(url)
-			// then() called when son gets back
-			.then(function(data) {
-				// promise fulfilled
-				console.log("Service Sector Preference",  data);
-				$scope.profileStats.dateSelection();
-				//if custom date is selected
-				ifCustomDate();
+		UserChartsService.getSectorPreferenceChartService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Sector Preference",  data);
+					$scope.profileStats.dateSelection();
+					//if custom date is selected
+					ifCustomDate();
 
-				var sectorPreference = {};
-				var fillChartSectorPreference = function() {
-					$scope.profileStats.chart.sectorPreference = [
-						{
-							key: "Cumulative Return",
-							values: [
-								{
-									"label": "Healthcare",
-									"value": sectorPreference.healthcare
-								},
-								{
-									"label": "Financial",
-									"value": sectorPreference.financial
-								},
-								{
-									"label": "Industrial Goods",
-									"value": sectorPreference.industrialGoods
-								},
-								{
-									"label": "Services",
-									"value": sectorPreference.services
-								},
+					var sectorPreference = {};
+					var fillChartSectorPreference = function() {
+						$scope.profileStats.chart.sectorPreference = [
+							{
+								key: "Cumulative Return",
+								values: [
+									{
+										"label": "Healthcare",
+										"value": sectorPreference.healthcare
+									},
+									{
+										"label": "Financial",
+										"value": sectorPreference.financial
+									},
+									{
+										"label": "Industrial Goods",
+										"value": sectorPreference.industrialGoods
+									},
+									{
+										"label": "Services",
+										"value": sectorPreference.services
+									},
 
-								{
-									"label": "Consumer Goods",
-									"value": sectorPreference.conumerGoods
-								},
+									{
+										"label": "Consumer Goods",
+										"value": sectorPreference.conumerGoods
+									},
 
-								{
-									"label": "Conglomerates",
-									"value": sectorPreference.conglomerates
-								},
+									{
+										"label": "Conglomerates",
+										"value": sectorPreference.conglomerates
+									},
 
-								{
-									"label": "Basic Materials",
-									"value": sectorPreference.basicMaterials
-								},
+									{
+										"label": "Basic Materials",
+										"value": sectorPreference.basicMaterials
+									},
 
-								{
-									"label": "Technology",
-									"value": sectorPreference.technology
-								},
-								{
-									"label": "Utilities",
-									"value": sectorPreference.utilities
-								}
-							]
-						}
-					];
-				};
-				fillChartSectorPreference();
-				var assignChartSectorPreference = function () {
-					sectorPreference.healthcare = data.healthcare;
-					sectorPreference.financial = data.financial;
-					sectorPreference.industrialGoods = data["industrial goods"];
-					sectorPreference.services = data.services;
-					sectorPreference.conumerGoods = data["consumer goods"];
-					sectorPreference.conglomerates = data.conglomerates;
-					sectorPreference.basicMaterials = data["basic materials"];
-					sectorPreference.technology = data.technology;
-					sectorPreference.utilities = data.utilities;
+									{
+										"label": "Technology",
+										"value": sectorPreference.technology
+									},
+									{
+										"label": "Utilities",
+										"value": sectorPreference.utilities
+									}
+								]
+							}
+						];
+					};
 					fillChartSectorPreference();
-				};
-				assignChartSectorPreference();
+					var assignChartSectorPreference = function () {
+						sectorPreference.healthcare = data.healthcare;
+						sectorPreference.financial = data.financial;
+						sectorPreference.industrialGoods = data["industrial goods"];
+						sectorPreference.services = data.services;
+						sectorPreference.conumerGoods = data["consumer goods"];
+						sectorPreference.conglomerates = data.conglomerates;
+						sectorPreference.basicMaterials = data["basic materials"];
+						sectorPreference.technology = data.technology;
+						sectorPreference.utilities = data.utilities;
+						fillChartSectorPreference();
+					};
+					assignChartSectorPreference();
 
 
-			}, function(error) {
-				// promise rejected, could log the error with: console.log('error', error);
-				console.log('error', error);
-			});
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('error', error);
+				});
 	};
-
 	service.getMarketCapPreference = function (url) {
-		UserService.getMarketCapPreferenceService(url)
-			// then() called when son gets back
-			.then(function(data) {
-				// promise fulfilled
-				console.log("Service Market Cap Preference",  data);
-				var marketCapPreference = {};
-				var fillChartMarketCapPreference = function() {
-					$scope.profileStats.chart.marketCapPreference = [
-						{
-							key: "Market Cap Preference",
-							values: [
-								{
-									"label": "Mega",
-									"value": marketCapPreference.mega
-								},
-								{
-									"label": "Large",
-									"value": marketCapPreference.large
-								},
-								{
-									"label": "Mid",
-									"value": marketCapPreference.mid
-								},
+		UserChartsService.getMarketCapPreferenceService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Market Cap Preference",  data);
+					var marketCapPreference = {};
+					var fillChartMarketCapPreference = function() {
+						$scope.profileStats.chart.marketCapPreference = [
+							{
+								key: "Market Cap Preference",
+								values: [
+									{
+										"label": "Mega",
+										"value": marketCapPreference.mega
+									},
+									{
+										"label": "Large",
+										"value": marketCapPreference.large
+									},
+									{
+										"label": "Mid",
+										"value": marketCapPreference.mid
+									},
 
-								{
-									"label": "Small",
-									"value": marketCapPreference.small
-								},
+									{
+										"label": "Small",
+										"value": marketCapPreference.small
+									},
 
-								{
-									"label": "Micro",
-									"value": marketCapPreference.micro
-								},
+									{
+										"label": "Micro",
+										"value": marketCapPreference.micro
+									},
 
-								{
-									"label": "Nano",
-									"value": marketCapPreference.nano
-								}
-							]
-						}
-					];
-				};
+									{
+										"label": "Nano",
+										"value": marketCapPreference.nano
+									}
+								]
+							}
+						];
+					};
 
-				var assignMarketCapPreference = function () {
-					marketCapPreference.mega = data.mega;
-					marketCapPreference.nano = data.nano;
-					marketCapPreference.mid = data.mid;
-					marketCapPreference.large = data.large;
-					marketCapPreference.micro = data.micro;
-					marketCapPreference.small = data.small;
-					fillChartMarketCapPreference();
-				};
-				assignMarketCapPreference();
+					var assignMarketCapPreference = function () {
+						marketCapPreference.mega = data.mega;
+						marketCapPreference.nano = data.nano;
+						marketCapPreference.mid = data.mid;
+						marketCapPreference.large = data.large;
+						marketCapPreference.micro = data.micro;
+						marketCapPreference.small = data.small;
+						fillChartMarketCapPreference();
+					};
+					assignMarketCapPreference();
 
 
-			}, function(error) {
-				// promise rejected, could log the error with: console.log('error', error);
-				console.log('Service Market Cap Preference Error', error);
-			});
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Market Cap Preference Error', error);
+				});
 	};
-
 	service.getTotalCorrect = function(url) {
-		UserService.getTotalCorrectService(url)
+		UserChartsService.getTotalCorrectService(url)
 				// then() called when son gets back
 				.then(function(data) {
 					// promise fulfilled
@@ -922,9 +614,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 					console.log('Service Total Correct Error', error);
 				});
 	};
-
 	service.getForecastSentiment = function(url) {
-		UserService.getForecastSentimentService(url)
+		UserChartsService.getForecastSentimentService(url)
 				// then() called when son gets back
 				.then(function(data) {
 					// promise fulfilled
@@ -956,9 +647,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 					console.log('Service Forecast Sentiment Error', error);
 				});
 	};
-
 	service.getForecastPendingSentiment = function(url) {
-		UserService.getForecastPendingSentimentService(url)
+		UserChartsService.getForecastPendingSentimentService(url)
 				// then() called when son gets back
 				.then(function(data) {
 					// promise fulfilled
@@ -995,9 +685,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 					console.log('Service Forecast Pending Sentiment Error', error);
 				});
 	};
-
 	service.getTimeOfDayPreference = function(url) {
-		UserService.getTimeOfDayPreferenceService(url)
+		UserChartsService.getTimeOfDayPreferenceService(url)
 				// then() called when son gets back
 				.then(function(data) {
 					// promise fulfilled
@@ -1038,27 +727,246 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 				});
 	};
 
-	service.getAtGlance("http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
-	service.getUserSectorPreference("http://204.12.206.202:2197/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getMarketCapPreference("http://204.12.206.202:2197/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getTotalCorrect("http://204.12.206.202:2197/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getForecastSentiment("http://204.12.206.202:2197/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getForecastPendingSentiment("http://204.12.206.202:2197/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getTimeOfDayPreference("http://204.12.206.202:2197/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	//user related data
+	service.getAtGlance = function(url) {
+		UserDetailsService.getAtGlanceService(url)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				$scope.profileStats.atGlance = data;
+				$scope.username.display = data.user;
+				console.log("Service Get At Glance",  data);
 
-	$scope.refreshData = function() {
-		console.log("data refresh called");
+				service.getFollowers("https://marketcrown.com/api/v1/personal/follow/list/" + currentUser);
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Get At Glance Error', error);
+			});
+
+	};
+	service.getFollowers = function(url) {
+		UserDetailsService.getFollowersService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Get Follower",  data);
+					$scope.profileStats.followers = data;
+					$scope.profileStats.followersCount = data.length;
+					service.getFollowing("https://marketcrown.com/api/v1/personal/imfollowing/list/" + currentUser);
+
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Get Followers Error', error);
+				});
+	};
+	service.getFollowing = function(url) {
+		UserDetailsService.getFollowingService(url)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Get Following",  data);
+					$scope.profileStats.following = data;
+					$scope.profileStats.followingCount = data.length;
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Get Following Error', error);
+				});
+	};
+
+	//forecasts
+	service.getSimpleForecasts = function(market, user, status) {
+		if (status == "pending") {
+			$scope.profileStats.forecastStatus = "pending";
+		}
+
+		else if (status == "validated") {
+			$scope.profileStats.forecastStatus = "validated";
+		}
+		ForecastService.getSimpleForecastsService(market, user, status)
+				// then() called when son gets back
+				.then(function(data) {
+					// promise fulfilled
+					console.log("Service Simple Forecasts",  data);
+					$scope.profileStats.forecasts = data;
+
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.log('Service Simple Forecast Error', error);
+				});
+	};
+	//calling service function
+	$scope.getSimpleForecasts = function(status) {
+		//calling service function directly
+		service.getSimpleForecasts($scope.profileStats.market.selected.symbol, currentUser, status);
+	};
+
+	//single user related
+	service.getAtGlanceCurrentUser = function(url){
+		UserDetailsService.getAtGlanceCurrentUserService(url)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Current User At Glance",  data);
+				$scope.profileStats.hoveredUser = data;
+				$scope.profileStats.activeGroup = 1;
+				console.log("hoveredUser", data);
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Current User At Glance Error', error);
+			});
+	};
+	$scope.getAtGlanceCurrentUser = function(user) {
+		service.getAtGlanceCurrentUser("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol +"/" + user)
+	};
+
+	//groups related
+	service.getMyGroups = function(user){
+		UserDetailsService.getMyGroupsService(user)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service get My groups",  data);
+				$scope.profileStats.myGroups = data;
+				$scope.profileStats.activeGroup = data[0];
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service get my groups Error', error);
+			});
+	};
+	$scope.getMyGroups = function() {
+		service.getMyGroups(currentUser);
+	};
+	$scope.addActive = function(group) {
+		$scope.profileStats.activeGroup = group;
+		console.log($scope.profileStats.activeGroup);
+	};
+
+	service.createGroup = function(user, groupName, groupDescription, groupMembers) {
+		UserDetailsService.createGroupService(user, groupName, groupDescription, groupMembers)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Create New Group",  data);
+				$('#createGroup').modal('hide');
+				service.getMyGroups(currentUser);
+
+				$scope.group.name = "";
+				$scope.group.description = "";
+				$scope.group.members = "";
+
+
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Create New Group Error', error);
+				$('#createGroup').modal('hide')
+			});
+	};
+	$scope.createGroup = function() {
+		console.log(currentUser, $scope.group);
+		service.createGroup(currentUser, $scope.group.name, $scope.group.description, $scope.group.members);
+
+	};
+
+	service.addMemberToGroup = function(members, groupId) {
+		UserDetailsService.addMemberToGroupService(members, groupId)
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Add Member to Group Group",  data);
+				$('#addMemberToGroup').modal('hide');
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Add Member to Group Error', error);
+
+			});
+	};
+	$scope.addMemberToGroup = function() {
+		service.addMemberToGroup($scope.group.members, $scope.profileStats.activeGroup.guid);
+	};
+
+	service.removeMemberFromGroup = function(member, groupId) {
+		UserDetailsService.removeMemberFromGroupService(member, groupId)
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Remove member From Group",  data);
+				service.getMyGroups(currentUser);
+
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Remove Member From Group Error', error);
+
+			});
+	};
+
+	$scope.removeMemberFromGroup = function(member) {
+		service.removeMemberFromGroup(member, $scope.profileStats.activeGroup.guid);
+	};
+
+
+	service.deleteGroup = function(groupId) {
+		UserDetailsService.deleteGroupService(groupId)
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Delete Group",  data);
+				service.getMyGroups(currentUser);
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Delete Group Error', error);
+
+			});
+	};
+
+	$scope.deleteGroup = function(groupId) {
+		service.deleteGroup(groupId);
+	};
+
+
+	//calling charts
+	service.getAtGlance("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+	service.getUserSectorPreference("https://marketcrown.com/api/v1/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getMarketCapPreference("https://marketcrown.com/api/v1/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTotalCorrect("https://marketcrown.com/api/v1/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastSentiment("https://marketcrown.com/api/v1/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastPendingSentiment("https://marketcrown.com/api/v1/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTimeOfDayPreference("https://marketcrown.com/api/v1/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+
+	//functions for refreshing data. Not called initially
+	$scope.refreshUserDetailsData = function() {
+		service.getAtGlance("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+	};
+	$scope.refreshChartData = function() {
+		console.log("chart data refresh called");
 		$scope.profileStats.dateSelection();
 		//if custom date is selected
 		ifCustomDate();
 
-		service.getAtGlance("http://204.12.206.202:2197/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
-		service.getUserSectorPreference("http://204.12.206.202:2197/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getMarketCapPreference("http://204.12.206.202:2197/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getTotalCorrect("http://204.12.206.202:2197/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getForecastSentiment("http://204.12.206.202:2197/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getForecastPendingSentiment("http://204.12.206.202:2197/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getUserSectorPreference("https://marketcrown.com/api/v1/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getMarketCapPreference("https://marketcrown.com/api/v1/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTotalCorrect("https://marketcrown.com/api/v1/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastSentiment("https://marketcrown.com/api/v1/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastPendingSentiment("https://marketcrown.com/api/v1/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTimeOfDayPreference("https://marketcrown.com/api/v1/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	};
+	$scope.redirectToUser = function () {
+		newUsername = $scope.username.search;
+		currentUser = newUsername;
+		//$scope.refreshChartData();
+		$location.path('/user/' + $scope.username.search);
+		console.log("redirected to user")
+	};
+
 
 	//displaying charts correctly if they were in the hidden tab
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -1066,6 +974,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserService)
 	});
 
 	/*
-		TODO: Make pagination work on user following
+	 TODO: Make pagination work on user following
+	 TODO: Reimplement pagination or infinite scroll
 	 */
 });

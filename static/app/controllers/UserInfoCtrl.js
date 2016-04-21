@@ -86,38 +86,38 @@ App.controller ('UserInfoCtrl', function StockInfoCtrl ($scope, $http){
 	$scope.getSectorPreference = function() {
 		$scope.sectorPreferenceLabel = ["Healthcare", "Financial", "Industrial Goods", "Services", "Consumer Goods", "Conglomerates", "Basic Materials", "Technology", "Utilities"];
 		console.log("Called First");
-		$scope.getData("http://204.12.206.202:2197/sector/jeangrey/" + stock_info_market, "sector_preference");
+		$scope.getData("https://marketcrown.com/api/v1/personal/sector/jeangrey/" + stock_info_market, "sector_preference");
 	};
 
 
 	$scope.getCorrect = function() {
 		$scope.correctLabel = ["Correct", "Incorrect"];
 		console.log("Called Second");
-		$scope.getData("http://204.12.206.202:2197/correctperformance/jeangrey/" + stock_info_market + "/02-05-14until09-21-22", "correct_incorrect");
+		$scope.getData("https://marketcrown.com/api/v1/personal/correctperformance/jeangrey/" + stock_info_market + "/02-05-14until09-21-22", "correct_incorrect");
 	};
 
 	$scope.getForecastSentiment = function() {
 		$scope.forecastSentimentLabel = ["Bearish", "Bullish"];
 		console.log("Called Third");
-		$scope.getData("http://204.12.206.202:2197/sentiment/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "forecast_sentiment");
+		$scope.getData("https://marketcrown.com/api/v1/personal/sentiment/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "forecast_sentiment");
 	};
 
 	$scope.getMarketCapPreference = function() {
 		$scope.marketCapPreferenceLabel = ["Mega", "Nano", "Mid", "Large", "Micro", "Small"];
 		console.log("Called Fourth");
-		$scope.getData("http://204.12.206.202:2197/marketcap/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "market_cap_preference");
+		$scope.getData("https://marketcrown.com/api/v1/personal/marketcap/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "market_cap_preference");
 	};
 
 	$scope.getTimeOfTheDayPreference = function() {
 		$scope.timeOfTheDayPreferenceLabel = ["Close", "Midday", "Morning"];
 		console.log("Called Fifth");
-		$scope.getData("http://204.12.206.202:2197/timeofday/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "time_of_the_day_preference");
+		$scope.getData("https://marketcrown.com/api/v1/personal/timeofday/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "time_of_the_day_preference");
 	};
 
 
 	//returning at a glance section data
 	$scope.getAtGlance = function () {
-		$http.get("http://204.12.206.202:2197/profile/" + stock_info_market + "/jeangrey")
+		$http.get("https://marketcrown.com/api/v1/personal/profile/" + stock_info_market + "/jeangrey")
 			.success(function (data) {
 				$scope.atGlanceData = data;
 			})

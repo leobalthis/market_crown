@@ -1,4 +1,4 @@
-App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http){
+App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, GeneralDataService){
 
 	$scope.dateOptions = {
 		changeYear: true,
@@ -6,134 +6,121 @@ App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http){
 		yearRange: '1900:-0'
 	};
 
-	$scope.marketData = {
-		selectMarket: null,
-		option1: "us",
-		option2: "ca",
-		option3: "uk",
-		option4: "de",
-		option5: "hk"
-	};
+	$scope.newForecast = {};
+	$scope.newForecast.markets = [
+		{name: 'US Market', symbol: 'us', flag: 'us-flag.png'},
+		{name: 'CA Market', symbol: 'ca', flag: 'ca-flag.png'},
+		{name: 'UK Market', symbol: 'uk', flag: 'uk-flag.png'},
+		{name: 'DE Market', symbol: 'de', flag: 'de-flag.png'},
+		{name: 'HK Market', symbol: 'hk', flag: 'hk-flag.png'}
+	];
+	$scope.newForecast.market= $scope.newForecast.markets[0];
 
+	$scope.newForecast.percentages = [
+		{name: ".2-.9%", symbol: ".2-.9%"},
+		{name: "1-5%", symbol: "1-5%"},
+		{name: "6-15%", symbol: "6-15%"},
+		{name: "16-30%", symbol: "16-30%"},
+		{name: "31+%", symbol: "31+%"}
+	];
+	$scope.newForecast.percentage = $scope.newForecast.percentages[0];
 
-	$scope.$watch('data.selectMarket', function(newValue, oldValue) {
-		if (newValue !== oldValue) {
-			$scope.liveSearchSymbol("http://204.12.206.202:1935/getsymbols/" + $scope.data.selectMarket);
-			$scope.stockSymbol = "";
-		}
-	});
+	$scope.newForecast.dayTimes = [
+		{name: 'Morning', symbol: 'morning'},
+		{name: 'Midday', symbol: 'midday'},
+		{name: 'Close', symbol: 'close'}
+	];
+	$scope.newForecast.dayTime = $scope.newForecast.dayTimes[0];
 
-	$scope.marketMovement = {
-		selectMarketMovement: null,
-		option1: "up",
-		option2: "down"
-	};
+	$scope.newForecast.marketMovements = [
+		{name: 'UP', symbol: 'up', flag: 'up.png'},
+		{name: 'DOWN', symbol: 'down', flag: 'down.png'}
+	];
+	$scope.newForecast.marketMovement = $scope.newForecast.marketMovements[0];
 
-	$scope.dayTime = {
-		selectDayTime: null,
-		option1: "morning",
-		option2: "midday",
-		option3: "close"
-	};
-
-
-	$scope.marketMovementPercentage = {
-		selectMarketMovementPercentage: null,
-		option1: ".2-.9%",
-		option2: "1-5%",
-		option3: "6-15%",
-		option4: "16-30%",
-		option5: "31+%"
-	};
-
-
-	$scope.createForecast = function () {
+	$scope.createForecast = function() {
 		var regExp = /\(([^)]+)\)/;
 		var stockSymbolFormatted;
 
-		var symbolObjStr = JSON.stringify($scope.stockSymbol);
+		var symbolObjStr = JSON.stringify($scope.newForecast.symbol);
 		var symbolObjLength = symbolObjStr.length;
 
 		if (symbolObjLength >= 15) {
-			var formattedSymbol = regExp.exec($scope.stockSymbol);
+			var formattedSymbol = regExp.exec($scope.newForecast.symbol);
 			stockSymbolFormatted = formattedSymbol[1];
 
-			if ($scope.data.selectMarket === "ca") {
+			if ($scope.newForecast.market.symbol === "ca") {
 				stockSymbolFormatted = stockSymbolFormatted.substr(0, stockSymbolFormatted.length-3);
 			}
 
-			else if ($scope.data.selectMarket === "uk"){
+			else if ($scope.newForecast.market.symbol === "uk"){
 				stockSymbolFormatted = stockSymbolFormatted.substr(0, stockSymbolFormatted.length-2);
 			}
 
 
-			else if ($scope.data.selectMarket === "de"){
+			else if ($scope.newForecast.market.symbol === "de"){
 				stockSymbolFormatted = stockSymbolFormatted.substr(0, stockSymbolFormatted.length-3);
 			}
 
 
-			else if ($scope.data.selectMarket === "hk"){
+			else if ($scope.newForecast.market.symbol === "hk"){
 				stockSymbolFormatted = stockSymbolFormatted.substr(0, stockSymbolFormatted.length-3);
 			}
 		}
 
 		else {
-			stockSymbolFormatted = $scope.stockSymbol;
+			stockSymbolFormatted = $scope.newForecast.symbol;
 		}
 
 
+		GeneralDataService.createForecastService("jcramer", stockSymbolFormatted, $scope.newForecast.marketMovement.symbol, $scope.newForecast.date, $scope.newForecast.dayTime.symbol, $scope.newForecast.percentage.symbol, $scope.newForecast.market.symbol, $scope.newForecast.analysis)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Create Forecasts",  data);
 
+				$scope.newForecast.symbol = "";
+				//$scope.newForecast.marketMovement = "";
+				$scope.newForecast.date = "";
+				$scope.newForecast.dayTime = "";
+				$scope.newForecast.percentage = "";
+				//$scope.newForecast.market = "";
+				$scope.newForecast.analysis = "";
 
-		var request = {
-			method: 'POST',
-			url: 'http://204.12.206.202:1220/createforecast',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
-				"user": "jcramer",
-				"symbol": stockSymbolFormatted,
-				"movement": $scope.data.selectMarketMovement,
-				"date" : $scope.forecastDate,
-				"timeofday" : $scope.data.selectDayTime,
-				"percent": $scope.data.selectMarketMovementPercentage,
-				"market": $scope.data.selectMarket,
-				"analysis": $scope.forecastAnalysis
-			}
-		};
-
-
-		$http(request)
-			.success(function(data){
-				console.log("Successfull");
-				console.log(data);
-
-				$scope.stockSymbol = "";
-				$scope.data.selectMarketMovement = null;
-				$scope.forecastDate = null;
-				$scope.data.selectDayTime = null;
-				$scope.data.selectMarketMovementPercentage = null;
-				alert("Forecast successfully created");
-			})
-			.error(function(){
-				console.log("Unsuccesfull");
-				alert("Forecast creation unsuccessful. Please make sure the fields are entered correctly ");
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Create Forecast Error', error);
 			});
+
 	};
 
-	$scope.liveSearchSymbol = function(apiUrl) {
-		$http.get(apiUrl)
-			.success(function (data) {
-				ignoreLoadingBar: true;
-				$scope.selected = undefined;
+	//initial call for the symbols
+	GeneralDataService.getSymbols("us")
+	// then() called when son gets back
+	.then(function(data) {
+		// promise fulfilled
+		console.log("Service Symbols",  data);
+		$scope.symbols = data;
+
+	}, function(error) {
+		// promise rejected, could log the error with: console.log('error', error);
+		console.log('Service Symbols Error', error);
+	});
+
+	$scope.refreshSymbols = function() {
+		//initial call for the symbols
+		GeneralDataService.getSymbols($scope.newForecast.market.symbol)
+			// then() called when son gets back
+			.then(function(data) {
+				// promise fulfilled
+				console.log("Service Symbols",  data);
 				$scope.symbols = data;
+				$scope.newForecast.symbol = "";
 
-
-			})
-
-			.error (function(){
-			console.log("Live search API error");
-		});
-	};
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Symbols Error', error);
+			});
+	}
 
 });

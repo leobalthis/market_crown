@@ -1,7 +1,7 @@
 
-	<div class="col-lg-5 stock-info-page" ng-controller="StockInfoCtrl" >
+	<div class="col-lg-5 stock-info-page">
 		<div class="row">
-			<div class="col-lg-12 stock-info-details" >
+			<div class="col-lg-12 stock-info-details"  ng-controller="StockInfoCtrl" >
 				<div class="dashboard-element">
 					<div class="customization row">
 						<div class="col-lg-8 market-selection">
@@ -53,7 +53,7 @@
 
 
 					<div class="top-chart">
-						<img ng-src="http://chart.finance.yahoo.com/{{chartPeriodSelected.link + stock.symbol}}" alt="Chart"/>
+						<img ng-src="https://chart.finance.yahoo.com/{{chartPeriodSelected.link + stock.symbol}}" alt="Chart"/>
 					</div>
 
 					<div class="stock-data" >
@@ -130,13 +130,12 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row" ng-controller="StockInfoCtrl" >
 			<div class="col-lg-12 stock-info-rss">
 				<div class="dashboard-element">
 					<div class="dashboard-element-header">
 						<h3><img src="assets/images/rss.png" alt=""/>Stock Feed</h3>
 					</div>
-					<!------------------->
 
 					<div class="row rss-elements">
 						<div class="col-xs-6" ng-repeat="feed in feeds | limitTo : 4">
@@ -152,70 +151,170 @@
 		</div>
 	</div>
 
-	<div class="col-lg-4 site-feed">
-		<div class="dashboard-element">
-			<div class="dashboard-element-header">
-				<h3>News Feed</h3>
+	<div class="col-lg-4" ng-controller="MicroblogsCtrl" >
+		<div class="dashboard-element microblogs">
+
+			<div class="microblogs-header">
+				<h3>Microblogs</h3>
 			</div>
 
-			<div class="row">
-				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
-					<a href="#">
-						<div class="img-container">
-							<img src="assets/images/bg-2.jpg" alt=""/>
+			<div class="create-microblog">
+				<img src="assets/images/collapse.png" alt="" class="collapse">
+				<form class="form-horizontal" ng-class="{ focused: microblogs.formFocused, blur: !microblogs.formFocused }" ng-submit="createTopic()">
+					<div class="form-group">
+						<div class="col-lg-12">
+							<textarea ng-focus="microblogs.formFocused = true" ng-model="microblogs.new.message" required class="form-control" rows="1" id="textArea" placeholder="Create your Microblog message..."></textarea>
+						</div>
+					</div>
+
+					<div class="controls" ng-show="microblogs.formFocused">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row-regular">
+									<div class="col-md-6">
+										<ui-select ng-model="microblogs.new.market" theme="bootstrap" ng-disabled="disabled" on-select="refreshSymbols()">
+											<ui-select-match placeholder="Select a market"><img ng-src="assets/images/flags/{{$select.selected.flag}}" alt="">{{$select.selected.name}}</ui-select-match>
+											<ui-select-choices repeat="market in microblogs.new.markets | filter: $select.search">
+												<img ng-src="assets/images/flags/{{market.flag}}" alt="">{{market.name}}
+											</ui-select-choices>
+										</ui-select>
+									</div>
+
+									<div class="col-md-6">
+										<div class="buttons">
+											<button class="pull-right btn btn-success" type="submit">Submit</button>
+											<p class="btn pull-right btn-cancel" ng-click="dismissCreateMicroblogForm()">Cancel</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="clearfix"></div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<div class="filter-microblogs">
+				<div class="inner">
+					<div class="row-regular">
+						<div class="col-md-6">
+							<ui-select ng-model="microblogs.filter" theme="bootstrap" ng-disabled="disabled" >
+								<ui-select-match placeholder="Select a market">{{$select.selected.name}}</ui-select-match>
+								<ui-select-choices repeat="filter in microblogs.filters | filter: $select.search">
+									{{filter.name}}
+								</ui-select-choices>
+							</ui-select>
 						</div>
 
-						<div class="content">
-							<h2>US shale industry braced for bankruptcies</h2>
-							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
+						<div class="col-md-6">
+							<ui-select ng-model="microblogs.filterMarket" theme="bootstrap" ng-disabled="disabled">
+								<ui-select-match placeholder="Select a market"><img ng-src="assets/images/flags/{{$select.selected.flag}}" alt="">{{$select.selected.name}}</ui-select-match>
+								<ui-select-choices repeat="market in microblogs.new.markets | filter: $select.search">
+									<img ng-src="assets/images/flags/{{market.flag}}" alt="">{{market.name}}
+								</ui-select-choices>
+							</ui-select>
 						</div>
 
-					</a>
-				</div>
+						<div class="clearfix"></div>
+					</div>
 
-				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
-					<a href="#">
-						<div class="img-container">
-							<img src="assets/images/article-img.jpg" alt=""/>
+					<div class="row-regular">
+						<div class="col-lg-8">
+							<div class="sectors" ng-show="microblogs.filter.symbol == 'sectors'">
+								<ui-select multiple ng-model="microblogs.filter.sector" theme="bootstrap">
+									<ui-select-match placeholder="Sectors...">{{$item}}</ui-select-match>
+									<ui-select-choices repeat="sector in microblogs.filter.sectors | filter:$select.search" position="down">
+										{{sector}}
+									</ui-select-choices>
+								</ui-select>
+							</div>
+
+							<div class="symbols">
+								<input type="text" placeholder="Enter new symbol..." ng-model="microblog.symbol" uib-typeahead="symbol.name for symbol in microblogs.symbols | filter:$viewValue | limitTo:8" class="form-control">
+							</div>
 						</div>
 
-						<div class="content">
-							<h2>U5 Top Biotech Stocks That Ran This Past Week</h2>
-							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
+						<div class="col-lg-4">
+							<button class="btn btn-success pull-right">Submit</button>
 						</div>
+						<div class="clearfix"></div>
+					</div>
 
-					</a>
-				</div>
-
-				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
-					<a href="#">
-						<div class="img-container">
-							<img src="assets/images/article-img-2.jpg" alt=""/>
-						</div>
-
-						<div class="content">
-							<h2>US shale industry braced for bankruptcies</h2>
-							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
-						</div>
-
-					</a>
-				</div>
-
-				<div class="site-feed-element col-lg-12 col-md-6 col-sm-6">
-					<a href="#">
-						<div class="img-container">
-							<img src="assets/images/article-img-3.jpg" alt=""/>
-						</div>
-
-						<div class="content">
-							<h2>U5 Top Biotech Stocks That Ran This Past Week</h2>
-							<p>Duis porta metus sit amet ultrices mollis. Integer volutpat velit risus, et suscipit metus pharetra in. In vel nisl id leo convallis </p>
-						</div>
-
-					</a>
 				</div>
 			</div>
+
+			<div class="microblogs-elements-feed" infinite-scroll="getDefaultMicroblogs('jeangrey', 'us', 'default')">
+				<div class="element" ng-repeat="item in microblogs.data | limitTo:9">
+					<div class="row">
+						<div class="col-lg-2">
+							<div class="img-container" popover-placement="bottom" uib-popover="{{item.user}}" popover-trigger="mouseenter" >
+								<img src="assets/images/avatar-small-2.png" alt="">
+							</div>
+						</div>
+
+						<div class="col-lg-10">
+							<p class="theme">
+								{{item.theme_name}}
+							</p>
+
+							<p class="message">
+								{{item.message}}
+ 							</p>
+							<div class="row-regular">
+								<div class="col-sm-6">
+									<p class="text-left author"><img src="assets/images/calendar-small.png" alt=""> {{item.activity_time}}</p>
+								</div>
+								<div class="col-sm-6">
+									<button ng-click="getClickedMicroblogElement(item)"  class="btn pull-right"><img src="assets/images/reply.png" alt=""> Reply <span class="number">{{item.replies}}</span></button>
+								</div>
+							</div>
+
+							<div class="clearfix"></div>
+
+							<div class="reply-form" id="{{item.theme_id}}" ng-show="item.theme_id == microblogs.clickedMicroblogElement.theme_id">
+								<div class="replies">
+									<div class="reply-element" ng-repeat="reply in microblogs.replies">
+										<div class="row-regular">
+											<div class="col-sm-3">
+												<p class="author">
+													<a href="#/user/{{reply.user}}">
+														{{reply.user}}
+													</a>
+												</p>
+											</div>
+
+											<div class="col-sm-9">
+												<p class="message">{{reply.reply}}</p>
+											</div>
+											<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+
+								<form class="form-horizontal" ng-submit="sendReply(item.theme_id)">
+									<div class="form-group" ng-class="">
+										<div class="col-lg-12">
+											<textarea ng-model="microblogs.replyData" required class="form-control" rows="2" id="reply" placeholder="Reply"></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-lg-12">
+											<button type="submit" class="btn btn-primary">Submit</button>
+											<p class="btn btn-cancel" ng-click="dismissReplyForm()" class="cancel">Cancel</p>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 
 		</div><!--dashboard--element-->
 	</div>
 
+
+                                                                                           
