@@ -15,13 +15,11 @@ App.controller ('StockInfoCtrl',['$scope', 'FeedService', 'APIService', function
 		$scope.$emit('loadStockInfo');
 
 		API.getHttp(stock_info_full_link)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.stock = data;
 				console.log("Successfull GET call " + stock_info_full_link);
 				$scope.$emit('unloadStockInfo');
-			})
-
-			.catch(function(response) {
+			},function(response) {
 				console.error('Gists error', response.status, response.data);
 				$scope.$emit('unloadStockInfo');
 			});
@@ -219,12 +217,10 @@ App.controller ('StockInfoCtrl',['$scope', 'FeedService', 'APIService', function
 	//live search
 	$scope.liveSearchSymbol = function(apiUrl) {
 		API.getHttp(apiUrl)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
-			})
-
-			.catch(function(response) {
+			},function(response) {
 				console.error('Gists error', response.status, response.data);
 			});
 	};

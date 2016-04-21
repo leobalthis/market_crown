@@ -13,7 +13,7 @@ App.controller ('UserInfoCtrl', ['$scope','APIService',function StockInfoCtrl ($
 	$scope.getData = function(request_link, type) {
 		$scope.$emit('loadProfileInfo');
 		API.getHttp(request_link)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.chartData = data;
 				console.log("Successful GET call " + stock_info_full_link);
 
@@ -73,11 +73,8 @@ App.controller ('UserInfoCtrl', ['$scope','APIService',function StockInfoCtrl ($
 				}
 
 				$scope.$emit('unloadProfileInfo')
-			})
-
-
-			.error (function(){
-			console.log("Get Call Error");
+			},function(err){
+			console.log("Get Call Error",err);
 			$scope.$emit('UNLOAD');
 		});
 	};
@@ -117,16 +114,24 @@ App.controller ('UserInfoCtrl', ['$scope','APIService',function StockInfoCtrl ($
 
 	//returning at a glance section data
 	$scope.getAtGlance = function () {
-		$http.get("/personal/profile/" + stock_info_market + "/jeangrey")
-			.success(function (data) {
+		API.getHttp("/personal/profile/" + stock_info_market + "/jeangrey")
+			.then(function (data) {
+				console.log(' > *** ',data);
 				$scope.atGlanceData = data;
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Live search API error");
 		});
 	};
 
+	$scope.getABasicUserInfo = function () {
+		API.getHttp("/personal/me/")
+			.then(function (data) {
+				console.log(' > *** ',data);
+				$scope.basicUserInfo = data;
+			},function(){
+				console.log("Live search API error");
+			});
+	};
 
 	$scope.$watch('userInfoMarketSelected', function(newValue, oldValue) {
 		if (newValue !== oldValue) {
@@ -152,6 +157,7 @@ App.controller ('UserInfoCtrl', ['$scope','APIService',function StockInfoCtrl ($
 		}
 
 		$scope.getAtGlance();
+		$scope.getABasicUserInfo();
 		$scope.getSectorPreference();
 		$scope.getCorrect();
 		$scope.getForecastSentiment();
@@ -178,6 +184,7 @@ App.controller ('UserInfoCtrl', ['$scope','APIService',function StockInfoCtrl ($
 	$scope.getAllData = function() {
 		//calling profile info functions
 		$scope.getAtGlance();
+		$scope.getABasicUserInfo()
 		$scope.getSectorPreference();
 		$scope.getCorrect();
 		$scope.getForecastSentiment();

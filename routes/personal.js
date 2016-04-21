@@ -33,17 +33,29 @@ function usernameReplacement(req,res, next){
 
 
 router.get('/me',function(req, res){
-	log.info('user',req.user);
-	res.json(req.user);
+	if(process.env.NODE_ENV=='development'){
+		res.json({
+			displayName:'Vasily Petrov',
+			photos:[{value:'assets/images/thumb.jpg'}]
+		});
+	}else{
+		res.json(req.user);
+	}
+
 });
 
 router.all('*', function(req, res) {
-	if(!req.user){
-		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
-	}else if(!req.user.mc_username){
-		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
+	if(process.env.NODE_ENV=='development'){
+		req.user = {mc_username:'rooborn'};
+	}else{
+		if(!req.user){
+			return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
+		}else if(!req.user.mc_username){
+			return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
+		}
 	}
-	//req.user = {mc_username:'rooborn'};
+
+
 	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 

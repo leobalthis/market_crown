@@ -33,10 +33,11 @@ var config_dev = {
 	USER_MONGO:{
 		URL:'mongodb://mongo/mcm-users'
 	},
-	PYTHON_API:{
-		HOST:'tracer',
-		PORT:'5000'
-	},
+	//PYTHON_API:{
+	//	HOST:'tracer',
+	//	PORT:'5000'
+	//},
+	PUBLIC_ADDRESS:'http://192.168.99.100:3000',
 };
 
 if(process.env.NODE_ENV=='development'){

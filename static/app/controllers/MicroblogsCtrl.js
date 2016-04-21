@@ -28,9 +28,9 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	$scope.getDefaultMicroblogs = function(user, market, query_type) {
 		MicroblogsService.getDefaultMicroblogsService(user, market, query_type)
 			.then(function(data) {
-				// promise fulfilled
+				console.log("Service Microblogs", data);
 				$scope.microblogs.data = data.results;
-				console.log("Service Microblogs",  $scope.microblogs.data);
+
 
 
 			}, function(error) {

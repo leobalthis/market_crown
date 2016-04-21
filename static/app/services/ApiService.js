@@ -1,8 +1,9 @@
 App.factory('APIService', ['$http','$q',function ($http,$q) {
 
 	var headers = {'Content-Type': 'application/json'};
-	var urlBase = 'https://marketcrown.com/api/v1'
+	var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
 
+console.log(window.location.host)
 	function getHttp(url,data){
 		var data = data?data:{};
 		return request({
@@ -26,7 +27,7 @@ App.factory('APIService', ['$http','$q',function ($http,$q) {
 
 	function request(req){
 		return $q(function(resolve, reject) {
-			$http(req).then(function (resp) {
+			$http(req).then(function (res) {
 				if (!res || !res.data) {
 					console.error('Responce error');
 					reject('Responce error');
@@ -34,8 +35,8 @@ App.factory('APIService', ['$http','$q',function ($http,$q) {
 					console.error('Responce error',res.data.error);
 					reject(res.data.error)
 				} else {
-					console.log('<<',res.data);
-					resolve(null, res.data)
+					console.log('>>[',req.method,'] ' ,req.url ,'\n <<',res.data);
+					resolve(res.data)
 				}
 			}, function (err) {
 				reject(err)
