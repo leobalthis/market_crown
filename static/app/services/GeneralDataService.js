@@ -1,44 +1,16 @@
-App.factory('GeneralDataService', function ($http, $q) {
+App.factory('GeneralDataService', ['APIService',function (API) {
 	return {
 		getAllUsersService: function(url) {
-			// the $http API is based on the deferred/promise APIs exposed by the $q service
-			// so it returns a promise for us by default
-			return $http.get(url, {
+			return API.getHttp(url, {
 					ignoreLoadingBar: true,
 					cache: true
-				})
-				.then(function(response) {
-					if (typeof response.data === 'object') {
-						return response.data;
-
-
-					} else {
-						// invalid response
-						return $q.reject(response.data);
-					}
-
-				}, function(response) {
-					// something went wrong
-					return $q.reject(response.data);
 				});
 		},
 
 		getSymbols: function(market) {
-			return $http.get("https://marketcrown.com/api/v1/personal/getsymbols/" + market, {
+			return API.getHttp("/personal/getsymbols/" + market, {
 					ignoreLoadingBar: true
 				})
-				.then(function(response) {
-					if (typeof response.data === 'object') {
-						return response.data;
-					} else {
-						// invalid response
-						return $q.reject(response.data);
-					}
-
-				}, function(response) {
-					// something went wrong
-					return $q.reject(response.data);
-				});
 		},
 
 		createForecastService: function(user, symbol, movement, date, timeOfDay, percent, market, analysis) {
@@ -77,13 +49,7 @@ App.factory('GeneralDataService', function ($http, $q) {
 				stockSymbolFormatted = symbol;
 			}
 
-			var request = {
-				method: 'POST',
-				url: 'https://marketcrown.com/api/v1/personal/createforecast',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				data: {
+			return API.postHttp('/personal/createforecast', {
 					"user": user,
 					"symbol": stockSymbolFormatted,
 					"movement": movement,
@@ -92,22 +58,7 @@ App.factory('GeneralDataService', function ($http, $q) {
 					"percent": percent,
 					"market": market,
 					"analysis": analysis
-				}
-			};
-			return $http(request)
-				.then(function(response) {
-					if (typeof response.data === 'object') {
-						return response.data;
-
-					} else {
-						// invalid response
-						return $q.reject(response.data);
-					}
-
-				}, function(response) {
-					// something went wrong
-					return $q.reject(response.data);
 				});
 		}
 	};
-});
+}]);

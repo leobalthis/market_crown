@@ -1,39 +1,46 @@
-App.factory('APIService', ['$http',function ($http) {
+App.factory('APIService', ['$http','$q',function ($http,$q) {
 
 	var headers = {'Content-Type': 'application/json'};
+	var urlBase = 'https://marketcrown.com/api/v1'
 
-	function getHttp(url,data,done){
-		request({
+	function getHttp(url,data){
+		var data = data?data:{};
+		return request({
 			method: 'GET',
-			url:url,
+			url:urlBase+url,
 			headers:headers,
 			data:data
-		},done)
-	}
-
-	function postHttp(url,data,done){
-		request({
-			method: 'POST',
-			url:url,
-			headers:headers,
-			data:data
-		},done)
-	}
-
-
-	function request(req,done){
-		$http(req).then(function(resp){
-			if(!res || !res.data){
-				console.error('Responce error');
-				done('Responce error');
-			}else if(res.data.error){
-				done(res.data.error)
-			}else{
-				done(null,res.data)
-			}
-		},function(err){
-			done(err)
 		})
+	}
+
+	function postHttp(url,data){
+		var data = data?data:{};
+		return request({
+			method: 'POST',
+			url:urlBase+url,
+			headers:headers,
+			data:data
+		})
+	}
+
+
+	function request(req){
+		return $q(function(resolve, reject) {
+			$http(req).then(function (resp) {
+				if (!res || !res.data) {
+					console.error('Responce error');
+					reject('Responce error');
+				} else if (res.data.error) {
+					console.error('Responce error',res.data.error);
+					reject(res.data.error)
+				} else {
+					console.log('<<',res.data);
+					resolve(null, res.data)
+				}
+			}, function (err) {
+				reject(err)
+			})
+		});
 	}
 
 	return {

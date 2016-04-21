@@ -18,7 +18,7 @@ var lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString
 
 
 
-App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
+App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, API){
 	/*
 	 Custom Queries Start
 	 ---------------------------------------
@@ -298,7 +298,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	};
 
 	$scope.getUserFollowingInfo = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/ifollow/" + currentUser + "/" + selectedToFollow, {
+		API.getHttp("/personal/ifollow/" + currentUser + "/" + selectedToFollow, {
 					ignoreLoadingBar: true
 				})
 
@@ -319,7 +319,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	};
 
 	$scope.getAtGlance = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/profile/" + "us" + "/" + selectedToFollow, {
+		API.getHttp("/personal/profile/" + "us" + "/" + selectedToFollow, {
 					ignoreLoadingBar: true
 				})
 
@@ -337,37 +337,25 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 		var followUnfollowLink;
 
 		if ($scope.followingData == "no") {
-			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/add";
+			followUnfollowLink = "/personal/follow/add";
 			$scope.followButton = "Unfollow";
 		}
 
 		else {
-			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/remove";
+			followUnfollowLink = "/personal/follow/remove";
 			$scope.followButton = "Follow";
 		}
-
-		var request = {
-			method: 'POST',
-			url: followUnfollowLink,
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-
-			data: {
+		APIService.postHttp(followUnfollowLink,{
 				"user": currentUser,
 				"member": selectedToFollow
 			}
-		};
+		).success(function(data){
+			console.log(data);
+		})
 
-		$http(request)
-				.success(function(data){
-					console.log(data);
-				})
-
-				.error(function(){
-					alert("Follow error");
-				});
+		.error(function(){
+			alert("Follow error");
+		});
 
 	};
 
@@ -391,25 +379,12 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 
 
 	$scope.getQueries = function () {
-
-		var request = {
-			method: 'POST',
-			url: 'https://marketcrown.com/api/v1/personal/query/tla',
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp('/personal/query/tla',{
 				"StartDate" : last7Days,
 				"EndDate": today,
 				"TLA" : "Community Rank",
 				"Market" : "US"
-			}
-		};
-
-
-		$http(request)
-				.success(function(data){
+			}).success(function(data){
 					$scope.isBasicQuery = true;
 					console.log(data);
 					$scope.queryData = data.Results;
@@ -430,37 +405,26 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 			startDate = $scope.customStartDate;
 			endDate = $scope.customEndDate;
 		}
-
-		var request = {
-			method: 'POST',
-			url: 'https://marketcrown.com/api/v1/personal/query/tla',
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp('/personal/query/tla',
+			{
 				"StartDate" : startDate,
 				"EndDate": endDate,
 				"TLA" : $scope.basicQuery.selected.call,
 				"Market" : $scope.queryMarket.selected.symbol
 			}
-		};
+		).success(function(data){
+			$scope.isBasicQuery = true;
+			console.log(data);
+			$scope.queryData = data.Results;
+			$scope.nameKeys();
 
 
-		$http(request)
-				.success(function(data){
-					$scope.isBasicQuery = true;
-					console.log(data);
-					$scope.queryData = data.Results;
-					$scope.nameKeys();
+			console.log($scope.queryMarket.selected.symbol);
+		})
 
-
-					console.log($scope.queryMarket.selected.symbol);
-				})
-
-				.error(function(){
-					console.log("Updated Query Unsuccessfull " + startDate + " " + endDate + " " +  $scope.basicQuery.selected.call + " " +  $scope.queryMarket.selected.symbol);
-				});
+		.error(function(){
+			console.log("Updated Query Unsuccessfull " + startDate + " " + endDate + " " +  $scope.basicQuery.selected.call + " " +  $scope.queryMarket.selected.symbol);
+		});
 	};
 
 	$scope.formatNumber = function(i) {
@@ -646,14 +610,8 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	$scope.getCustomQueries = function () {
 		$scope.getDefaultSymbolList();
 
-		var request = {
-			method: 'POST',
-			url: 'https://marketcrown.com/api/v1/personal/query/bla',
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: [{
+		API.postHttp('/personal/query/bla',
+				 [{
 						"PerformanceVariable": "Community Rank",
 						"StartDate": last7Days,
 						"EndDate": today,
@@ -667,11 +625,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 						"Market":"US"
 
 					}]
-		};
-
-
-		$http(request)
-				.success(function(data){
+		).success(function(data){
 					$scope.isBasicQuery = false;
 					$scope.nameCustomQueryKeys();
 					console.log(data);
@@ -695,15 +649,8 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 			startDate = $scope.customStartDate;
 			endDate = $scope.customEndDate;
 		}
-
-		var request = {
-			method: 'POST',
-			url: 'https://marketcrown.com/api/v1/personal/query/bla',
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: [{
+		API.postHttp('/personal/query/bla',
+			[{
 				"PerformanceVariable": $scope.customQuery.type.selected.call,
 				"StartDate" : startDate,
 				"EndDate": endDate,
@@ -716,11 +663,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 				"TimeOfDay": customQueryTime,
 				"Market": $scope.queryMarket.selected.symbol
 			}]
-		};
-
-
-		$http(request)
-			.success(function(data){
+		).success(function(data){
 				$scope.nameCustomQueryKeys();
 				$scope.isBasicQuery = false;
 				console.log(data);
@@ -735,8 +678,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 
 	$scope.liveSearchSymbol = function() {
 		market = $scope.queryMarket.selected.symbol;
-
-		$http.get("https://marketcrown.com/api/v1/personal/getsymbols/" + market)
+		API.getHttp("/personal/getsymbols/" + market)
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
@@ -749,7 +691,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	};
 
 	$scope.getDefaultSymbolList = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/getsymbols/us")
+		API.getHttp("/personal/getsymbols/us")
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
@@ -764,20 +706,9 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 	//initialized user group
 	$scope.forecastUserGroupResult = {};
 	$scope.getCustomQueryUserGroups = function(apiCallLink) {
-		var request = {
-			method: 'POST',
-			url: apiCallLink,
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp(apiCallLink,{
 				"owner": currentUser
-			}
-		};
-
-		$http(request)
-				.success(function(data){
+			}).success(function(data){
 					console.log(data);
 					$scope.customQueryGroups = data;
 				})
@@ -831,7 +762,7 @@ App.controller ('BasicQueriesCtrl',['$scope', '$http', function ($scope, $http){
 			$scope.showUsers = false;
 			$scope.showGroups = true;
 			isGroup = "true";
-			$scope.getCustomQueryUserGroups("https://marketcrown.com/api/v1/personal/group/find");
+			$scope.getCustomQueryUserGroups("/personal/group/find");
 			//doesn't work as a default, neds fix
 			customQueryCommunity = $scope.customQuery.group.name;
 		}

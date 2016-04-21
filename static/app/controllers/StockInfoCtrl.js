@@ -1,11 +1,11 @@
-App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($scope, $http, Feed){
+App.controller ('StockInfoCtrl',['$scope', 'FeedService', 'APIService', function ($scope, Feed, API){
 
 	var stock_info_market = "us";   	//default market value
 	var stock_info_symbol = "googl";	//default symbol values
 	var stock_info_symbol_rss = "googl";	//default rss stock symbol values
 
 	//default get call
-	var stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol;
+	var stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol;
 	console.log("Default get call " + stock_info_full_link);
 
 
@@ -13,7 +13,8 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 	//getData function. Calling default data
 	$scope.getData = function() {
 		$scope.$emit('loadStockInfo');
-		$http.get(stock_info_full_link)
+
+		API.getHttp(stock_info_full_link)
 			.success(function (data) {
 				$scope.stock = data;
 				console.log("Successfull GET call " + stock_info_full_link);
@@ -52,7 +53,7 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 
 		if ($scope.marketSelectionSwitcher == 'us') {
 			stock_info_market = "us";
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbol;
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbol;
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'to') {
@@ -69,7 +70,7 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 				stockInfoSymbolFormatted = stockInfoSymbol;
 			}
 
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".to";
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".to";
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'l') {
@@ -85,7 +86,7 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 				stockInfoSymbolFormatted = stockInfoSymbol;
 			}
 
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".l";
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".l";
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'hk') {
@@ -102,7 +103,7 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 			}
 
 
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".hk";
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".hk";
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'de') {
@@ -119,7 +120,7 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 			}
 
 
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".de";
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stockInfoSymbolFormatted + ".de";
 		}
 
 		$scope.getData();
@@ -167,8 +168,8 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 			stock_info_market = "us";
 			stock_info_symbol = "googl";
 			stock_info_symbol_rss = "googl";
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol;
-			$scope.liveSearchSymbol("https://marketcrown.com/api/v1/personal/getsymbols/us");
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol;
+			$scope.liveSearchSymbol("/personal/getsymbols/us");
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'to') {
@@ -176,16 +177,16 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 			stock_info_market = "to";
 			stock_info_symbol = "pow";
 			stock_info_symbol_rss = "pow.to";
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".to";
-			$scope.liveSearchSymbol("https://marketcrown.com/api/v1/personal/getsymbols/to");
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".to";
+			$scope.liveSearchSymbol("/personal/getsymbols/to");
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'l') {
 			stock_info_market = "l";
 			stock_info_symbol = "rr";
 			stock_info_symbol_rss = "rr.l";
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".l";
-			$scope.liveSearchSymbol("https://marketcrown.com/api/v1/personal/getsymbols/uk");
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".l";
+			$scope.liveSearchSymbol("/personal/getsymbols/uk");
 
 		}
 
@@ -193,16 +194,16 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 			stock_info_market = "hk";
 			stock_info_symbol = "0168";
 			stock_info_symbol_rss = "0168.kh";
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".hk";
-			$scope.liveSearchSymbol("https://marketcrown.com/api/v1/personal/getsymbols/hk");
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".hk";
+			$scope.liveSearchSymbol("/personal/getsymbols/hk");
 		}
 
 		else if ($scope.marketSelectionSwitcher == 'de') {
 			stock_info_market = "de";
 			stock_info_symbol = "cbk";
 			stock_info_symbol_rss = "cbk.de";
-			stock_info_full_link = "https://marketcrown.com/api/v1/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".de";
-			$scope.liveSearchSymbol("https://marketcrown.com/api/v1/personal/getsymbols/de");
+			stock_info_full_link = "/personal/fullinfo/" + stock_info_market + "/" + stock_info_symbol + ".de";
+			$scope.liveSearchSymbol("/personal/getsymbols/de");
 		}
 
 		else {
@@ -217,7 +218,7 @@ App.controller ('StockInfoCtrl',['$scope', '$http', 'FeedService', function ($sc
 
 	//live search
 	$scope.liveSearchSymbol = function(apiUrl) {
-		$http.get(apiUrl)
+		API.getHttp(apiUrl)
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;

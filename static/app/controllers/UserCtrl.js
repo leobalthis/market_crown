@@ -14,7 +14,7 @@ dashDate.firstDayOfCurrentMonth = Date.today().moveToFirstDayOfMonth().toString(
 dashDate.firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().toString('MM-dd-yy');
 dashDate.lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM-dd-yy');
 
-App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsService, UserDetailsService, ForecastService, GeneralDataService){
+App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsService, UserDetailsService, ForecastService, GeneralDataService, APIService){
 
 	//pie chart options
 	$scope.options = {
@@ -323,7 +323,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	};
 
 	$scope.getAnalysis = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/find/analysis/" + $scope.selectedItem.guid, {
+		APIService.getHttp("/personal/find/analysis/" + $scope.selectedItem.guid, {
 					ignoreLoadingBar: true
 				})
 				.success(function (data) {
@@ -363,20 +363,10 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 	//get users group
 	$scope.profileStats.getUsersGroups = function () {
-		var request = {
-			method: 'POST',
-			url: "https://marketcrown.com/api/v1/personal/group/find",
 
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
-				"owner": currentUser
-			}
-		};
-
-
-		$http(request)
+		APIService.postHttp("/personal/group/find",{
+			"owner": currentUser
+		})
 			.success(function(data){
 				console.log(data);
 				$scope.profileStats.usersGroups = data;
@@ -395,7 +385,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 	//get hovered user
 	$scope.profileStats.hoveredUser = function (user) {
-		$http.get("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + user)
+		APIService.getHttp("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + user)
 				.success(function (data) {
 					$scope.profileStats.hoveredUser.data = data;
 					console.log("User info got for " + user);
@@ -434,7 +424,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				console.log('Service Get All Users Error', error);
 			});
 	};
-	service.getAllUsers("https://marketcrown.com/api/v1/personal/return/users");
+	service.getAllUsers("/personal/return/users");
 
 	//charts
 	service.getUserSectorPreference = function (url) {
@@ -737,7 +727,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				$scope.username.display = data.user;
 				console.log("Service Get At Glance",  data);
 
-				service.getFollowers("https://marketcrown.com/api/v1/personal/follow/list/" + currentUser);
+				service.getFollowers("/personal/follow/list/" + currentUser);
 
 
 			}, function(error) {
@@ -754,7 +744,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 					console.log("Service Get Follower",  data);
 					$scope.profileStats.followers = data;
 					$scope.profileStats.followersCount = data.length;
-					service.getFollowing("https://marketcrown.com/api/v1/personal/imfollowing/list/" + currentUser);
+					service.getFollowing("/personal/imfollowing/list/" + currentUser);
 
 
 				}, function(error) {
@@ -821,7 +811,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			});
 	};
 	$scope.getAtGlanceCurrentUser = function(user) {
-		service.getAtGlanceCurrentUser("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol +"/" + user)
+		service.getAtGlanceCurrentUser("/personal/profile/" + $scope.profileStats.market.selected.symbol +"/" + user)
 	};
 
 	//groups related
@@ -934,17 +924,17 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 
 	//calling charts
-	service.getAtGlance("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
-	service.getUserSectorPreference("https://marketcrown.com/api/v1/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getMarketCapPreference("https://marketcrown.com/api/v1/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getTotalCorrect("https://marketcrown.com/api/v1/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getForecastSentiment("https://marketcrown.com/api/v1/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getForecastPendingSentiment("https://marketcrown.com/api/v1/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getTimeOfDayPreference("https://marketcrown.com/api/v1/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+	service.getUserSectorPreference("/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getMarketCapPreference("/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTotalCorrect("/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastSentiment("/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTimeOfDayPreference("/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 
 	//functions for refreshing data. Not called initially
 	$scope.refreshUserDetailsData = function() {
-		service.getAtGlance("https://marketcrown.com/api/v1/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+		service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
 	};
 	$scope.refreshChartData = function() {
 		console.log("chart data refresh called");
@@ -952,12 +942,12 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		//if custom date is selected
 		ifCustomDate();
 
-		service.getUserSectorPreference("https://marketcrown.com/api/v1/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getMarketCapPreference("https://marketcrown.com/api/v1/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getTotalCorrect("https://marketcrown.com/api/v1/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getForecastSentiment("https://marketcrown.com/api/v1/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getForecastPendingSentiment("https://marketcrown.com/api/v1/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getTimeOfDayPreference("https://marketcrown.com/api/v1/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getUserSectorPreference("/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getMarketCapPreference("/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTotalCorrect("/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastSentiment("/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTimeOfDayPreference("/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	};
 	$scope.redirectToUser = function () {
 		newUsername = $scope.username.search;

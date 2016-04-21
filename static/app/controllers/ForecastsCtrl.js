@@ -1,4 +1,4 @@
-App.controller ('ForecastsCtrl', function ($scope, $http){
+App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 
 	var today = Date.parse('today').toString('MM/dd/yy');
 	var yesterday = Date.parse('yesterday').toString('MM/dd/yy');
@@ -44,15 +44,8 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 	//initial forecasts default call function
 	$scope.getForecasts = function () {
-
-		var request = {
-			method: 'POST',
-			url: 'https://marketcrown.com/api/v1/personal/masterquery/us/jeangrey',
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp('/personal/masterquery/us/jeangrey',
+			{
 				"user": "all",
 				"symbol":"all",
 				"movement":"all",
@@ -63,12 +56,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 				"correct": "pending",
 				"startdate" :"09/15/15",
 				"enddate": "01/17/25"
-			}
-		};
-
-
-		$http(request)
-			.success(function(data){
+			}).success(function(data){
 				console.log(data);
 				$scope.forecastsData = data;
 				console.log(dateStart);
@@ -118,7 +106,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 	//if requires get that gets this
 	$scope.getUserResultsFollowing = function(apiCallLink) {
-		$http.get(apiCallLink)
+		API.getHttp(apiCallLink)
 			.success(function (data) {
 				$scope.resultsFollowing = data;
 				finalUserResult = $scope.resultsFollowing;
@@ -130,26 +118,15 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		});
 	};
 
-	$scope.getUserResultsFollowing("https://marketcrown.com/api/v1/personal/imfollowing/list/jeangrey");
+	$scope.getUserResultsFollowing("/personal/imfollowing/list/jeangrey");
 
 	//initialized user group
 	$scope.forecastUserGroupResult = {};
 
 	$scope.getUserResultsGroups = function(apiCallLink) {
-		var request = {
-			method: 'POST',
-			url: apiCallLink,
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp( apiCallLink,{
 				"owner": "jeangrey"
-			}
-		};
-
-		$http(request)
-			.success(function(data){
+			}).success(function(data){
 				console.log(data);
 				$scope.forecastUserGroupsResults = data;
 				$scope.forecastUserGroupResult.selected = $scope.forecastUserGroupsResults[0];
@@ -168,14 +145,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 	};
 
 	$scope.getUserResultsPods = function(apiCallLink) {
-		var request = {
-			method: 'POST',
-			url: apiCallLink,
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp(apiCallLink, {
 				"user": "jeangrey",
 				"symbol":"all",
 				"movement":"all",
@@ -186,12 +156,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 				"correct":"pending",
 				"startdate" :"10/13/14",
 				"enddate": "12/30/37"
-			}
-		};
-
-
-		$http(request)
-			.success(function(data){
+			}).success(function(data){
 				console.log(data);
 				$scope.userResultsPods = data;
 				finalUserResult = $scope.userResultsPods;
@@ -205,7 +170,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 	//returning at a glance section data. Called on initial load
 	$scope.getAtGlance = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/profile/" + market + "/" + clickedUser, {
+		API.getHttp("/personal/profile/" + market + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
 			.success(function (data) {
@@ -219,7 +184,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 	};
 
 	$scope.getUsers = function() {
-		$http.get("https://marketcrown.com/api/v1/personal/profile/" + market + "/" + clickedUser)
+		API.getHttp("/personal/profile/" + market + "/" + clickedUser)
 			.success(function (data) {
 				$scope.atGlanceData = data;
 				console.log("user info got");
@@ -260,7 +225,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 		else if ($scope.forecastUserResult.selected.call == "usersGroup") {
 			$scope.resetInputs();
-			$scope.getUserResultsGroups("https://marketcrown.com/api/v1/personal/group/find");
+			$scope.getUserResultsGroups("/personal/group/find");
 			//once the groups are loaded
 			if (groupsLoaded) {
 				finalUserResult = $scope.forecastUserGroupResult.selected.members;
@@ -301,12 +266,12 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 		//checking the correct api link
 		if ($scope.forecastUserResult.selected.call == "podsSubscribedTo") {
-			postCallLink = "https://marketcrown.com/api/v1/personal/pod/subscriptions/" + market + "/sonic";//current user will be here
+			postCallLink = "/personal/pod/subscriptions/" + market + "/sonic";//current user will be here
 			finalUserResult = "all";
 		}
 
 		else {
-			postCallLink = 'https://marketcrown.com/api/v1/personal/masterquery/' + market + '/jeangrey'; //current user will be here
+			postCallLink = '/personal/masterquery/' + market + '/jeangrey'; //current user will be here
 		}
 
 		//assigning a default date range if not custom
@@ -323,15 +288,8 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		}
 
 
-
-		var request = {
-			method: 'POST',
-			url: postCallLink,
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			data: {
+		API.postHttp( postCallLink,
+			{
 				"user": finalUserResult,
 				"symbol": symbols,
 				"movement": movement,
@@ -342,12 +300,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 				"correct": correct,
 				"startdate" : dateStart,
 				"enddate": dateEnd
-			}
-		};
-
-
-		$http(request)
-			.success(function(data){
+			}).success(function(data){
 				console.log(data);
 				$scope.forecastsData = data;
 				//used for displaying different elements on different status
@@ -370,7 +323,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		$scope.getAnalysis();
 	};
 	$scope.getAnalysis = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/find/analysis/" + $scope.selectedItem.guid, {
+		API.getHttp("/personal/find/analysis/" + $scope.selectedItem.guid, {
 			ignoreLoadingBar: true
 		})
 				.success(function (data) {
@@ -399,7 +352,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 
 	$scope.getUserFollowingInfo = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/ifollow/" + currentUser + "/" + clickedUser, {
+		API.getHttp("/personal/ifollow/" + currentUser + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
 			.success(function (data) {
@@ -420,7 +373,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 	$scope.deleteClickedObject = function(clickedForecast) {
 		$scope.selectedItemForDelete = clickedForecast;
 		forecastId = $scope.selectedItemForDelete.guid;
-		$http.get("https://marketcrown.com/api/v1/personal/delete/" + currentUser + "/" + forecastId)
+		API.getHttp("/personal/delete/" + currentUser + "/" + forecastId)
 			.success(function () {
 				alert("Forecast for " + $scope.selectedItemForDelete.company + " Successfully deleted");
 				$scope.getUpdatedForecasts();
@@ -435,31 +388,20 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 		var followUnfollowLink;
 
 		if ($scope.followingData == "no") {
-			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/add";
+			followUnfollowLink = "/personal/follow/add";
 			$scope.followButton = "Unfollow";
 		}
 
 		else {
-			followUnfollowLink = "https://marketcrown.com/api/v1/personal/follow/remove";
+			followUnfollowLink = "/personal/follow/remove";
 			$scope.followButton = "Follow";
 		}
 
-		var request = {
-			method: 'POST',
-			url: followUnfollowLink,
-
-			headers: {
-				'Content-Type': 'application/json'
-			},
-
-			data: {
+		API.postHttp(followUnfollowLink,
+			{
 				"user": currentUser,
 				"member": clickedUser
-			}
-		};
-
-		$http(request)
-			.success(function(data){
+			}).success(function(data){
 				console.log(data);
 			})
 
@@ -471,7 +413,7 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 
 	//custom query
 	$scope.liveSearchSymbol = function() {
-		$http.get("https://marketcrown.com/api/v1/personal/getsymbols/" + market)
+		API.getHttp("/personal/getsymbols/" + market)
 			.success(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
@@ -662,4 +604,4 @@ App.controller ('ForecastsCtrl', function ($scope, $http){
 	};
 
 
-});
+}]);

@@ -1,4 +1,4 @@
-App.controller ('UserInfoCtrl', function StockInfoCtrl ($scope, $http){
+App.controller ('UserInfoCtrl', ['$scope','APIService',function StockInfoCtrl ($scope, API){
 
 	var stock_info_market = "us";   	//default market value
 	var stock_info_symbol = "googl";	//default symbol values
@@ -12,7 +12,7 @@ App.controller ('UserInfoCtrl', function StockInfoCtrl ($scope, $http){
 	//getData function. Calling default data
 	$scope.getData = function(request_link, type) {
 		$scope.$emit('loadProfileInfo');
-		$http.get(request_link)
+		API.getHttp(request_link)
 			.success(function (data) {
 				$scope.chartData = data;
 				console.log("Successful GET call " + stock_info_full_link);
@@ -86,38 +86,38 @@ App.controller ('UserInfoCtrl', function StockInfoCtrl ($scope, $http){
 	$scope.getSectorPreference = function() {
 		$scope.sectorPreferenceLabel = ["Healthcare", "Financial", "Industrial Goods", "Services", "Consumer Goods", "Conglomerates", "Basic Materials", "Technology", "Utilities"];
 		console.log("Called First");
-		$scope.getData("https://marketcrown.com/api/v1/personal/sector/jeangrey/" + stock_info_market, "sector_preference");
+		$scope.getData("/personal/sector/jeangrey/" + stock_info_market, "sector_preference");
 	};
 
 
 	$scope.getCorrect = function() {
 		$scope.correctLabel = ["Correct", "Incorrect"];
 		console.log("Called Second");
-		$scope.getData("https://marketcrown.com/api/v1/personal/correctperformance/jeangrey/" + stock_info_market + "/02-05-14until09-21-22", "correct_incorrect");
+		$scope.getData("/personal/correctperformance/jeangrey/" + stock_info_market + "/02-05-14until09-21-22", "correct_incorrect");
 	};
 
 	$scope.getForecastSentiment = function() {
 		$scope.forecastSentimentLabel = ["Bearish", "Bullish"];
 		console.log("Called Third");
-		$scope.getData("https://marketcrown.com/api/v1/personal/sentiment/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "forecast_sentiment");
+		$scope.getData("/personal/sentiment/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "forecast_sentiment");
 	};
 
 	$scope.getMarketCapPreference = function() {
 		$scope.marketCapPreferenceLabel = ["Mega", "Nano", "Mid", "Large", "Micro", "Small"];
 		console.log("Called Fourth");
-		$scope.getData("https://marketcrown.com/api/v1/personal/marketcap/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "market_cap_preference");
+		$scope.getData("/personal/marketcap/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "market_cap_preference");
 	};
 
 	$scope.getTimeOfTheDayPreference = function() {
 		$scope.timeOfTheDayPreferenceLabel = ["Close", "Midday", "Morning"];
 		console.log("Called Fifth");
-		$scope.getData("https://marketcrown.com/api/v1/personal/timeofday/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "time_of_the_day_preference");
+		$scope.getData("/personal/timeofday/jeangrey/" + stock_info_market + "/01-02-14until01-02-22", "time_of_the_day_preference");
 	};
 
 
 	//returning at a glance section data
 	$scope.getAtGlance = function () {
-		$http.get("https://marketcrown.com/api/v1/personal/profile/" + stock_info_market + "/jeangrey")
+		$http.get("/personal/profile/" + stock_info_market + "/jeangrey")
 			.success(function (data) {
 				$scope.atGlanceData = data;
 			})
@@ -188,4 +188,4 @@ App.controller ('UserInfoCtrl', function StockInfoCtrl ($scope, $http){
 	$scope.updateUserInfoMarket();
 	$scope.getAllData();
 
-});
+}]);
