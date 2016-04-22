@@ -1,4 +1,8 @@
-App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
+App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',function ($scope, API,UserDetailsService){
+
+	var currentUsername = UserDetailsService.getUser().mc_username;
+	$scope.currentUsername=currentUsername;
+
 
 	var today = Date.parse('today').toString('MM/dd/yy');
 	var yesterday = Date.parse('yesterday').toString('MM/dd/yy');
@@ -16,8 +20,8 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 	var yearFromNow = Date.today().addYears(1).toString('MM/dd/yy');
 	console.log("Years from now " + yearFromNow);
 
-	var currentUser = "jeangrey";
-	$scope.currentUser = currentUser;
+
+
 	$scope.forecastDateStart = last7Days;
 	$scope.forecastDateEnd = today;
 	var forecastId;
@@ -44,7 +48,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 
 	//initial forecasts default call function
 	$scope.getForecasts = function () {
-		API.postHttp('/personal/masterquery/us/jeangrey',
+		API.postHttp('/personal/masterquery/us/'+currentUsername,
 			{
 				"user": "all",
 				"symbol":"all",
@@ -114,14 +118,14 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 		});
 	};
 
-	$scope.getUserResultsFollowing("/personal/imfollowing/list/jeangrey");
+	$scope.getUserResultsFollowing("/personal/imfollowing/list/"+currentUsername);
 
 	//initialized user group
 	$scope.forecastUserGroupResult = {};
 
 	$scope.getUserResultsGroups = function(apiCallLink) {
 		API.postHttp( apiCallLink,{
-				"owner": "jeangrey"
+				"owner": currentUsername
 			}).then(function(data){
 				console.log(data);
 				$scope.forecastUserGroupsResults = data;
@@ -140,7 +144,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 
 	$scope.getUserResultsPods = function(apiCallLink) {
 		API.postHttp(apiCallLink, {
-				"user": "jeangrey",
+				"user": currentUsername,
 				"symbol":"all",
 				"movement":"all",
 				"timeofday":"all",
@@ -205,7 +209,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 
 		else if ($scope.forecastUserResult.selected.call == "me") {
 			$scope.resetInputs();
-			finalUserResult = "jeangrey";
+			finalUserResult = currentUsername;
 			$scope.showGroups = false;
 			$scope.showCustom = false;
 			console.log(finalUserResult);
@@ -259,7 +263,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 		}
 
 		else {
-			postCallLink = '/personal/masterquery/' + market + '/jeangrey'; //current user will be here
+			postCallLink = '/personal/masterquery/' + market + '/'+currentUsername; //current user will be here
 		}
 
 		//assigning a default date range if not custom
@@ -336,7 +340,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 
 
 	$scope.getUserFollowingInfo = function () {
-		API.getHttp("/personal/ifollow/" + currentUser + "/" + clickedUser, {
+		API.getHttp("/personal/ifollow/" + currentUsername + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
 			.then(function (data) {
@@ -355,7 +359,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 	$scope.deleteClickedObject = function(clickedForecast) {
 		$scope.selectedItemForDelete = clickedForecast;
 		forecastId = $scope.selectedItemForDelete.guid;
-		API.getHttp("/personal/delete/" + currentUser + "/" + forecastId)
+		API.getHttp("/personal/delete/" + currentUsername + "/" + forecastId)
 			.then(function () {
 				alert("Forecast for " + $scope.selectedItemForDelete.company + " Successfully deleted");
 				$scope.getUpdatedForecasts();
@@ -379,7 +383,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 
 		API.postHttp(followUnfollowLink,
 			{
-				"user": currentUser,
+				"user": currentUsername,
 				"member": clickedUser
 			}).then(function(data){
 				console.log(data);

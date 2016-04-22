@@ -1,4 +1,7 @@
-App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'GeneralDataService', function ($scope, $http, MicroblogsService, GeneralDataService){
+App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'GeneralDataService', 'UserDetailsService', function ($scope, $http, MicroblogsService, GeneralDataService,UserDetailsService){
+	var currentUsername = UserDetailsService.getUser().mc_username;
+	$scope.currentUsername=currentUsername;
+	console.log('currentUser',currentUsername);
 
 	$scope.microblogs = {};
 	$scope.microblogs.formFocused = false;
@@ -38,17 +41,17 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				console.log('Service Default Microblogs Error', error);
 			});
 	};
-	$scope.getDefaultMicroblogs("jeangrey", "us", "default");
+	$scope.getDefaultMicroblogs(currentUsername, "us", "default");
 
 	$scope.createTopic = function() {
-		MicroblogsService.createTopic(currentUser, $scope.microblogs.new.message, $scope.microblogs.new.market.symbol)
+		MicroblogsService.createTopic(currentUsername, $scope.microblogs.new.message, $scope.microblogs.new.market.symbol)
 			.then(function(data) {
 				// promise fulfilled
 				$scope.microblogs.new.response = data;
 				$scope.microblogs.new.message = "";
 				$scope.microblogs.formFocused = false;
 				console.log("Service New Topic Response",  $scope.microblogs.data);
-				$scope.getDefaultMicroblogs("jeangrey", "us", "default");
+				$scope.getDefaultMicroblogs(currentUsername, "us", "default");
 
 
 			}, function(error) {
@@ -58,7 +61,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	};
 
 	$scope.getReplies = function(theme_id) {
-		MicroblogsService.getRepliesService(currentUser, "us", theme_id)
+		MicroblogsService.getRepliesService(currentUsername, "us", theme_id)
 			.then(function(data) {
 				// promise fulfilled
 				$scope.microblogs.replies = data.results;
@@ -72,7 +75,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	};
 
 	$scope.sendReply = function(theme_id) {
-		MicroblogsService.sendReplyService(currentUser, theme_id, $scope.microblogs.replyData)
+		MicroblogsService.sendReplyService(currentUsername, theme_id, $scope.microblogs.replyData)
 			.then(function(data) {
 				// promise fulfilled
 				console.log("Service Microblogs Send Reply",  $scope.microblogs.data);

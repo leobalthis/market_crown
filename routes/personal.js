@@ -36,6 +36,7 @@ router.get('/me',function(req, res){
 	if(process.env.NODE_ENV=='development'){
 		res.json({
 			displayName:'Vasily Petrov',
+			mc_username:'jeangrey',
 			photos:[{value:'assets/images/thumb.jpg'}]
 		});
 	}else{

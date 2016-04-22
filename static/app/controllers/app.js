@@ -1,4 +1,4 @@
-var currentUser = "jeangrey";
+//var currentUser = "jeangrey";
 
 var App = angular.module('App', ['ngSanitize',
 	'ui.bootstrap',
@@ -33,10 +33,20 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 			views: {
 				'section': {
 					controller: 'StockInfoWrapperCtrl',
-					templateUrl: 'views/StockInfo.html'
+					templateUrl: 'views/StockInfo.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				},
 				'sidebar': {
-					templateUrl: 'views/Sidebar.html'
+					templateUrl: 'views/Sidebar.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				}
 			}
 		})
@@ -44,10 +54,20 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 			url: '/forecasts',
 			views: {
 				'section': {
-					templateUrl: 'views/Forecasts.html'
+					templateUrl: 'views/Forecasts.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				},
 				'sidebar': {
-					templateUrl: 'views/Sidebar.html'
+					templateUrl: 'views/Sidebar.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				}
 			}
 		})
@@ -55,10 +75,20 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 			url: '/queries',
 			views: {
 				'section': {
-					templateUrl: 'views/Queries.html'
+					templateUrl: 'views/Queries.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				},
 				'sidebar': {
-					templateUrl: 'views/Sidebar.html'
+					templateUrl: 'views/Sidebar.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				}
 			}
 		})
@@ -67,10 +97,20 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 			templateUrl: 'views/Pods.html',
 			views: {
 				'section': {
-					templateUrl: 'views/Pods.html'
+					templateUrl: 'views/Pods.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				},
 				'sidebar': {
-					templateUrl: 'views/Sidebar.html'
+					templateUrl: 'views/Sidebar.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				}
 			}
 
@@ -80,10 +120,20 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 			url: '/stats',
 			views: {
 				'section': {
-					templateUrl: 'views/Stats.html'
+					templateUrl: 'views/Stats.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				},
 				'sidebar': {
-					templateUrl: 'views/UserSidebar.html'
+					templateUrl: 'views/UserSidebar.html',
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
+						}
+					}
 				}
 			}
 		})

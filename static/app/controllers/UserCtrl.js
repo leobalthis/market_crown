@@ -15,8 +15,9 @@ dashDate.firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().t
 dashDate.lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM-dd-yy');
 
 App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsService, UserDetailsService, ForecastService, GeneralDataService, APIService){
-	//var currentUser = UserDetailsService.getUser().mc_username;
-	console.log('currentUser',currentUser);
+	var currentUsername = UserDetailsService.getUser().mc_username;
+	$scope.currentUsername=currentUsername;
+	console.log('currentUser',currentUsername);
 	//pie chart options
 	$scope.options = {
 		chart: {
@@ -364,7 +365,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	$scope.profileStats.getUsersGroups = function () {
 
 		APIService.postHttp("/personal/group/find",{
-			"owner": currentUser
+			"owner": currentUsername
 		})
 			.then(function(data){
 				console.log(data);
@@ -722,7 +723,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				$scope.username.display = data.user;
 				console.log("Service Get At Glance",  data);
 
-				service.getFollowers("/personal/follow/list/" + currentUser);
+				service.getFollowers("/personal/follow/list/" + currentUsername);
 
 
 			}, function(error) {
@@ -739,7 +740,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 					console.log("Service Get Follower",  data);
 					$scope.profileStats.followers = data;
 					$scope.profileStats.followersCount = data.length;
-					service.getFollowing("/personal/imfollowing/list/" + currentUser);
+					service.getFollowing("/personal/imfollowing/list/" + currentUsername);
 
 
 				}, function(error) {
@@ -786,7 +787,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	//calling service function
 	$scope.getSimpleForecasts = function(status) {
 		//calling service function directly
-		service.getSimpleForecasts($scope.profileStats.market.selected.symbol, currentUser, status);
+		service.getSimpleForecasts($scope.profileStats.market.selected.symbol, currentUsername, status);
 	};
 
 	//single user related
@@ -826,7 +827,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			});
 	};
 	$scope.getMyGroups = function() {
-		service.getMyGroups(currentUser);
+		service.getMyGroups(currentUsername);
 	};
 	$scope.addActive = function(group) {
 		$scope.profileStats.activeGroup = group;
@@ -840,7 +841,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				// promise fulfilled
 				console.log("Service Create New Group",  data);
 				$('#createGroup').modal('hide');
-				service.getMyGroups(currentUser);
+				service.getMyGroups(currentUsername);
 
 				$scope.group.name = "";
 				$scope.group.description = "";
@@ -856,8 +857,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			});
 	};
 	$scope.createGroup = function() {
-		console.log(currentUser, $scope.group);
-		service.createGroup(currentUser, $scope.group.name, $scope.group.description, $scope.group.members);
+		console.log(currentUsername, $scope.group);
+		service.createGroup(currentUsername, $scope.group.name, $scope.group.description, $scope.group.members);
 
 	};
 
@@ -884,7 +885,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			.then(function(data) {
 				// promise fulfilled
 				console.log("Service Remove member From Group",  data);
-				service.getMyGroups(currentUser);
+				service.getMyGroups(currentUsername);
 
 
 			}, function(error) {
@@ -904,7 +905,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			.then(function(data) {
 				// promise fulfilled
 				console.log("Service Delete Group",  data);
-				service.getMyGroups(currentUser);
+				service.getMyGroups(currentUsername);
 
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
@@ -919,17 +920,17 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 
 	//calling charts
-	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
-	service.getUserSectorPreference("/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getMarketCapPreference("/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getTotalCorrect("/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getForecastSentiment("/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-	service.getTimeOfDayPreference("/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
+	service.getUserSectorPreference("/personal/sector/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getMarketCapPreference("/personal/marketcap/" + currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTotalCorrect("/personal/correctperformance/" + currentUsername +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastSentiment("/personal/sentiment/"+ currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 
 	//functions for refreshing data. Not called initially
 	$scope.refreshUserDetailsData = function() {
-		service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUser);
+		service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
 	};
 	$scope.refreshChartData = function() {
 		console.log("chart data refresh called");
@@ -937,16 +938,16 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		//if custom date is selected
 		ifCustomDate();
 
-		service.getUserSectorPreference("/personal/sector/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getMarketCapPreference("/personal/marketcap/" + currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getTotalCorrect("/personal/correctperformance/" + currentUser +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getForecastSentiment("/personal/sentiment/"+ currentUser + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
-		service.getTimeOfDayPreference("/personal/timeofday/" + currentUser + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getUserSectorPreference("/personal/sector/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getMarketCapPreference("/personal/marketcap/" + currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTotalCorrect("/personal/correctperformance/" + currentUsername +"/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastSentiment("/personal/sentiment/"+ currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+		service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	};
 	$scope.redirectToUser = function () {
 		newUsername = $scope.username.search;
-		currentUser = newUsername;
+		currentUsername = newUsername;
 		//$scope.refreshChartData();
 		$location.path('/user/' + $scope.username.search);
 		console.log("redirected to user")

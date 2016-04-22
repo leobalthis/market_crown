@@ -245,7 +245,7 @@
 				</div>
 			</div>
 
-			<div class="microblogs-elements-feed" infinite-scroll="getDefaultMicroblogs('jeangrey', 'us', 'default')">
+			<div class="microblogs-elements-feed" infinite-scroll="getDefaultMicroblogs(currentUsername, 'us', 'default')">
 				<div class="element" ng-repeat="item in microblogs.data | limitTo:9">
 					<div class="row">
 						<div class="col-lg-2">

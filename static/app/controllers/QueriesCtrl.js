@@ -18,11 +18,14 @@ var lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString
 
 
 
-App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, API){
+App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService', function ($scope, API,UserDetailsService){
 	/*
 	 Custom Queries Start
 	 ---------------------------------------
 	 */
+
+	var currentUsername = UserDetailsService.getUser().mc_username;
+	$scope.currentUsername=currentUsername;
 
 	var startDate = last7Days;
 	var endDate = today;
@@ -298,11 +301,11 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 	};
 
 	$scope.getUserFollowingInfo = function () {
-		API.getHttp("/personal/ifollow/" + currentUser + "/" + selectedToFollow, {
+		API.getHttp("/personal/ifollow/" + currentUsername + "/" + selectedToFollow, {
 					ignoreLoadingBar: true
 				})
 
-				.success(function (data) {
+				.then(function (data) {
 					$scope.followingData = data;
 					if ($scope.followingData == "yes") {
 						$scope.followButton = "Unfollow";
@@ -311,9 +314,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 					else {
 						$scope.followButton = "Follow";
 					}
-				})
-
-				.error (function(){
+				},function(){
 					console.log("Not following");
 				});
 	};
@@ -344,7 +345,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 			$scope.followButton = "Follow";
 		}
 		APIService.postHttp(followUnfollowLink,{
-				"user": currentUser,
+				"user": currentUsername,
 				"member": selectedToFollow
 			}
 		).then(function(data){
@@ -691,7 +692,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 	$scope.forecastUserGroupResult = {};
 	$scope.getCustomQueryUserGroups = function(apiCallLink) {
 		API.postHttp(apiCallLink,{
-				"owner": currentUser
+				"owner": currentUsername
 			}).then(function(data){
 					console.log(data);
 					$scope.customQueryGroups = data;
