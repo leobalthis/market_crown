@@ -1,4 +1,4 @@
-App.factory('UserDetailsService', ['APIService', '$q', function (API, $q) {
+App.factory('UserDetailsService', ['APIService', '$q','$timeout', function (API, $q, $timeout) {
 	var user = null;
 	function getUser(){
 		if(!user){
@@ -6,8 +6,12 @@ App.factory('UserDetailsService', ['APIService', '$q', function (API, $q) {
 				console.log('user!',data);
 				user = data;
 				API.getHttp('/personal/tagline/'+data.mc_username).then(function(data){
-					angular.extend(user,data);
-					console.log('tagling',user);
+					//$timeout(function(){
+						user.tagline = data.tagline;
+						user.profession = data.profession;
+						console.log('tagling',user);
+					//},1)
+
 				});
 				return user;
 			});
