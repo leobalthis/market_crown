@@ -736,7 +736,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 	service.getAvatar = function(url){
 		APIService.getHttp(url).then(function(data){
-			$scope.profileStats.atGlance.avatar = data.avatar;
+			$scope.profileStats.atGlance.avatar = data.avatar ||  '/userpics/$default.png';
 		},function(error){
 			console.log('Service Get Avatar Error', error);
 		});
