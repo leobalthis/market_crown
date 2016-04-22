@@ -590,10 +590,10 @@
 			<div class="dashboard-element">
 
 				<div class="user-info-header">
-					<img src="assets/images/thumb.jpg" alt=""/>
+					<img ng-src="{{profileStats.atGlance.avatar}}" alt=""/>
 					<h2>{{profileStats.atGlance.user || upercase}}</h2>
-					<h2 class="subtitle">CNBC Analysis</h2>
-					<p>Former hedge fund manager and CNBC analysis</p>
+					<h2 class="subtitle">{{profileStats.atGlance.profession}}</h2>
+					<p>{{profileStats.atGlance.tagline}}</p>
 
 					<div class="btn-container">
 						<button class="btn btn-primary">

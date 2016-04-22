@@ -3,9 +3,15 @@ App.factory('UserDetailsService', ['APIService', '$q', function (API, $q) {
 	function getUser(){
 		if(!user){
 			API.getHttp('/personal/me').then(function(data){
+				console.log('user!',data);
 				user = data;
+				API.getHttp('/personal/tagline/'+data.mc_username).then(function(data){
+					angular.extend(user,data);
+					console.log('tagling',user);
+				});
 				return user;
 			});
+
 		}else{
 			return user;
 		}

@@ -153,11 +153,12 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					//		currentUser = $scope.username.id;
 					//	}
 					//},
-					resolve:{
-						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
-						}
-					}
+
+				}
+			},
+			resolve:{
+				currentUser:function(UserDetailsService){
+					return UserDetailsService.getUser();
 				}
 			}
 		});

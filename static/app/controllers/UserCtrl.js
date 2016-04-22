@@ -724,7 +724,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				console.log("Service Get At Glance",  data);
 
 				service.getFollowers("/personal/follow/list/" + currentUsername);
-
+				service.getTagline("/personal/tagline/" + currentUsername);
+				service.getAvatar("/personal/avatar/" + currentUsername);
 
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
@@ -732,6 +733,25 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			});
 
 	};
+
+	service.getAvatar = function(url){
+		APIService.getHttp(url).then(function(data){
+			$scope.profileStats.atGlance.avatar = data.avatar;
+		},function(error){
+			console.log('Service Get Avatar Error', error);
+		});
+	}
+
+	service.getTagline = function(url){
+		APIService.getHttp(url).then(function(data){
+			$scope.profileStats.atGlance.tagline = data.tagline;
+			$scope.profileStats.atGlance.profession = data.profession;
+
+		},function(error){
+			console.log('Service Get Tagline Error', error);
+		});
+	}
+
 	service.getFollowers = function(url) {
 		UserDetailsService.getFollowersService(url)
 				// then() called when son gets back

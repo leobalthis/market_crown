@@ -4,6 +4,7 @@ var log 				= log4js.getLogger('personal.js');
 var express				= require('express');
 var router 				= express.Router();
 var _					= require('lodash');
+const User 				= require('../db/user.model.js');
 
 var request				= require('request');
 var concat				= require('concat-stream');
@@ -44,6 +45,22 @@ router.get('/me',function(req, res){
 	}
 
 });
+
+router.get('/avatar/:username',function(req, res){
+	if(process.env.NODE_ENV=='development'){
+		res.json({avatar:'assets/images/thumb.jpg'});
+	}else{
+		User.findBy({mc_username:username}, function(err, user) {
+			if(!user){
+				res.json({error:'user not found'});
+			}else{
+				res.json({avatar:user.photos[0]});
+			}
+		});
+	}
+});
+
+
 
 router.all('*', function(req, res) {
 	if(process.env.NODE_ENV=='development'){

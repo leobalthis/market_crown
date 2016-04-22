@@ -10,7 +10,7 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 	var currentUsername = UserDetailsService.getUser().mc_username;
 	$scope.currentUsername=currentUsername;
 
-
+	$scope.basicUserInfo = UserDetailsService.getUser()
 
 	//getData function. Calling default data
 	$scope.getData = function(request_link, type) {
@@ -126,15 +126,14 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 		});
 	};
 
-	$scope.getABasicUserInfo = function () {
-		API.getHttp("/personal/me/")
-			.then(function (data) {
-				console.log(' > *** ',data);
-				$scope.basicUserInfo = data;
-			},function(){
-				console.log("Live search API error");
-			});
-	};
+	//$scope.getABasicUserInfo = function () {
+	//	API.getHttp("/personal/me/")
+	//		.then(function (data) {
+	//			$scope.basicUserInfo = data;
+	//		},function(){
+	//			console.log("Live search API error");
+	//		});
+	//};
 
 	$scope.$watch('userInfoMarketSelected', function(newValue, oldValue) {
 		if (newValue !== oldValue) {
@@ -160,7 +159,7 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 		}
 
 		$scope.getAtGlance();
-		$scope.getABasicUserInfo();
+		//$scope.getABasicUserInfo();
 		$scope.getSectorPreference();
 		$scope.getCorrect();
 		$scope.getForecastSentiment();
@@ -187,7 +186,7 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 	$scope.getAllData = function() {
 		//calling profile info functions
 		$scope.getAtGlance();
-		$scope.getABasicUserInfo()
+		//$scope.getABasicUserInfo()
 		$scope.getSectorPreference();
 		$scope.getCorrect();
 		$scope.getForecastSentiment();
