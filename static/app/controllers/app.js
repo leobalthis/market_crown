@@ -8,11 +8,25 @@ var App = angular.module('App', ['ngSanitize',
 	'ui.select',
 	'angularUtils.directives.dirPagination',
 	'angular-loading-bar',
+	'ui-notification',
 	'nvd3'
 ]);
 
-App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function($urlRouterProvider, $stateProvider, $httpProvider) {
+App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'NotificationProvider', function($urlRouterProvider, $stateProvider, $httpProvider,NotificationProvider) {
+		NotificationProvider.setOptions({
+			delay: 6000,
+			startTop: 20,
+			startRight: 10,
+			verticalSpacing: 20,
+			horizontalSpacing: 20,
+			positionX: 'right',
+			positionY: 'bottom'
+		});
+
+
+
 	$urlRouterProvider.otherwise('/stock-info');
+
 	$stateProvider
 		.state('stock-info', {
 			url: '/stock-info',

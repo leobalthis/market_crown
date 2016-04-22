@@ -1,4 +1,4 @@
-App.factory('APIService', ['$http','$q',function ($http,$q) {
+App.factory('APIService', ['$http','$q','Notification', function ($http,$q,Notification) {
 
 	var headers = {'Content-Type': 'application/json'};
 	var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
@@ -29,16 +29,21 @@ console.log(window.location.host)
 		return $q(function(resolve, reject) {
 			$http(req).then(function (res) {
 				if (!res || !res.data) {
+					Notification.error('Unknown error');
 					console.error('Responce error');
 					reject('Responce error');
 				} else if (res.data.error) {
+					Notification.error(res.data.error);
 					console.error('Responce error',res.data.error);
 					reject(res.data.error)
 				} else {
 					console.log('>>[',req.method,'] ' ,req.url ,'\n <<',res.data);
 					resolve(res.data)
+
 				}
 			}, function (err) {
+
+				Notification.error('Unknown error');
 				reject(err)
 			})
 		});
