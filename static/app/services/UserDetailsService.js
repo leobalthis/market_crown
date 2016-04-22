@@ -1,5 +1,17 @@
-App.factory('UserDetailsService', ['APIService', function (API) {
+App.factory('UserDetailsService', ['APIService', '$q', function (API, $q) {
+	var user = null;
+	function getUser(){
+		if(!user){
+			API.getHttp('/personal/me').then(function(data){
+				user = data;
+				return user;
+			});
+		}else{
+			return user;
+		}
+	};
 	return {
+		getUser:getUser,
 		getAtGlanceService: API.getHttp,
 
 		getAtGlanceCurrentUserService: function (url) {

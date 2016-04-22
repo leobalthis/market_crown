@@ -15,7 +15,8 @@ dashDate.firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().t
 dashDate.lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM-dd-yy');
 
 App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsService, UserDetailsService, ForecastService, GeneralDataService, APIService){
-
+	//var currentUser = UserDetailsService.getUser().mc_username;
+	console.log('currentUser',currentUser);
 	//pie chart options
 	$scope.options = {
 		chart: {
@@ -326,7 +327,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		APIService.getHttp("/personal/find/analysis/" + $scope.selectedItem.guid, {
 					ignoreLoadingBar: true
 				})
-				.success(function (data) {
+				.then(function (data) {
 					$scope.forecastAnalysis = data;
 					console.log($scope.forecastAnalysis);
 					if ($scope.forecastAnalysis.length <= 0) {
@@ -338,9 +339,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 						console.log("Not zero");
 						$scope.analysisOutput = true;
 					}
-				})
-
-				.error (function(){
+				},function(){
 					console.log("Analysis error");
 				});
 	};
@@ -367,12 +366,10 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		APIService.postHttp("/personal/group/find",{
 			"owner": currentUser
 		})
-			.success(function(data){
+			.then(function(data){
 				console.log(data);
 				$scope.profileStats.usersGroups = data;
-			})
-
-			.error(function(){
+			},function(){
 				console.log("get groups error");
 			});
 	};
@@ -386,12 +383,10 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	//get hovered user
 	$scope.profileStats.hoveredUser = function (user) {
 		APIService.getHttp("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + user)
-				.success(function (data) {
+				.then(function (data) {
 					$scope.profileStats.hoveredUser.data = data;
 					console.log("User info got for " + user);
-				})
-
-				.error (function(){
+				},function(){
 					console.log("Hovered user error");
 				});
 	};

@@ -79,14 +79,21 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function($u
 			views: {
 				'section': {
 					templateUrl: 'views/User.html',
-					controller: function($scope, $stateParams) {
-						$scope.username = [];
-						$scope.username.id = $stateParams.username;
-						console.log("App: " + $scope.username.id);
-						if ($scope.username.id != currentUser) {
-							currentUser = $scope.username.id;
+
+					//controller: function($scope, $stateParams) {
+					//	var user = UserDetailsService.getUser();
+					//
+					//	$scope.username.id = $stateParams.username;
+					//	console.log("App: " + $scope.username.id);
+					//	if ($scope.username.id != currentUser) {
+					//		currentUser = $scope.username.id;
+					//	}
+					//},
+					resolve:{
+						currentUser:function(UserDetailsService){
+							return UserDetailsService.getUser();
 						}
-					},
+					}
 				}
 			}
 		});

@@ -323,12 +323,10 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 					ignoreLoadingBar: true
 				})
 
-				.success(function (data) {
+				.then(function (data) {
 					$scope.atGlanceData = data;
 					console.log("user info got");
-				})
-
-				.error (function(){
+				},function(){
 					console.log("user info haven't been got");
 				});
 	};
@@ -349,11 +347,9 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 				"user": currentUser,
 				"member": selectedToFollow
 			}
-		).success(function(data){
+		).then(function(data){
 			console.log(data);
-		})
-
-		.error(function(){
+		},function(){
 			alert("Follow error");
 		});
 
@@ -384,14 +380,12 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 				"EndDate": today,
 				"TLA" : "Community Rank",
 				"Market" : "US"
-			}).success(function(data){
+			}).then(function(data){
 					$scope.isBasicQuery = true;
 					console.log(data);
 					$scope.queryData = data.Results;
 					console.log($scope.queryData)
-				})
-
-				.error(function(){
+				},function(){
 					console.log("initial basic query unsuccessfull " + today + " " + last7Days);
 
 				});
@@ -412,7 +406,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 				"TLA" : $scope.basicQuery.selected.call,
 				"Market" : $scope.queryMarket.selected.symbol
 			}
-		).success(function(data){
+		).then(function(data){
 			$scope.isBasicQuery = true;
 			console.log(data);
 			$scope.queryData = data.Results;
@@ -420,9 +414,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 
 
 			console.log($scope.queryMarket.selected.symbol);
-		})
-
-		.error(function(){
+		},function(){
 			console.log("Updated Query Unsuccessfull " + startDate + " " + endDate + " " +  $scope.basicQuery.selected.call + " " +  $scope.queryMarket.selected.symbol);
 		});
 	};
@@ -625,15 +617,13 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 						"Market":"US"
 
 					}]
-		).success(function(data){
+		).then(function(data){
 					$scope.isBasicQuery = false;
 					$scope.nameCustomQueryKeys();
 					console.log(data);
 					$scope.customQueryData = data[0].Results;
 					console.log($scope.customQueryData)
-				})
-
-				.error(function(){
+				},function(){
 					console.log("initial custom query unsuccessfull");
 
 				});
@@ -663,15 +653,13 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 				"TimeOfDay": customQueryTime,
 				"Market": $scope.queryMarket.selected.symbol
 			}]
-		).success(function(data){
+		).then(function(data){
 				$scope.nameCustomQueryKeys();
 				$scope.isBasicQuery = false;
 				console.log(data);
 				$scope.customQueryData = data[0].Results;
 				console.log($scope.customQueryData)
-			})
-
-			.error(function(){
+			},function(){
 				console.log("initial custom query unsuccessfull " + $scope.customQuery.type);
 			});
 	};
@@ -679,26 +667,22 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 	$scope.liveSearchSymbol = function() {
 		market = $scope.queryMarket.selected.symbol;
 		API.getHttp("/personal/getsymbols/" + market)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
 				console.log($scope.symbols);
-			})
-
-			.error (function(){
+			},function(){
 				console.log("Live search symbol API error");
 			});
 	};
 
 	$scope.getDefaultSymbolList = function () {
 		API.getHttp("/personal/getsymbols/us")
-			.success(function (data) {
+			.then(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
 				console.log($scope.symbols);
-			})
-
-			.error (function(){
+			},function(){
 				console.log("Live search symbol API error");
 			});
 	};
@@ -708,12 +692,10 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService', function ($scope, AP
 	$scope.getCustomQueryUserGroups = function(apiCallLink) {
 		API.postHttp(apiCallLink,{
 				"owner": currentUser
-			}).success(function(data){
+			}).then(function(data){
 					console.log(data);
 					$scope.customQueryGroups = data;
-				})
-
-				.error(function(){
+				},function(){
 					alert("getUserResultsPost Unsuccessfull");
 				});
 	};

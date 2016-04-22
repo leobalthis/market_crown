@@ -56,13 +56,11 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 				"correct": "pending",
 				"startdate" :"09/15/15",
 				"enddate": "01/17/25"
-			}).success(function(data){
+			}).then(function(data){
 				console.log(data);
 				$scope.forecastsData = data;
 				console.log(dateStart);
-			})
-
-			.error(function(){
+			},function(){
 				console.log("initial forecast unsuccessfull")
 			});
 	};
@@ -107,13 +105,11 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 	//if requires get that gets this
 	$scope.getUserResultsFollowing = function(apiCallLink) {
 		API.getHttp(apiCallLink)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.resultsFollowing = data;
 				finalUserResult = $scope.resultsFollowing;
 				console.log("Successfull get user results call");
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Get Call Error");
 		});
 	};
@@ -126,15 +122,13 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 	$scope.getUserResultsGroups = function(apiCallLink) {
 		API.postHttp( apiCallLink,{
 				"owner": "jeangrey"
-			}).success(function(data){
+			}).then(function(data){
 				console.log(data);
 				$scope.forecastUserGroupsResults = data;
 				$scope.forecastUserGroupResult.selected = $scope.forecastUserGroupsResults[0];
 				finalUserResult = $scope.forecastUserGroupResult.selected.members;
 				groupsLoaded = true;
-			})
-
-			.error(function(){
+			},function(){
 				alert("getUserResultsPost Unsuccessfull");
 			});
 	};
@@ -156,13 +150,11 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 				"correct":"pending",
 				"startdate" :"10/13/14",
 				"enddate": "12/30/37"
-			}).success(function(data){
+			}).then(function(data){
 				console.log(data);
 				$scope.userResultsPods = data;
 				finalUserResult = $scope.userResultsPods;
-			})
-
-			.error(function(){
+			},function(){
 				alert("getUserResultsPost Unsuccessfull");
 			});
 	};
@@ -173,24 +165,20 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 		API.getHttp("/personal/profile/" + market + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
-			.success(function (data) {
+			.then(function (data) {
 				$scope.atGlanceData = data;
 				console.log("user info got");
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Live search API error");
 		});
 	};
 
 	$scope.getUsers = function() {
 		API.getHttp("/personal/profile/" + market + "/" + clickedUser)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.atGlanceData = data;
 				console.log("user info got");
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Live search API error");
 		});
 	};
@@ -300,15 +288,13 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 				"correct": correct,
 				"startdate" : dateStart,
 				"enddate": dateEnd
-			}).success(function(data){
+			}).then(function(data){
 				console.log(data);
 				$scope.forecastsData = data;
 				//used for displaying different elements on different status
 				$scope.forecastStatusVisibility = $scope.forecastStatus;
 				console.log("user: " + finalUserResult + " | symbol: " + symbols + " | movements: " + movement + " | timeofday: " + timeofday + " | percentage: " + percentage + " | market cap: " + mcapcategory + " | sector: " + sectors + " | correct: " + correct + " | start date: " + dateStart + " | end date: " +  dateEnd);
-			})
-
-			.error(function(){
+			},function(){
 				alert("Forecast Unsuccessfull");
 				console.log("user: " + finalUserResult + " |symbol: " + symbols + " |movements: " + movement + " |timeofday: " + timeofday + " |percentage: " + percentage + " |market cap: " + mcapcategory + " |sector: " + sectors + " |correct: " + correct + " |start date: " + dateStart + " |end date: " +  dateEnd);
 			});
@@ -326,7 +312,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 		API.getHttp("/personal/find/analysis/" + $scope.selectedItem.guid, {
 			ignoreLoadingBar: true
 		})
-				.success(function (data) {
+				.then(function (data) {
 					$scope.forecastAnalysis = data;
 					console.log($scope.forecastAnalysis);
 					if ($scope.forecastAnalysis.length <= 0) {
@@ -338,9 +324,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 						console.log("Not zero");
 						$scope.analysisOutput = true;
 					}
-				})
-
-				.error (function(){
+				},function(){
 					console.log("Analysis error");
 				});
 	};
@@ -355,7 +339,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 		API.getHttp("/personal/ifollow/" + currentUser + "/" + clickedUser, {
 			ignoreLoadingBar: true
 		})
-			.success(function (data) {
+			.then(function (data) {
 				$scope.followingData = data;
 				if ($scope.followingData == "yes") {
 					$scope.followButton = "Unfollow";
@@ -364,9 +348,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 				else {
 					$scope.followButton = "Follow";
 				}
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Not following");
 		});
 	};
@@ -374,12 +356,10 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 		$scope.selectedItemForDelete = clickedForecast;
 		forecastId = $scope.selectedItemForDelete.guid;
 		API.getHttp("/personal/delete/" + currentUser + "/" + forecastId)
-			.success(function () {
+			.then(function () {
 				alert("Forecast for " + $scope.selectedItemForDelete.company + " Successfully deleted");
 				$scope.getUpdatedForecasts();
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Live search API error");
 		});
 
@@ -401,11 +381,9 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 			{
 				"user": currentUser,
 				"member": clickedUser
-			}).success(function(data){
+			}).then(function(data){
 				console.log(data);
-			})
-
-			.error(function(){
+			},function(){
 				alert("Follow error");
 			});
 
@@ -414,14 +392,12 @@ App.controller ('ForecastsCtrl', ['$scope','APIService',function ($scope, API){
 	//custom query
 	$scope.liveSearchSymbol = function() {
 		API.getHttp("/personal/getsymbols/" + market)
-			.success(function (data) {
+			.then(function (data) {
 				$scope.selected = undefined;
 				$scope.symbols = data;
 				console.log(market);
 				console.log($scope.symbols);
-			})
-
-			.error (function(){
+			},function(){
 			console.log("Live search symbol API error");
 		});
 	};
