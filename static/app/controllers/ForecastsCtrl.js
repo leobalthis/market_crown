@@ -62,6 +62,12 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 				"enddate": "01/17/25"
 			}).then(function(data){
 				console.log(data);
+			_.each(data,function(item){
+				API.getHttp('/personal/avatar/'+item.user).then(function(avatar){
+					item.avatar = avatar.avatar;
+				})
+				
+			})
 				$scope.forecastsData = data;
 				console.log(dateStart);
 			},function(){
