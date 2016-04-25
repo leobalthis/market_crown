@@ -50,7 +50,7 @@ router.get('/avatar/:username',function(req, res){
 	if(process.env.NODE_ENV=='development'){
 		res.json({avatar:'assets/images/thumb.jpg'});
 	}else{
-		User.findBy({mc_username:req.params.username}, function(err, user) {
+		User.findOne({mc_username:req.params.username}, function(err, user) {
 			if(!user){
 				res.json({error:'user not found'});
 			}else{
