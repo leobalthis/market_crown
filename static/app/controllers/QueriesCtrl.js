@@ -344,14 +344,15 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 			followUnfollowLink = "/personal/follow/remove";
 			$scope.followButton = "Follow";
 		}
-		APIService.postHttp(followUnfollowLink,{
+		console.log('>',followUnfollowLink);
+		API.postHttp(followUnfollowLink,{
 				"user": currentUsername,
 				"member": selectedToFollow
 			}
 		).then(function(data){
 			console.log(data);
-		},function(){
-			alert("Follow error");
+		},function(e){
+			console.error(e);
 		});
 
 	};
@@ -703,26 +704,13 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 
 	$scope.customQuery.user = [];
 	$scope.getUsers = function() {
-		$scope.customQuery.users = [
-			"jeangrey",
-			"sonic",
-			"godzilla",
-			"onslaught",
-			"rony",
-			"agustus",
-			"kaushik",
-			"gordongekko",
-			"superman",
-			"test",
-			"ccline",
-			"spiderman",
-			"tmcpeak",
-			"shahdhruvin",
-			"jimcramer",
-			"glen",
-			"vputin",
-			"stocklord"
-		];
+		API.getHttp("/personal/return/users")
+			.then(function (data) {
+				$scope.customQuery.users = data;
+
+			},function(){
+				console.log("Live search symbol API error");
+			});
 	};
 
 	//$scope.customQuery.group = [];

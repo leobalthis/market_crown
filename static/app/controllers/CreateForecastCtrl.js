@@ -1,4 +1,4 @@
-App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, GeneralDataService){
+App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, GeneralDataService,Notification){
 
 	$scope.dateOptions = {
 		changeYear: true,
@@ -78,7 +78,7 @@ App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, Gen
 			.then(function(data) {
 				// promise fulfilled
 				console.log("Service Create Forecasts",  data);
-
+				Notification.success("Forecast Successfully Created");
 				$scope.newForecast.symbol = "";
 				//$scope.newForecast.marketMovement = "";
 				$scope.newForecast.date = "";

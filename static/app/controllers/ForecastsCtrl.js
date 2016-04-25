@@ -410,25 +410,36 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.multiselect = {};
 
 	$scope.users = [
-	  "jeangrey",
-	  "sonic",
-	  "godzilla",
-	  "onslaught",
-	  "rony",
-	  "agustus",
-	  "kaushik",
-	  "gordongekko",
-	  "superman",
-	  "test",
-	  "ccline",
-	  "spiderman",
-	  "tmcpeak",
-	  "shahdhruvin",
-	  "jimcramer",
-	  "glen",
-	  "vputin",
-	  "stocklord"
+	  //"jeangrey",
+	  //"sonic",
+	  //"godzilla",
+	  //"onslaught",
+	  //"rony",
+	  //"agustus",
+	  //"kaushik",
+	  //"gordongekko",
+	  //"superman",
+	  //"test",
+	  //"ccline",
+	  //"spiderman",
+	  //"tmcpeak",
+	  //"shahdhruvin",
+	  //"jimcramer",
+	  //"glen",
+	  //"vputin",
+	  //"stocklord"
 	];
+
+	function getAllUsers(){
+		API.getHttp("/personal/return/users")
+			.then(function (data) {
+				$scope.users = data;
+
+			},function(){
+				console.log("Live search symbol API error");
+			});
+	}
+	getAllUsers();
 
 	$scope.sectors = ["utilities","services","industrial goods","consumer goods","conglomerates","financial","healthcare","basic materials","technology"];
 
