@@ -981,9 +981,11 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	};
 
 	$scope.followButton = "Follow";
-	APIService.postHttp('/personal/ifollow/'+logginedUser+'/'+currentUsername).then(function(followingData){
-		$scope.followingData = followingData;
-	})
+	if(logginedUser!=currentUsername){
+		APIService.getHttp('/personal/ifollow/'+logginedUser+'/'+currentUsername).then(function(followingData){
+			$scope.followingData = followingData;
+		})
+	}
 
 	$scope.followUser = function(){
 		var followUnfollowLink;
