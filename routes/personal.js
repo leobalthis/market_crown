@@ -52,7 +52,7 @@ router.get('/avatar/:username',function(req, res){
 	}else{
 		User.findOne({mc_username:req.params.username}, function(err, user) {
 			if(!user){
-				res.json({error:'user not found'});
+				res.json({avatar:'/userpics/$default.png'});
 			}else{
 				res.json({avatar:(user.photos && user.photos[0])?user.photos[0].value:'/userpics/$default.png'});
 			}
