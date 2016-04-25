@@ -386,6 +386,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 					$scope.isBasicQuery = true;
 					console.log(data);
 					$scope.queryData = data.Results;
+					setAvatarToQueryData();
 					console.log($scope.queryData)
 				},function(){
 					console.log("initial basic query unsuccessfull " + today + " " + last7Days);
@@ -395,6 +396,14 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 
 	$scope.getQueries(); //calling the intial default basic queries
 
+	function setAvatarToQueryData(){
+		_.each($scope.queryData,function(item){
+			API.getHttp('/personal/avatar/'+item.user).then(function(avatar){
+				item.avatar = avatar.avatar;
+			})
+
+		})
+	}
 	$scope.getUpdatedQueries = function () {
 		//hack for getting custom date work
 		if ($scope.queryDate.selected.call === "custom") {
@@ -412,6 +421,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 			$scope.isBasicQuery = true;
 			console.log(data);
 			$scope.queryData = data.Results;
+			setAvatarToQueryData();
 			$scope.nameKeys();
 
 
