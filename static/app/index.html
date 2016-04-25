@@ -42,6 +42,7 @@
 	<script src="controllers/StockInfoWrapperCtrl.js"></script>
 	<script src="controllers/StockInfoCtrl.js"></script>
 	<script src="controllers/CreateForecastCtrl.js"></script>
+	<script src="controllers/TopmenuCtrl.js"></script>
 	<script src="controllers/UserInfoCtrl.js"></script>
 	<script src="controllers/ForecastsCtrl.js"></script>
 	<script src="controllers/QueriesCtrl.js"></script>
@@ -68,7 +69,7 @@
 <div id="dashboard">
 	<header class="navbar-fixed-top">
 		<div class="">
-			<div class="container-fluid">
+			<div class="container-fluid" ng-controller="TopmenuCtrl">
 				<div class="col-lg-9">
 					<nav class="navbar navbar-default">
 						<div class="container-fluid">
@@ -98,10 +99,10 @@
 						<div class="collapse navbar-collapse" id="user-profile">
 							<ul class="nav navbar-nav navbar-right">
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Andrew Cramer <span class="caret"></span></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentUsername}} <span class="caret"></span></a>
 									<ul class="dropdown-menu">
 
-										<li><a href="/user">Profile</a></li>
+										<li><a href="#/user">Profile</a></li>
 										<li><a href="#">Settings</a></li>
 										<li role="separator" class="divider"></li>
 										<li><a href="/api/v1/auth/logout">Log Out</a></li>
