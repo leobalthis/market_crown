@@ -54,7 +54,7 @@ router.get('/avatar/:username',function(req, res){
 			if(!user){
 				res.json({error:'user not found'});
 			}else{
-				res.json({avatar:(user.photos && user.photos[0])?user.photos[0]:'/userpics/$default.png'});
+				res.json({avatar:(user.photos && user.photos[0])?user.photos[0].value:'/userpics/$default.png'});
 			}
 		});
 	}
