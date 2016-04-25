@@ -36,7 +36,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/StockInfo.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				},
@@ -44,7 +44,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Sidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				}
@@ -57,7 +57,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Forecasts.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				},
@@ -65,7 +65,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Sidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				}
@@ -78,7 +78,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Queries.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				},
@@ -86,7 +86,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Sidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				}
@@ -100,7 +100,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Pods.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				},
@@ -108,7 +108,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Sidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				}
@@ -123,7 +123,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/Stats.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				},
@@ -131,7 +131,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					templateUrl: 'views/UserSidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
-							return UserDetailsService.getUser();
+							return UserDetailsService.getUser(true);
 						}
 					}
 				}
