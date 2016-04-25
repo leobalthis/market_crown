@@ -12,6 +12,8 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 
 	$scope.basicUserInfo = UserDetailsService.getUser()
 
+
+
 	//getData function. Calling default data
 	$scope.getData = function(request_link, type) {
 		$scope.$emit('loadProfileInfo');

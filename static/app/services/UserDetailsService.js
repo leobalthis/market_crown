@@ -1,20 +1,33 @@
 App.factory('UserDetailsService', ['APIService', '$q','$timeout', function (API, $q, $timeout) {
 	var user = null;
-	function getUser(){
+	function getUser(returnPromise){
 		if(!user){
-			API.getHttp('/personal/me').then(function(data){
-				console.log('user!',data);
-				user = data;
-				API.getHttp('/personal/tagline/'+data.mc_username).then(function(data){
-					//$timeout(function(){
+
+			if(returnPromise){
+				return $q(function(resolve,reject){
+					API.getHttp('/personal/me').then(function(data){
+						console.log('user!',data);
+						user = data;
+						API.getHttp('/personal/tagline/'+data.mc_username).then(function(data){
+							user.tagline = data.tagline;
+							user.profession = data.profession;
+							console.log('tagling',user);
+							resolve(user);
+						},reject);
+					},reject);
+				})
+			}else{
+				API.getHttp('/personal/me').then(function(data){
+					console.log('user!',data);
+					user = data;
+					API.getHttp('/personal/tagline/'+data.mc_username).then(function(data){
 						user.tagline = data.tagline;
 						user.profession = data.profession;
 						console.log('tagling',user);
-					//},1)
-
+						return user;
+					});
 				});
-				return user;
-			});
+			}
 
 		}else{
 			return user;

@@ -229,7 +229,7 @@
 									<li class=""><a href="#forecasts" data-toggle="tab" aria-expanded="false" target="_self" ng-click="getSimpleForecasts('pending')">Forecasts</a></li>
 									<li class=""><a href="#followers" data-toggle="tab" aria-expanded="false" target="_self">Followers</a></li>
 									<li class=""><a href="#following" data-toggle="tab" aria-expanded="false" target="_self">Following</a></li>
-									<li class=""><a href="#groups" data-toggle="tab" aria-expanded="false" target="_self" ng-click="getMyGroups()" >My Groups</a></li>
+									<li class="" ng-show="isMyProfile"><a href="#groups" data-toggle="tab" aria-expanded="false" target="_self" ng-click="getMyGroups()" >My Groups</a></li>
 								</ul>
 							</div>
 						</div>`
@@ -590,14 +590,14 @@
 			<div class="dashboard-element">
 
 				<div class="user-info-header">
-					<img ng-src="{{profileStats.atGlance.avatar}}" alt=""/>
+					<img ng-src="{{profileStats.atGlance.avatar || '/userpics/$default.png'}}" alt=""/>
 					<h2>{{profileStats.atGlance.user || upercase}}</h2>
 					<h2 class="subtitle">{{profileStats.atGlance.profession}}</h2>
 					<p>{{profileStats.atGlance.tagline}}</p>
 
 					<div class="btn-container">
-						<button class="btn btn-primary">
-							Follow
+						<button  ng-hide="isMyProfile" class="btn btn-primary" ng-click="followUser(profileStats.atGlance)">
+							{{followButton}}
 						</button>
 					</div>
 

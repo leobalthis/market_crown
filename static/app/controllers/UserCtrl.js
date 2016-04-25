@@ -15,7 +15,13 @@ dashDate.firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().t
 dashDate.lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM-dd-yy');
 
 App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsService, UserDetailsService, ForecastService, GeneralDataService, APIService){
-	var currentUsername = UserDetailsService.getUser().mc_username;
+	console.log('currentUser',$scope.currentUser);
+	var currentUsername = $scope.currentUser.user || $scope.currentUser.mc_username;
+
+		var logginedUser = UserDetailsService.getUser().mc_username;
+
+
+	$scope.isMyProfile = logginedUser == currentUsername;
 	$scope.currentUsername=currentUsername;
 	console.log('currentUser',currentUsername);
 	//pie chart options
@@ -966,6 +972,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	};
 	$scope.redirectToUser = function () {
+		console.log("redirected to user")
 		newUsername = $scope.username.search;
 		currentUsername = newUsername;
 		//$scope.refreshChartData();
@@ -973,6 +980,35 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		console.log("redirected to user")
 	};
 
+	$scope.followButton = "Follow";
+	APIService.postHttp('/personal/ifollow/'+logginedUser+'/'+currentUsername).then(function(followingData){
+		$scope.followingData = followingData;
+	})
+
+	$scope.followUser = function(){
+		var followUnfollowLink;
+
+		if ($scope.followingData == "no") {
+			followUnfollowLink = "/personal/follow/add";
+			$scope.followButton = "Unfollow";
+		}
+
+		else {
+			followUnfollowLink = "/personal/follow/remove";
+			$scope.followButton = "Follow";
+		}
+
+		APIService.postHttp(followUnfollowLink,
+			{
+				"user": logginedUser,
+				"member": currentUsername
+			}).then(function(data){
+			console.log(data);
+		},function(err){
+			console.error(err);
+			//alert("Follow error");
+		});
+	}
 
 	//displaying charts correctly if they were in the hidden tab
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

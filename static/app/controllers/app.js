@@ -144,7 +144,8 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 				'section': {
 					templateUrl: 'views/User.html',
 
-					//controller: function($scope, $stateParams) {
+					controller: function($scope,currentUser) {
+						$scope.currentUser = currentUser;
 					//	var user = UserDetailsService.getUser();
 					//
 					//	$scope.username.id = $stateParams.username;
@@ -152,15 +153,35 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					//	if ($scope.username.id != currentUser) {
 					//		currentUser = $scope.username.id;
 					//	}
-					//},
+					},
+					resolve:{
+						currentUser:function(UserDetailsService,$stateParams,APIService,$q){
+							if(!$stateParams.username){
+								return UserDetailsService.getUser(true);
+							}else{
+								UserDetailsService.getUser(true);
+								var user = {};
+								return $q(function(resolve,reject){
+									APIService.getHttp('/personal/profile/us/'+$stateParams.username).then(function(data){
+										console.log('user!',data);
+										user = data;
+										APIService.getHttp('/personal/tagline/'+$stateParams.username).then(function(data){
+											user.tagline = data.tagline;
+											user.profession = data.profession;
+											console.log('tagling',user);
+											resolve(user)
+										},reject);
+									},reject);
+								})
 
+							}
+						}
+					}
 				}
-			},
-			resolve:{
-				currentUser:function(UserDetailsService){
-					return UserDetailsService.getUser();
-				}
+
+
 			}
+
 		});
 }]);
 
