@@ -50,7 +50,9 @@ router.get('/avatar/:username',function(req, res){
 	if(process.env.NODE_ENV=='development'){
 		res.json({avatar:'assets/images/thumb.jpg'});
 	}else{
-		User.findOne({mc_username:req.params.username}, function(err, user) {
+		var username = String(req.params.username).toLowerCase();
+		var regex = new RegExp('/^'+username+'$/i');
+		User.findOne({mc_username:regex}, function(err, user) {
 			if(!user){
 				res.json({avatar:'/userpics/$default.png'});
 			}else{
