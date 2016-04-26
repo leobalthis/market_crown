@@ -403,7 +403,7 @@
 										<div class="row">
 											<div class="col-lg-4">
 												<div class="profile">
-													<img ng-src="assets/images/thumb.jpg" alt="">
+													<img ng-src="{{forecast.avatar}}" alt="">
 													<h5>{{forecast.user}}</h5>
 												</div>
 											</div>
@@ -483,7 +483,7 @@
 			<div class="tab-pane fade following-users" id="followers">
 				<div class="row row-regular">
 					<div class="col-md-2" ng-repeat="user in profileStats.followers track by $index">
-						<a href="#/user/{{user}}" ng-mouseenter="getAtGlanceCurrentUser(user)">
+						<a href="#/user/{{user.username}}" ng-mouseenter="getAtGlanceCurrentUser(user)">
 							<div class="element">
 								<!--<div class="over">-->
 								<!--<ul>-->
@@ -492,8 +492,8 @@
 								<!--</ul>-->
 								<!--</div>-->
 
-								<img ng-src="assets/images/thumb.jpg" alt="">
-								<h5>{{user}}</h5>
+								<img ng-src="{{user.avatar}}" alt="">
+								<h5>{{user.username}}</h5>
 							</div>
 						</a>
 					</div>
@@ -502,7 +502,7 @@
 			<div class="tab-pane fade following-users" id="following">
 				<div class="row row-regular">
 					<div class="col-md-2" ng-repeat="user in profileStats.following track by $index">
-						<a href="#/user/{{user}}" ng-mouseenter="getAtGlanceCurrentUser(user)">
+						<a href="#/user/{{user.username}}" ng-mouseenter="getAtGlanceCurrentUser(user)">
 							<div class="element">
 								<!--<div class="over">-->
 								<!--<ul>-->
@@ -512,8 +512,8 @@
 								<!--</ul>-->
 								<!--</div>-->
 
-								<img ng-src="assets/images/thumb.jpg" alt="">
-								<h5>{{user}}</h5>
+								<img ng-src="{{user.avatar}}" alt="">
+								<h5>{{user.username}}</h5>
 							</div>
 						</a>
 					</div>
@@ -559,10 +559,10 @@
 										<div class="row">
 											<div class="col-lg-3 member-element-container" ng-repeat="user in profileStats.activeGroup.members">
 												<button class="remove-user" ng-really-message="Are you sure you want to remove this user from the group?" ng-really-click="removeMemberFromGroup(user)"><img ng-src="assets/images/x.png" alt=""></button>
-												<a href="#/user/{{user}}">
+												<a href="#/user/{{user.username}}">
 													<div class="member-element">
-														<img class="thumb" ng-src="assets/images/thumb.jpg" alt="">
-														<h5>{{user}}</h5>
+														<img class="thumb" ng-src="{{user.avatar}}" alt="">
+														<h5>{{user.username}}</h5>
 													</div>
 												</a>
 											</div>

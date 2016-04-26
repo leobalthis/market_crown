@@ -764,7 +764,13 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				.then(function(data) {
 					// promise fulfilled
 					console.log("Service Get Follower",  data);
-					$scope.profileStats.followers = data;
+					$scope.profileStats.followers = _.map(data,function(item){
+						var obj = {username:item};
+						APIService.getHttp('/personal/avatar/'+item).then(function(avatar){
+							obj.avatar = avatar.avatar;
+						})
+						return obj;
+					});
 					$scope.profileStats.followersCount = data.length;
 					service.getFollowing("/personal/imfollowing/list/" + currentUsername);
 
@@ -780,7 +786,13 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				.then(function(data) {
 					// promise fulfilled
 					console.log("Service Get Following",  data);
-					$scope.profileStats.following = data;
+					$scope.profileStats.following = _.map(data,function(item){
+						var obj = {username:item};
+						APIService.getHttp('/personal/avatar/'+item).then(function(avatar){
+							obj.avatar = avatar.avatar;
+						})
+						return obj;
+					});
 					$scope.profileStats.followingCount = data.length;
 
 				}, function(error) {
@@ -803,7 +815,12 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 				.then(function(data) {
 					// promise fulfilled
 					console.log("Service Simple Forecasts",  data);
-					$scope.profileStats.forecasts = data;
+					$scope.profileStats.forecasts = _.map(data,function(item){
+						APIService.getHttp('/personal/avatar/'+item.user).then(function(avatar){
+							item.avatar = avatar.avatar;
+						})
+						return item;
+					});
 
 				}, function(error) {
 					// promise rejected, could log the error with: console.log('error', error);
@@ -843,8 +860,17 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			.then(function(data) {
 				// promise fulfilled
 				console.log("Service get My groups",  data);
-				$scope.profileStats.myGroups = data;
-				$scope.profileStats.activeGroup = data[0];
+				$scope.profileStats.myGroups = _.map(data,function(group){
+					group.members = _.map(group.members,function(item){
+						var obj = {username:item};
+						APIService.getHttp('/personal/avatar/'+item).then(function(avatar){
+							obj.avatar = avatar.avatar;
+						})
+						return obj;
+					})
+					return group;
+				});
+				$scope.profileStats.activeGroup = $scope.profileStats.myGroups[0];
 
 
 			}, function(error) {
