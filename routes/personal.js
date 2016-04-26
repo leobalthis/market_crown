@@ -52,9 +52,10 @@ router.get('/avatar/:username',function(req, res){
 	}else{
 		var username = String(req.params.username).toLowerCase();
 		var regex = new RegExp('/^'+username+'$/i');
+		console.log('ava',username,regex);
 		User.findOne({mc_username:regex}, function(err, user) {
 			if(!user){
-				res.json({avatar:'/userpics/$default.png'});
+				res.json({avatar:'/userpics/$default.png',reason:'no user found'});
 			}else{
 				res.json({avatar:(user.photos && user.photos[0])?user.photos[0].value:'/userpics/$default.png'});
 			}
