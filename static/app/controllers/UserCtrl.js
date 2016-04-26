@@ -1010,6 +1010,11 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	if(logginedUser!=currentUsername){
 		APIService.getHttp('/personal/ifollow/'+logginedUser+'/'+currentUsername).then(function(followingData){
 			$scope.followingData = followingData;
+			if ($scope.followingData == "yes") {
+				$scope.followButton = "Unfollow";
+			}else {
+				$scope.followButton = "Follow";
+			}
 		})
 	}
 
