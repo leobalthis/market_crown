@@ -66,7 +66,6 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 				API.getHttp('/personal/avatar/'+item.user).then(function(avatar){
 					item.avatar = avatar.avatar;
 				})
-
 			})
 				$scope.forecastsData = data;
 				console.log(dateStart);
@@ -300,6 +299,11 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 				"enddate": dateEnd
 			}).then(function(data){
 				console.log(data);
+				_.each(data,function(item){
+					API.getHttp('/personal/avatar/'+item.user).then(function(avatar){
+						item.avatar = avatar.avatar;
+					})
+				})
 				$scope.forecastsData = data;
 				//used for displaying different elements on different status
 				$scope.forecastStatusVisibility = $scope.forecastStatus;
