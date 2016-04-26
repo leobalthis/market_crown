@@ -386,7 +386,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 					$scope.isBasicQuery = true;
 					console.log(data);
 					$scope.queryData = data.Results;
-					setAvatarToQueryData();
+					$scope.queryData = setAvatarToQueryData($scope.queryData);
 					console.log($scope.queryData)
 				},function(){
 					console.log("initial basic query unsuccessfull " + today + " " + last7Days);
@@ -396,12 +396,12 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 
 	$scope.getQueries(); //calling the intial default basic queries
 
-	function setAvatarToQueryData(){
-		_.each($scope.queryData,function(item){
+	function setAvatarToQueryData(data){
+		return _.map(data,function(item){
 			API.getHttp('/personal/avatar/'+item.user).then(function(avatar){
 				item.avatar = avatar.avatar;
 			})
-
+			return item;
 		})
 	}
 	$scope.getUpdatedQueries = function () {
@@ -421,7 +421,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 			$scope.isBasicQuery = true;
 			console.log(data);
 			$scope.queryData = data.Results;
-			setAvatarToQueryData();
+			$scope.queryData = setAvatarToQueryData($scope.queryData);
 			$scope.nameKeys();
 
 
@@ -633,7 +633,8 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 					$scope.isBasicQuery = false;
 					$scope.nameCustomQueryKeys();
 					console.log(data);
-					$scope.customQueryData = data[0].Results;
+					$scope.customQueryData = setAvatarToQueryData(data[0].Results);
+
 					console.log($scope.customQueryData)
 				},function(){
 					console.log("initial custom query unsuccessfull");
@@ -669,7 +670,7 @@ App.controller ('BasicQueriesCtrl',['$scope', 'APIService','UserDetailsService',
 				$scope.nameCustomQueryKeys();
 				$scope.isBasicQuery = false;
 				console.log(data);
-				$scope.customQueryData = data[0].Results;
+				$scope.customQueryData = setAvatarToQueryData(data[0].Results);
 				console.log($scope.customQueryData)
 			},function(){
 				console.log("initial custom query unsuccessfull " + $scope.customQuery.type);
