@@ -51,7 +51,7 @@ router.get('/avatar/:username',function(req, res){
 		res.json({avatar:'assets/images/thumb.jpg'});
 	}else{
 		var username = String(req.params.username).toLowerCase();
-		var regex = new RegExp('/^'+username+'$/i');
+		var regex = new RegExp('^'+username+'$','i');
 		console.log('ava',username,regex);
 		User.findOne({mc_username:regex}, function(err, user) {
 			if(!user){
