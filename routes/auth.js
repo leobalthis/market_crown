@@ -124,8 +124,6 @@ router.post('/finish',urlencodedParser, function(req,res){
 		body:obj,
 		json:true
 	},function (error, response, body) {
-			//console.log('error',error);
-			//console.log('response',response);
 			console.log('body',body);
 			if(error){
 				return res.json({error:body})
