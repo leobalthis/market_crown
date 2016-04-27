@@ -21,7 +21,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		var logginedUser = UserDetailsService.getUser().mc_username;
 
 
-	$scope.isMyProfile = logginedUser == currentUsername;
+	$scope.isMyProfile = String(logginedUser).toLowerCase() == String(currentUsername).toLowerCase();
 	$scope.currentUsername=currentUsername;
 	console.log('currentUser',currentUsername);
 	//pie chart options
