@@ -337,7 +337,7 @@
 					</div>
 				</div>
 
-				<button class="delete" ng-show="{{console.log('::::',currentUsername,forecast.user);String(currentUsername).toLowerCase() == String(forecast.user).toLowerCase() && forecastStatus == 'pending'}}" ng-click="deleteClickedObject(forecast)">
+				<button class="delete" ng-show="{{nicknameComparing(currentUsername,forecast.user) && forecastStatus == 'pending'}}" ng-click="deleteClickedObject(forecast)">
 					<img ng-src="assets/images/x.png" alt=""/>
 				</button>
 			</div>

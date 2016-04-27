@@ -604,5 +604,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		}
 	};
 
-
+	$scope.nicknameComparing = function(a,b){
+		return String(a).toLowerCase() === String(b).toLowerCase();
+	}
 }]);
