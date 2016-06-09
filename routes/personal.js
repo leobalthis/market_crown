@@ -77,7 +77,7 @@ router.all('*', function(req, res) {
 	}
 
 
-	log.info('authed  > [%s] %s    (%s)',req.method,req.url, req.originalUrl);
+	log.info('request  > [%s] %s(%s)   payload:(%s)',req.method,req.url, req.originalUrl,req.body);
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 
 	var obj;
