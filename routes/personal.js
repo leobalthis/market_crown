@@ -77,9 +77,10 @@ router.all('*', function(req, res) {
 	}
 
 
-	log.info('request  > [%s] %s(%s)   payload:(%s)',req.method,req.url, req.originalUrl,req.body);
-	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT + req.url;
 
+	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+_.sample(CONFIG.PYTHON_API.PORTS) + req.url;
+	log.info('request  > [%s] %s(%s)   payload:(%s)',req.method,req.url, req.originalUrl,req.body);
+	log.info('request goes to endpoint: %s ',url);
 	var obj;
 	var  write = concat(function(completeResponse) {
 		// here is where you can modify the resulting response before passing it back to the client.
@@ -106,6 +107,8 @@ router.all('*', function(req, res) {
 	}
 
 });
+
+
 //
 //
 //function getUser(req,done){

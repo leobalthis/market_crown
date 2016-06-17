@@ -4,7 +4,7 @@ const log 					= log4js.getLogger('auth.js');
 const express				= require('express');
 const router 				= express.Router();
 var request					= require('request');
-
+var _						= require('lodash');
 
 const User 					= require('../db/user.model.js');
 const CONFIG				= require('../config.js');
@@ -104,7 +104,7 @@ router.get('/logout', function(req, res){
 });
 
 
-var finish_url = 'http://'+CONFIG.PYTHON_API.HOST+':'+CONFIG.PYTHON_API.PORT;
+var finish_url = 'http://'+CONFIG.PYTHON_API.HOST+':'+_.sample(CONFIG.PYTHON_API.PORTS);
 router.post('/finish',urlencodedParser, function(req,res){
 	//console.log('post finish',req.body);
 	if(!req.user){
