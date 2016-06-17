@@ -15,7 +15,7 @@ var config = {
 
 	PUBLIC_ADDRESS:'http://marketcrown.com',
 	PYTHON_API:{
-		HOST:'162.209.66.60',
+		HOST:'198.204.255.122',//'162.209.66.60',
 		PORTS:['2198', '2199', '2200']
 	},
 	//PUBLIC_ADDRESS:'http://104.239.245.54',
