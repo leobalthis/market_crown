@@ -232,12 +232,12 @@
 							</div>
 
 							<div class="symbols">
-								<input type="text" placeholder="Enter new symbol..." ng-model="microblog.symbol" uib-typeahead="symbol.name for symbol in microblogs.symbols | filter:$viewValue | limitTo:8" class="form-control">
+								<input type="text" placeholder="Enter new symbol..." ng-model="microblogs.filter.symbol" uib-typeahead="symbol.name for symbol in microblogs.symbols | filter:$viewValue | limitTo:8" class="form-control">
 							</div>
 						</div>
 
 						<div class="col-lg-4">
-							<button class="btn btn-success pull-right">Submit</button>
+							<button class="btn btn-success pull-right" ng-click="submitFilters()">Submit</button>
 						</div>
 						<div class="clearfix"></div>
 					</div>

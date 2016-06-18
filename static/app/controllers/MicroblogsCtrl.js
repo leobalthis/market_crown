@@ -18,30 +18,49 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 	$scope.microblogs.filter = {};
 	$scope.microblogs.filters = [
-		{name: 'Default', symbol: 'default'},
-		{name: 'Only Me', symbol: 'only-me'},
-		{name: 'Sectors', symbol: 'sectors'},
-		{name: 'Symbols', symbol: 'symbols'}
+		{name: 'Default', query_type: 'default'},
+		{name: 'Only Me', query_type: 'only-me'},
+		{name: 'Sectors', query_type: 'sectors'},
+		{name: 'Symbols', query_type: 'symbols'}
 	];
 	$scope.microblogs.filter = $scope.microblogs.filters[0];
 
 	$scope.microblogs.filterMarket = $scope.microblogs.new.markets[0];
 
 
-	$scope.getDefaultMicroblogs = function(user, market, query_type) {
-		MicroblogsService.getDefaultMicroblogsService(user, market, query_type)
+	$scope.getDefaultMicroblogs = function(user) {
+		MicroblogsService.getMicroblogsService({user:user, market:"us", query_type:"default"})
 			.then(function(data) {
 				console.log("Service Microblogs", data);
 				$scope.microblogs.data = data.results;
-
-
-
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
 				console.log('Service Default Microblogs Error', error);
 			});
 	};
-	$scope.getDefaultMicroblogs(currentUsername, "us", "default");
+	$scope.getDefaultMicroblogs(currentUsername);
+
+
+	$scope.getMicroblogs = function(market, querytype){
+		MicroblogsService.getMicroblogsService(currentUsername,market,querytype)
+			.then(function(data){
+				console.log("Service Microblogs2", data);
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Default Microblogs Error2', error);
+			});
+	};
+
+	$scope.submitFilters = function(){
+		var q = _.pick($scope.microblogs.filter,['query_type','market','sector','symbol']);
+		q.market = $scope.microblogs.filterMarket.symbol;
+		q.user = currentUsername;
+		console.log('_', q);
+		$scope.getMicroblogs(q)
+
+		$scope.microblogs.filter.sector=null;
+		$scope.microblogs.filter.symbol=null;
+	};
 
 	$scope.createTopic = function() {
 		MicroblogsService.createTopic(currentUsername, $scope.microblogs.new.message, $scope.microblogs.new.market.symbol)

@@ -1,4 +1,4 @@
-App.factory('MicroblogsService', ['APIService',function (API) {
+App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 	return {
 		createTopic: function(user, message, market) {
 			return API.postHttp('/personal/feed/entry',
@@ -21,25 +21,15 @@ App.factory('MicroblogsService', ['APIService',function (API) {
 			});
 		},
 
-		getSymbolsMicroblogsService: function(user, market, symbols) {
-			return API.postHttp('/personal/feed/query',
-			{
-					"user" : user,
-					"market" : market,
-					"query_type" : "symbols",
-					"symbols": symbols
+		getMicroblogsService: function(query) {
+			return $q(function(resolve, reject) {
+				API.postHttp('/personal/feed/query', query).then(function(res){
+					res.opop = 'asddd';
+					resolve(res)
+				},reject);
 			});
 		},
 
-		getSectorsMicroblogsService: function(user, market, sectors) {
-			return API.postHttp('/personal/feed/query',
-				{
-					"user" : user,
-					"market" : market,
-					"query_type" : "sectors",
-					"sectors": sectors
-			});
-		},
 
 		getOnlyMeMicroblogsService: function(user, market) {
 			return API.postHttp('/personal/feed/query',
