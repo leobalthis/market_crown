@@ -24,12 +24,26 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 		getMicroblogsService: function(query) {
 			return $q(function(resolve, reject) {
 				API.postHttp('/personal/feed/query', query).then(function(res){
-					res.opop = 'asddd';
 					resolve(res)
 				},reject);
 			});
 		},
 
+		getPushMessages: function(type,market, tstamp, data){
+			var path = ''
+			if(type=='default'){
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp;
+			}else if(type=='symbols'){
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.symbol);
+			}else if(type=='users'){
+				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify(data.user);
+			}else if(type=='sectors'){
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.sector);
+			}else if(type=='response'){
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.response);
+			}
+			return API.getHttp(path);
+		},
 		getRepliesCount: function(data){
 				API.postHttp('/personal/message/reply/count', {
 					message_ids:_.chain(data).map('theme_id'),

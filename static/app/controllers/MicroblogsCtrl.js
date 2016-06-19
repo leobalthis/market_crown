@@ -2,6 +2,8 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	var currentUsername = UserDetailsService.getUser().mc_username;
 	$scope.currentUsername=currentUsername;
 	console.log('currentUser',currentUsername);
+	var periodicalReqiestInterval;
+	var periodicalRequestParams;
 
 	$scope.microblogs = {};
 	$scope.microblogs.formFocused = false;
@@ -34,6 +36,9 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				console.log("Service Microblogs", data);
 
 				$scope.microblogs.data = data.results;
+				$scope.microblogs.tstamp = data.tstamp;
+				startPeriodicalRequests();
+				processMessages($scope.microblogs.data);
 				MicroblogsService.getRepliesCount($scope.microblogs.data);
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
@@ -44,9 +49,10 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 
 	$scope.getMicroblogs = function(market, querytype){
-		MicroblogsService.getMicroblogsService(currentUsername,market,querytype)
+		MicroblogsService.getMicroblogsService({user:currentUsername,market:market,query_type:querytype})
 			.then(function(data){
 				console.log("Service Microblogs2", data);
+				startPeriodicalRequests();
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
 				console.log('Service Default Microblogs Error2', error);
@@ -58,7 +64,8 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		q.market = $scope.microblogs.filterMarket.symbol;
 		q.user = currentUsername;
 		console.log('_', q);
-		$scope.getMicroblogs(q)
+		$scope.getMicroblogs(q);
+		startPeriodicalRequests();
 
 		$scope.microblogs.filter.sector=null;
 		$scope.microblogs.filter.symbol=null;
@@ -101,8 +108,8 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				// promise fulfilled
 				console.log("Service Microblogs Send Reply",  $scope.microblogs.data);
 				$scope.microblogs.replyData = "";
-				$scope.getReplies($scope.microblogs.clickedMicroblogElement.theme_id);
-				$scope.microblogs.clickedMicroblogElement.replies += 1;
+				//$scope.getReplies($scope.microblogs.clickedMicroblogElement.theme_id);
+				//$scope.microblogs.clickedMicroblogElement.replies += 1;
 
 
 			}, function(error) {
@@ -150,4 +157,50 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		$location.path('/user/'+username);
 		//"#/user/{{reply.user}}"
 	}
+
+
+	function processMessages(messages){
+		_.each(messages,processMessage);
+	}
+
+	var reBold = /([\$\#\@]\S+)/ig;
+	var reLink = /((?:http:\/\/\S+\.\S+)|(?:w{3}\S+\.\S+)|(?:\S+\.(?:ru|com|net|png|jpg|jpeg|bmp)))/ig;
+	function processMessage(message){
+		message.message =  String(message.message).replace(reBold,"<strong>$1</strong>");
+		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
+	}
+
+	function doPeriodicalRequest(){
+
+
+		console.log('DPR',$scope.microblogs,periodicalRequestParams);
+		MicroblogsService.getPushMessages(periodicalRequestParams.query_type,periodicalRequestParams.market,periodicalRequestParams.tstamp,periodicalRequestParams.microblogs).then(function(res){
+			console.log('PM<<, ',res);
+			if(res.results && !_.isEmpty(res.results)){
+				$scope.microblogs.data = _.union($scope.microblogs.data,res.results);
+			};
+			$scope.microblogs.tstamp = res.tstamp;
+
+		});
+
+	};
+
+	function startPeriodicalRequests(){
+		periodicalRequestParams = {
+			tstamp:$scope.microblogs.tstamp,
+			query_type:$scope.microblogs.filter.query_type,
+			market:$scope.microblogs.new.market.symbol,
+			microblogs: _.cloneDeep($scope.microblogs)
+		};
+		if(periodicalReqiestInterval){
+			clearInterval(periodicalReqiestInterval)
+		}
+		periodicalReqiestInterval = setInterval(doPeriodicalRequest,3000)
+	}
+
+	$scope.$on('$destroy',function(){
+		if(periodicalReqiestInterval){
+			clearInterval(periodicalReqiestInterval)
+		}
+	})
 }]);
