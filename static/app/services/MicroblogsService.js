@@ -30,6 +30,21 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 			});
 		},
 
+		getRepliesCount: function(data){
+				API.postHttp('/personal/message/reply/count', {
+					message_ids:_.chain(data).map('theme_id'),
+					market:data[0].market
+				}).then(function(res){
+					console.log('getRepliesCount+',res);
+					_.each(res,function(rply){
+						var msg = _.find(data,{theme_id:rply.theme_id})
+						if(msg){
+							msg.replies = rply.replies;
+						}
+					})
+				});
+			console.log('getRepliesCount',data);
+		},
 
 		getOnlyMeMicroblogsService: function(user, market) {
 			return API.postHttp('/personal/feed/query',

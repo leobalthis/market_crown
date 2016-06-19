@@ -1,4 +1,4 @@
-App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'GeneralDataService', 'UserDetailsService', function ($scope, $http, MicroblogsService, GeneralDataService,UserDetailsService){
+App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'GeneralDataService', 'UserDetailsService', '$location', function ($scope, $http, MicroblogsService, GeneralDataService,UserDetailsService,$location){
 	var currentUsername = UserDetailsService.getUser().mc_username;
 	$scope.currentUsername=currentUsername;
 	console.log('currentUser',currentUsername);
@@ -32,7 +32,9 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		MicroblogsService.getMicroblogsService({user:user, market:"us", query_type:"default"})
 			.then(function(data) {
 				console.log("Service Microblogs", data);
+
 				$scope.microblogs.data = data.results;
+				MicroblogsService.getRepliesCount($scope.microblogs.data);
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
 				console.log('Service Default Microblogs Error', error);
@@ -143,4 +145,9 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	$scope.microblogs.filter.sector = [];
 	$scope.microblogs.filter.sectors = ["utilities", "services", "industrial goods", "consumer goods", "conglomerates", "financial", "healthcare", "basic materials", "technology"];
 
+
+	$scope.gotoProfile = function(username){
+		$location.path('/user/'+username);
+		//"#/user/{{reply.user}}"
+	}
 }]);

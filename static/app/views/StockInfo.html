@@ -249,8 +249,8 @@
 				<div class="element" ng-repeat="item in microblogs.data | limitTo:9">
 					<div class="row">
 						<div class="col-lg-2">
-							<div class="img-container" popover-placement="bottom" uib-popover="{{item.user}}" popover-trigger="mouseenter" >
-								<img src="assets/images/avatar-small-2.png" alt="">
+							<div class="img-container" popover-placement="bottom" uib-popover="{{item.user}}" popover-trigger="mouseenter" ng-click="gotoProfile(item.user)">
+								<img ng-src="{{item.avatar || 'assets/images/avatar-small-2.png'}}" alt="">
 							</div>
 						</div>
 
@@ -277,12 +277,16 @@
 								<div class="replies">
 									<div class="reply-element" ng-repeat="reply in microblogs.replies">
 										<div class="row-regular">
-											<div class="col-sm-3">
-												<p class="author">
-													<a href="#/user/{{reply.user}}">
-														{{reply.user}}
-													</a>
-												</p>
+											<div class="col-sm-2">
+
+												<div class="img-container" popover-placement="bottom" uib-popover="{{item.user}}" popover-trigger="mouseenter"  ng-click="gotoProfile(item.user)">
+													<img ng-src="{{item.avatar || 'assets/images/avatar-small-2.png'}}" alt="">
+												</div>
+												<!--<p class="author">-->
+													<!--<a href="#/user/{{reply.user}}">-->
+													<!--{{reply.user}}-->
+													<!--</a>-->
+												<!--</p>-->
 											</div>
 
 											<div class="col-sm-9">
