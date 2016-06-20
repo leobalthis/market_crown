@@ -222,17 +222,23 @@
 
 					<div class="row-regular">
 						<div class="col-lg-8">
-							<div class="sectors" ng-show="microblogs.filter.symbol == 'sectors'">
+							<div class="sectors" ng-show="microblogs.filter.query_type == 'sectors'">
 								<ui-select multiple ng-model="microblogs.filter.sector" theme="bootstrap">
 									<ui-select-match placeholder="Sectors...">{{$item}}</ui-select-match>
-									<ui-select-choices repeat="sector in microblogs.filter.sectors | filter:$select.search" position="down">
+									<ui-select-choices repeat="sector in sectors | filter:$select.search" position="down">
 										{{sector}}
 									</ui-select-choices>
 								</ui-select>
 							</div>
 
-							<div class="symbols">
-								<input type="text" placeholder="Enter new symbol..." ng-model="microblogs.filter.symbol" uib-typeahead="symbol.name for symbol in microblogs.symbols | filter:$viewValue | limitTo:8" class="form-control">
+							<div class="symbols input-field enter-symbol" ng-show="microblogs.filter.query_type == 'symbols'">
+								<input type="text" placeholder="Enter new symbol..."
+									   ng-model="microblogs.filter.symbol"
+									   typeahead-editable="false"
+									   typeahead-input-formatter="formatLabel($model)"
+									   required = "true"
+									   value="{{symbol.name}}"
+									   uib-typeahead="symbol.symbol as symbol.name for symbol in symbols | filter:$viewValue | limitTo:8" class="form-control">
 							</div>
 						</div>
 
@@ -246,7 +252,8 @@
 			</div>
 
 			<div class="microblogs-elements-feed" infinite-scroll="getDefaultMicroblogs(currentUsername, 'us', 'default')">
-				<div class="element" ng-repeat="item in microblogs.data | limitTo:9">
+				<div class="element" ng-repeat="item in microblogs.data | limitTo:maxMessages ">
+
 					<div class="row">
 						<div class="col-lg-2">
 							<div class="img-container" popover-placement="bottom" uib-popover="{{item.user}}" popover-trigger="mouseenter" ng-click="gotoProfile(item.user)">
@@ -314,6 +321,8 @@
 						</div>
 					</div>
 				</div>
+
+				<button  class="btn btn-primary" ng-click="showMoreMessages()" ng-show="maxMessages<microblogs.data.length">Load more...</button>
 			</div>
 
 

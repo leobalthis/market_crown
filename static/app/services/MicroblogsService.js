@@ -31,14 +31,15 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 
 		getPushMessages: function(type,market, tstamp, data){
 			var path = ''
+			console.log('type',type,data)
 			if(type=='default'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp;
 			}else if(type=='symbols'){
-				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.symbol);
-			}else if(type=='users'){
-				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify(data.user);
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.symbol]);
+			}else if(type=='only-me'){
+				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify(data.username);
 			}else if(type=='sectors'){
-				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.sector);
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.sector]);
 			}else if(type=='response'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.response);
 			}
