@@ -38,6 +38,8 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.symbol]);
 			}else if(type=='onlyme'){
 				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify([data.username]);
+			}else if(type=='userlist'){
+				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify([data.userlist]);
 			}else if(type=='sectors'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.sector]);
 			}else if(type=='response'){
@@ -49,7 +51,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 				API.postHttp('/personal/message/reply/count', {
 					message_ids:_.chain(data).map('theme_id'),
 					market:data[0].market
-				}).then(function(res){
+				},true).then(function(res){
 					console.log('getRepliesCount+',res);
 					_.each(res,function(rply){
 						var msg = _.find(data,{theme_id:rply.theme_id})

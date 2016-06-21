@@ -25,6 +25,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	$scope.microblogs.filters = [
 		{name: 'Default', query_type: 'default'},
 		{name: 'Only Me', query_type: 'onlyme'},
+		{name: 'Users', query_type: 'userlist'},
 		{name: 'Sectors', query_type: 'sectors'},
 		{name: 'Symbols', query_type: 'symbols'}
 	];
@@ -37,7 +38,17 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	};
 
 
+	GeneralDataService.getAllUsersService("/personal/return/users")
+		// then() called when son gets back
+		.then(function(data) {
+			// promise fulfilled
+			console.log("Service Get All Usersr",  data);
+			$scope.users = data;
 
+		}, function(error) {
+			// promise rejected, could log the error with: console.log('error', error);
+			console.log('Service Get All Users Error', error);
+		});
 
 	//watching for market changes
 	$scope.$watch(function(){
@@ -167,12 +178,15 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	};
 
 	$scope.submitFilters = function(){
-		var q = _.pick($scope.microblogs.filter,['query_type','market','sector','symbol']);
+		var q = _.pick($scope.microblogs.filter,['query_type','market']);
 		q.market = $scope.microblogs.filterMarket.symbol;
-		q.user = currentUsername;
-		if(q.symbol){q.symbols = [q.symbol]};
-		if(q.sector){q.sectors = q.sector};
 
+		q.user = currentUsername;
+		if($scope.microblogs.filter.symbol){q.symbols = $scope.microblogs.filter.symbol};
+		if($scope.microblogs.filter.sector){q.sectors = $scope.microblogs.filter.sector};
+		if($scope.microblogs.filter.user){q.userlist = $scope.microblogs.filter.user;};
+
+		//if(q.query_type=='onlyme'){q.user = currentUsername;}
 		if(!checkSumbitFilters(q)){
 			Notification.error('Some fields required are empty');
 			return;
@@ -188,8 +202,9 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		//startPeriodicalRequests();
 		//$scope.maxMessages = maxMessagesInit;
 		//sortMessages();
-		$scope.microblogs.filter.sector=null;
-		$scope.microblogs.filter.symbol=null;
+		//$scope.microblogs.filter.sector=null;
+		//$scope.microblogs.filter.symbol=null;
+		//$scope.microblogs.filter.user=null;
 	};
 
 	$scope.createTopic = function() {
@@ -229,8 +244,8 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				// promise fulfilled
 				console.log("Service Microblogs Send Reply",  $scope.microblogs.data);
 				$scope.microblogs.replyData = "";
-				//$scope.getReplies($scope.microblogs.clickedMicroblogElement.theme_id);
-				//$scope.microblogs.clickedMicroblogElement.replies += 1;
+				$scope.getReplies($scope.microblogs.clickedMicroblogElement.theme_id);
+				$scope.microblogs.clickedMicroblogElement.replies += 1;
 
 
 			}, function(error) {
@@ -292,16 +307,15 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	}
 
 	function doPeriodicalRequest(){
-		console.log('DPR',periodicalRequestParams);
 		MicroblogsService.getPushMessages(periodicalRequestParams.query_type,periodicalRequestParams.market,periodicalRequestParams.tstamp,periodicalRequestParams).then(function(res){
-			console.log('PM<<, ',res);
 			if(res.results && !_.isEmpty(res.results)){
-				$scope.microblogs.data = _.union($scope.microblogs.data,res.results);
+				processMessages(res.results);
+				$scope.microblogs.data = _.unionBy($scope.microblogs.data,res.results,'theme_id');
 				sortMessages()
 			};
 			$scope.microblogs.tstamp = res.tstamp;
-
 		});
+		MicroblogsService.getRepliesCount($scope.microblogs.data);
 
 	};
 
@@ -312,6 +326,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 			market:$scope.microblogs.new.market.symbol,
 			sector:$scope.microblogs.filter.sector,
 			symbol:$scope.microblogs.filter.symbol,
+			userlist:$scope.microblogs.filter.user,
 			username:currentUsername,
 			microblogs: _.cloneDeep($scope.microblogs)
 		};
@@ -319,6 +334,12 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 			clearInterval(periodicalReqiestInterval)
 		}
 		periodicalReqiestInterval = setInterval(doPeriodicalRequest,7000)
+		//periodicalReqiestInterval = setInterval(function(){
+		//	console.log('microblogs.filter.sector',$scope.microblogs.filter.sector);
+		//	console.log('microblogs.filter.user',$scope.microblogs.filter.user);
+		//	console.log('microblogs.filter.symbol',$scope.microblogs.filter.symbol);
+		//},1000)
+
 	}
 
 

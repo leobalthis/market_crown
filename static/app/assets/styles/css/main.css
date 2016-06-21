@@ -10591,8 +10591,7 @@ footer {
           margin: 0;
           border: 1px solid #39464D;
           background-color: #46585f;
-          position: absolute;
-          padding-bottom: 25px;
+          padding-bottom: 22px;
           -webkit-box-shadow: none;
           box-shadow: none;
           color: #ededed;
@@ -10660,6 +10659,7 @@ footer {
           margin-bottom: .2em; }
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element p.message {
           margin-bottom: .5em;
+          word-wrap: break-word;
           border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element p.author {
           color: rgba(0, 0, 0, 0.5) !important; }

@@ -12,7 +12,7 @@ console.log(window.location.host)
 			headers:headers,
 			data:data,
 			ignoreLoadingBar:ignoreLoadingBar
-		})
+		},ignoreLoadingBar)
 	}
 
 	function postHttp(url,data,ignoreLoadingBar){
@@ -29,7 +29,7 @@ console.log(window.location.host)
 
 	function request(req,ignoreLoadingBar){
 		return $q(function(resolve, reject) {
-			$http(req).then(function (res) {
+			$http(req,{ignoreLoadingBar:ignoreLoadingBar}).then(function (res) {
 				if (!res || !res.data) {
 					Notification.error('Unknown error');
 					console.error('Responce error');

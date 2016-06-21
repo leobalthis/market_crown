@@ -231,14 +231,31 @@
 								</ui-select>
 							</div>
 
+							<div class="sectors" ng-show="microblogs.filter.query_type == 'userlist'">
+								<ui-select multiple ng-model="microblogs.filter.user" theme="bootstrap">
+									<ui-select-match placeholder="Users...">{{$item}}</ui-select-match>
+									<ui-select-choices repeat="user in users | filter:$select.search" position="down">
+										{{user}}
+									</ui-select-choices>
+								</ui-select>
+							</div>
+							<!--refresh="refreshAddresses($select.search)"-->
+							<!--refresh-delay="0"-->
+
 							<div class="symbols input-field enter-symbol" ng-show="microblogs.filter.query_type == 'symbols'">
-								<input type="text" placeholder="Enter new symbol..."
-									   ng-model="microblogs.filter.symbol"
-									   typeahead-editable="false"
-									   typeahead-input-formatter="formatLabel($model)"
-									   required = "true"
-									   value="{{symbol.name}}"
-									   uib-typeahead="symbol.symbol as symbol.name for symbol in symbols | filter:$viewValue | limitTo:8" class="form-control">
+								<ui-select multiple ng-model="microblogs.filter.symbol" theme="bootstrap">
+									<ui-select-match placeholder="Symbols...">{{$item.name}}</ui-select-match>
+									<ui-select-choices repeat=" symbol.symbol as symbol in symbols  | filter:$select.search" position="down">
+										{{symbol.name}}
+									</ui-select-choices>
+								</ui-select>
+								<!--<input type="text" placeholder="Enter new symbol..."-->
+									   <!--ng-model="microblogs.filter.symbol"-->
+									   <!--typeahead-editable="false"-->
+									   <!--typeahead-input-formatter="formatLabel($model)"-->
+									   <!--required = "true"-->
+									   <!--value="{{symbol.name}}"-->
+									   <!--uib-typeahead="symbol.symbol as symbol.name for symbol in symbols | filter:$viewValue | limitTo:8" class="form-control">-->
 							</div>
 						</div>
 
@@ -271,13 +288,17 @@
  							</p>
 							<div class="row-regular">
 								<div class="col-sm-6">
-									<p class="text-left author"><img src="assets/images/calendar-small.png" alt=""> {{item.activity_time}}</p>
+									<p class="text-left author">{{item.activity_time}}</p>
+									<!--<img src="assets/images/calendar-small.png" alt="">-->
 								</div>
 								<div class="col-sm-6">
-									<button ng-click="getClickedMicroblogElement(item)"  class="btn pull-right"><img src="assets/images/reply.png" alt=""> Reply <span class="number">{{item.replies}}</span></button>
+									<button ng-click="getClickedMicroblogElement(item)"
+											ng-hide="item.theme_id == microblogs.clickedMicroblogElement.theme_id"
+											style="    border: none;overflow: hidden;padding-bottom: 0px;padding-top: 0px;    line-height: 26px;"
+											class="btn pull-right">Reply <span style="  width: initial;  float: right;border-radius: 0px;display: block;margin-right: -12px;margin-left: 8px;padding-right: 12px;padding-left: 10px;line-height: 26px;height: 25px;">{{item.replies}}</span></button>
 								</div>
 							</div>
-
+							<!--<img src="assets/images/reply.png" alt="">-->
 							<div class="clearfix"></div>
 
 							<div class="reply-form" id="{{item.theme_id}}" ng-show="item.theme_id == microblogs.clickedMicroblogElement.theme_id">
@@ -312,8 +333,8 @@
 									</div>
 									<div class="form-group">
 										<div class="col-lg-12">
-											<button type="submit" class="btn btn-primary">Submit</button>
-											<p class="btn btn-cancel" ng-click="dismissReplyForm()" class="cancel">Cancel</p>
+											<button type="submit" class="btn btn-primary pull-right">Submit</button>
+											<p class="btn btn-cancel pull-right" ng-click="dismissReplyForm()" class="cancel">Cancel</p>
 										</div>
 									</div>
 								</form>
