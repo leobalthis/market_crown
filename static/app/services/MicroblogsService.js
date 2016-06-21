@@ -43,7 +43,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 			}else if(type=='response'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.response);
 			}
-			return API.getHttp(path);
+			return API.getHttp(path,null,true);
 		},
 		getRepliesCount: function(data){
 				API.postHttp('/personal/message/reply/count', {

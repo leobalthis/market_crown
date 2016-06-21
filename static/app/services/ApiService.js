@@ -4,28 +4,30 @@ App.factory('APIService', ['$http','$q','Notification', function ($http,$q,Notif
 	var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
 
 console.log(window.location.host)
-	function getHttp(url,data){
+	function getHttp(url,data,ignoreLoadingBar){
 		var data = data?data:{};
 		return request({
 			method: 'GET',
 			url:urlBase+url,
 			headers:headers,
-			data:data
+			data:data,
+			ignoreLoadingBar:ignoreLoadingBar
 		})
 	}
 
-	function postHttp(url,data){
+	function postHttp(url,data,ignoreLoadingBar){
 		var data = data?data:{};
 		return request({
 			method: 'POST',
 			url:urlBase+url,
 			headers:headers,
-			data:data
+			data:data,
+			ignoreLoadingBar:ignoreLoadingBar
 		})
 	}
 
 
-	function request(req){
+	function request(req,ignoreLoadingBar){
 		return $q(function(resolve, reject) {
 			$http(req).then(function (res) {
 				if (!res || !res.data) {

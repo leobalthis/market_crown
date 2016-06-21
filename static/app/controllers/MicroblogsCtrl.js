@@ -316,7 +316,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		if(periodicalReqiestInterval){
 			clearInterval(periodicalReqiestInterval)
 		}
-		periodicalReqiestInterval = setInterval(doPeriodicalRequest,3000)
+		periodicalReqiestInterval = setInterval(doPeriodicalRequest,7000)
 	}
 
 

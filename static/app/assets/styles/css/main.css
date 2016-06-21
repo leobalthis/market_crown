@@ -10591,6 +10591,8 @@ footer {
           margin: 0;
           border: 1px solid #39464D;
           background-color: #46585f;
+          position: absolute;
+          padding-bottom: 25px;
           -webkit-box-shadow: none;
           box-shadow: none;
           color: #ededed;
