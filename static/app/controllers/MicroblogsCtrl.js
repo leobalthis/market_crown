@@ -24,7 +24,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	$scope.microblogs.filter = {};
 	$scope.microblogs.filters = [
 		{name: 'Default', query_type: 'default'},
-		{name: 'Only Me', query_type: 'only-me'},
+		{name: 'Only Me', query_type: 'onlyme'},
 		{name: 'Sectors', query_type: 'sectors'},
 		{name: 'Symbols', query_type: 'symbols'}
 	];
@@ -143,6 +143,8 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				$scope.maxMessages = maxMessagesInit;
 				//startPeriodicalRequests();
 				$scope.microblogs.data = data.results;
+				processMessages($scope.microblogs.data);
+				MicroblogsService.getRepliesCount($scope.microblogs.data);
 				sortMessages();
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);

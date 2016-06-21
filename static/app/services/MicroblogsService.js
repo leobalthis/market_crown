@@ -36,8 +36,8 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp;
 			}else if(type=='symbols'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.symbol]);
-			}else if(type=='only-me'){
-				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify(data.username);
+			}else if(type=='onlyme'){
+				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify([data.username]);
 			}else if(type=='sectors'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.sector]);
 			}else if(type=='response'){
