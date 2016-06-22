@@ -246,7 +246,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				$scope.microblogs.replyData = "";
 				$scope.getReplies($scope.microblogs.clickedMicroblogElement.theme_id);
 				$scope.microblogs.clickedMicroblogElement.replies += 1;
-				$scope.dismissCreateMicroblogForm();
+				$scope.dismissReplyForm();
 
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
@@ -304,6 +304,11 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 	function processMessage(message){
 		message.message =  String(message.message).replace(reBold,"<strong>$1</strong>");
 		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
+		//_.each(data,function(item){
+			API.getHttp('/personal/avatar/'+message.user).then(function(avatar){
+				message.avatar = avatar.avatar;
+			})
+		//})
 	}
 
 	function doPeriodicalRequest(){

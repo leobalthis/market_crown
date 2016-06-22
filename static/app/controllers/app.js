@@ -41,7 +41,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					}
 				},
 				'sidebar': {
-					templateUrl: 'views/Sidebar.html',
+					templateUrl: 'views/UserSidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
 							return UserDetailsService.getUser(true);
