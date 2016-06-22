@@ -44,12 +44,13 @@ app.use(passport.session());
 
 app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
 app.use('/userpics', express.static(__dirname + '/static/userpics'));
-app.use(CONFIG.APP_PREFIX, [checkIfAuthed, express.static(__dirname + '/static/app')]);
+
 
 //app.use(CONFIG.API_PREFIX+'/common',		common);
 app.use(CONFIG.API_PREFIX+'/admin',			admin);
 app.use(CONFIG.API_PREFIX+'/personal',		personal);
 app.use(CONFIG.API_PREFIX+'/auth',			auth);
+app.use(CONFIG.APP_PREFIX, [checkIfAuthed, express.static(__dirname + '/static/app')]);
 app.get(CONFIG.LANDING_PREFIX, function(req,res){
 	res.sendFile(__dirname + '/static/landing/marketcrown.html')
 });
