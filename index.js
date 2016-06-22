@@ -91,6 +91,7 @@ function startServer(){
 
 
 function checkIfAuthed(req,res,next){
+	console.log('checkIfAuthed',req.user);
 	if(!req.user){
 		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
 	}else if(!req.user.mc_username){
