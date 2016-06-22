@@ -230,7 +230,11 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				// promise fulfilled
 				$scope.microblogs.replies = data.results;
 				console.log("Service Microblogs Replies",  $scope.microblogs.data);
-
+				_.each($scope.microblogs.replies,function(reply){
+					API.getHttp('/personal/avatar/'+reply.user).then(function(avatar){
+						reply.avatar = avatar.avatar;
+					})
+				})
 
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
@@ -307,7 +311,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		message.message =  String(message.message).replace(reBold,"<strong>$1</strong>");
 		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
 		//_.each(data,function(item){
-		console.log('message',message)
+
 			API.getHttp('/personal/avatar/'+message.user).then(function(avatar){
 				message.avatar = avatar.avatar;
 			})
