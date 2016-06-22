@@ -131,7 +131,7 @@
 function validateForm(){
 	console.log('validation');
 	var form = document.forms["finishForm"];
-	var nick = form['user_name'].value;
+	var nick = form['username'].value;
 	var email = form['email'].value;
 	var re = /^\w+$/;
 	var remail = /^.+@.+\..+$/;

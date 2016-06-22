@@ -287,7 +287,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				console.log('Service SYMBOLS Error', error);
 			});
 	};
-	$scope.getSymbols($scope.microblogs.filterMarket);
+	$scope.getSymbols($scope.microblogs.filterMarket.symbol);
 
 	$scope.microblogs.filter.sector = [];
 	$scope.microblogs.filter.sectors = ["utilities", "services", "industrial goods", "consumer goods", "conglomerates", "financial", "healthcare", "basic materials", "technology"];
