@@ -47,9 +47,9 @@ router.get('/me',function(req, res){
 });
 
 router.get('/avatar/:username',function(req, res){
-	if(process.env.NODE_ENV=='development'){
-		res.json({avatar:'assets/images/thumb.jpg'});
-	}else{
+	//if(process.env.NODE_ENV=='development'){
+	//	res.json({avatar:'assets/images/thumb.jpg'});
+	//}else{
 		var username = String(req.params.username).toLowerCase();
 		var regex = new RegExp('^'+username+'$','i');
 		console.log('ava',username,regex);
@@ -60,7 +60,7 @@ router.get('/avatar/:username',function(req, res){
 				res.json({avatar:(user.photos && user.photos[0])?user.photos[0].value:'/userpics/$default.png'});
 			}
 		});
-	}
+	//}
 });
 
 

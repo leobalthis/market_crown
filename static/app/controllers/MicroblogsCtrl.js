@@ -296,7 +296,9 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 
 	function processMessages(messages){
-		_.each(messages,processMessage);
+		_.each(messages,function(message){
+			processMessage(message);
+		});
 	}
 
 	var reBold = /([\$\#\@]\S+)/ig;
@@ -305,6 +307,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		message.message =  String(message.message).replace(reBold,"<strong>$1</strong>");
 		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
 		//_.each(data,function(item){
+		console.log('message',message)
 			API.getHttp('/personal/avatar/'+message.user).then(function(avatar){
 				message.avatar = avatar.avatar;
 			})
