@@ -246,7 +246,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 				$scope.microblogs.replyData = "";
 				$scope.getReplies($scope.microblogs.clickedMicroblogElement.theme_id);
 				$scope.microblogs.clickedMicroblogElement.replies += 1;
-
+				$scope.dismissCreateMicroblogForm();
 
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
