@@ -153,40 +153,36 @@ $scope.test = function(){
 
 
 	$scope.getMicroblogs = function(data){
-		$scope.getDefaultMicroblogs(currentUsername);
-		//MicroblogsService.getMicroblogsService(data)
-		//	.then(function(data){
-		//		console.log("Service Microblogs2", data);
-		//		$scope.maxMessages = maxMessagesInit;
-		//		//startPeriodicalRequests();
-		//		$scope.microblogs.data = data.results;
-		//		processMessages($scope.microblogs.data);
-		//		MicroblogsService.getRepliesCount($scope.microblogs.data);
-		//		sortMessages();
-		//	}, function(error) {
-		//		// promise rejected, could log the error with: console.log('error', error);
-		//		console.log('Service Default Microblogs Error2', error);
-		//	});
+		//$scope.getDefaultMicroblogs(currentUsername);
+		MicroblogsService.getMicroblogsService(data)
+			.then(function(data){
+				console.log("Service Microblogs2", data);
+				$scope.maxMessages = maxMessagesInit;
+				//startPeriodicalRequests();
+				$scope.microblogs.data = data.results;
+				processMessages($scope.microblogs.data);
+				MicroblogsService.getRepliesCount($scope.microblogs.data);
+				sortMessages();
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Default Microblogs Error2', error);
+			});
 	};
 
 	$scope.formatLabel = function(model){
-		console.log('!!!!',$scope.symbols,model);
+
 		var res  = _.find($scope.symbols,{symbol:model})
 		if(res){
 			return res.name;
 		}
 
-		//for (var i=0; i< $scope.symbols.length; i++) {
-		//	if (model === $scope.options[i].value) {
-		//		return $scope.options[i].text;
-		//	}
-		//}
+
 	};
 
 	$scope.submitFilters = function(){
 		var q = _.pick($scope.microblogs.filter,['query_type','market']);
 		q.market = $scope.microblogs.filterMarket.symbol;
-
+		//q.query_type = $scope.microblogs.filter;
 		q.user = currentUsername;
 		if($scope.microblogs.filter.symbol){q.symbols = $scope.microblogs.filter.symbol};
 		if($scope.microblogs.filter.sector){q.sectors = $scope.microblogs.filter.sector};
@@ -198,11 +194,7 @@ $scope.test = function(){
 			return;
 		}
 
-
-		//startPeriodicalRequests();// IT SAVES PERIODICAL REQUEST PARAMS
-
-
-		console.log('_', q);
+		startPeriodicalRequests();// IT SAVES PERIODICAL REQUEST PARAMS
 
 		$scope.getMicroblogs(q);
 		//startPeriodicalRequests();
@@ -352,11 +344,7 @@ $scope.test = function(){
 			clearInterval(periodicalReqiestInterval)
 		}
 		periodicalReqiestInterval = setInterval(doPeriodicalRequest,7000)
-		//periodicalReqiestInterval = setInterval(function(){
-		//	console.log('microblogs.filter.sector',$scope.microblogs.filter.sector);
-		//	console.log('microblogs.filter.user',$scope.microblogs.filter.user);
-		//	console.log('microblogs.filter.symbol',$scope.microblogs.filter.symbol);
-		//},1000)
+
 
 	}
 
