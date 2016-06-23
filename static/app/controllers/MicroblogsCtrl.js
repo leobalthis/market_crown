@@ -154,7 +154,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		//		console.log('Service Default Microblogs Error', error);
 		//	});
 	};
-	$scope.getDefaultMicroblogs(currentUsername);
+	//$scope.getDefaultMicroblogs(currentUsername);
 
 
 	$scope.getMicroblogs = function(data){
