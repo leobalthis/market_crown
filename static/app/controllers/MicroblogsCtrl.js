@@ -132,12 +132,12 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		API.postHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
 			console.log("Service Microblogs", data);
 
-			$scope.microblogs.data = data.results;
-			$scope.microblogs.tstamp = data.tstamp;
-			startPeriodicalRequests();
-			processMessages($scope.microblogs.data);
-			MicroblogsService.getRepliesCount($scope.microblogs.data);
-			sortMessages();
+			//$scope.microblogs.data = data.results;
+			//$scope.microblogs.tstamp = data.tstamp;
+			//startPeriodicalRequests();
+			//processMessages($scope.microblogs.data);
+			//MicroblogsService.getRepliesCount($scope.microblogs.data);
+			//sortMessages();
 		});
 		//MicroblogsService.getMicroblogsService({user:user, market:"us", query_type:"default"})
 		//	.then(function(data) {
@@ -154,23 +154,24 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		//		console.log('Service Default Microblogs Error', error);
 		//	});
 	};
-	$scope.getDefaultMicroblogs(currentUsername);
+	//$scope.getDefaultMicroblogs(currentUsername);
 
 
 	$scope.getMicroblogs = function(data){
-		MicroblogsService.getMicroblogsService(data)
-			.then(function(data){
-				console.log("Service Microblogs2", data);
-				$scope.maxMessages = maxMessagesInit;
-				//startPeriodicalRequests();
-				$scope.microblogs.data = data.results;
-				processMessages($scope.microblogs.data);
-				MicroblogsService.getRepliesCount($scope.microblogs.data);
-				sortMessages();
-			}, function(error) {
-				// promise rejected, could log the error with: console.log('error', error);
-				console.log('Service Default Microblogs Error2', error);
-			});
+		$scope.getDefaultMicroblogs(currentUsername);
+		//MicroblogsService.getMicroblogsService(data)
+		//	.then(function(data){
+		//		console.log("Service Microblogs2", data);
+		//		$scope.maxMessages = maxMessagesInit;
+		//		//startPeriodicalRequests();
+		//		$scope.microblogs.data = data.results;
+		//		processMessages($scope.microblogs.data);
+		//		MicroblogsService.getRepliesCount($scope.microblogs.data);
+		//		sortMessages();
+		//	}, function(error) {
+		//		// promise rejected, could log the error with: console.log('error', error);
+		//		console.log('Service Default Microblogs Error2', error);
+		//	});
 	};
 
 	$scope.formatLabel = function(model){
@@ -203,7 +204,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		}
 
 
-		startPeriodicalRequests();// IT SAVES PERIODICAL REQUEST PARAMS
+		//startPeriodicalRequests();// IT SAVES PERIODICAL REQUEST PARAMS
 
 
 		console.log('_', q);
