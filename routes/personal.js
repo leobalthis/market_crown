@@ -13,32 +13,30 @@ var qs 					= require('querystring')
 
 //router.use(usernameReplacement);
 var pattern = '$$username$$';
-function replacer(req,field){
-	req[field] = req[field].replace(pattern,req.user.mc_username);
-}
-
-function usernameReplacement(req,res, next){
-
-	if(req.user){
-		replacer(req,'baseUrl');
-		replacer(req,'originalUrl');
-		replacer(req,'path');
-		replacer(req,'url');
-		next();
-	}else{
-		log.warn('No user in /personal');
-		next();
-	}
-}
+//function replacer(req,field){
+//	req[field] = req[field].replace(pattern,req.user.mc_username);
+//}
+//
+//function usernameReplacement(req,res, next){
+//
+//	if(req.user){
+//		replacer(req,'baseUrl');
+//		replacer(req,'originalUrl');
+//		replacer(req,'path');
+//		replacer(req,'url');
+//		next();
+//	}else{
+//		log.warn('No user in /personal');
+//		next();
+//	}
+//}
 
 
 
 router.get('/me',function(req, res){
 		res.json(req.user);
 });
-router.post('/me',function(req, res){
-	res.json(req.user);
-});
+
 
 router.get('/avatar/:username',function(req, res){
 	//if(process.env.NODE_ENV=='development'){
