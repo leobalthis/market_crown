@@ -7,6 +7,8 @@ const session 			= require('express-session');
 const MongoStore 		= require('connect-mongo')(session);
 const passport 			= require('passport');
 const mustacheExpress 	= require('mustache-express');
+var cookieParser 		= require('cookie-parser')
+
 
 const common 			= require('./routes/common.js');
 const personal			= require('./routes/personal.js');
@@ -15,7 +17,7 @@ const admin				= require('./routes/admin.js');
 const db				= require('./db/db.js');
 
 const CONFIG			= require('./config.js');
-
+const sessionsecret		= 'jst rndm scrt lne'
 
 // parse application/x-www-form-urlencoded
 //app.use(bodyParser.urlencoded({ extended: false }))
@@ -27,13 +29,18 @@ app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/static/landing');
 //app.set('views', __dirname + '/static/app');
+
+app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
+app.use('/userpics', express.static(__dirname + '/static/userpics'));
+app.use(cookieParser(sessionsecret));
 app.use(session({
-	secret:'jst rndm scrt lne',
+	secret:sessionsecret,
 	resave: false,
 	saveUninitialized:false,
-	rolling: true,
+	rolling: false,
 	cookie : {
 		secure: false,
+		httpOnly: true,
 		maxAge: 1000*60*60*24*7 // see below
 	},
 	store : new MongoStore({
@@ -45,8 +52,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
-app.use('/userpics', express.static(__dirname + '/static/userpics'));
+
 
 
 //app.use(CONFIG.API_PREFIX+'/common',		common);

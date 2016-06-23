@@ -13,7 +13,7 @@
     "body-parser": "^1.15.0",
     "concat-stream": "^1.5.1",
     "connect-mongo": "^1.1.0",
-    "cookie-parser": "^1.4.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "ioredis": "^1.15.1",
