@@ -58,11 +58,11 @@ router.get('/avatar/:username',function(req, res){
 });
 
 
-
-router.get('/(.*)/',proxy);
-router.post('/(.*)/',proxy);
-router.put('/(.*)/',proxy);
-router.delete('/(.*)/',proxy);
+var allpath = '/:w1/:w2*?/:w4*?/:w5*?'
+router.get(allpath,proxy);
+router.post(allpath,proxy);
+router.put(allpath,proxy);
+router.delete(allpath,proxy);
 
 
 function proxy(req, res) {
