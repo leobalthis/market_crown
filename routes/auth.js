@@ -25,12 +25,13 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
+	console.log('deserializeUser',id);
 	User.findById(id, function(err, user) {
-		if(user.banned){
-			done(err,null);
-		}else{
+		//if(user.banned){
+		//	done(err,null);
+		//}else{
 			done(err, user);
-		}
+		//}
 
 	});
 });
