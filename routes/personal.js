@@ -56,11 +56,11 @@ router.get('/avatar/:username',function(req, res){
 });
 
 //router.post('/feed/query',proxy);
-var allpath = '/feed/*';
-router.get(allpath,proxy);
-router.post(allpath,proxy);
-router.put(allpath,proxy);
-router.delete(allpath,proxy);
+//var allpath = '/feed/*';
+//router.get(allpath,proxy);
+//router.post(allpath,proxy);
+//router.put(allpath,proxy);
+//router.delete(allpath,proxy);
 router.all('*',proxy);
 
 function proxy(req, res) {
@@ -79,7 +79,7 @@ function proxy(req, res) {
 
 
 
-	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+_.sample(CONFIG.PYTHON_API.PORTS) + req.url;
+	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+_.sample(CONFIG.PYTHON_API.PORTS) + _.replace(req.url,'fe2ed','feed');
 	log.info('request  > [%s] %s(%s)   payload:(%s)',req.method,req.url, req.originalUrl,req.body);
 	log.info('request goes to endpoint: %s ',url);
 	var obj;
