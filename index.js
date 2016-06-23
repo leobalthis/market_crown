@@ -30,6 +30,7 @@ app.set('views', __dirname + '/static/landing');
 app.use(session({
 	secret:'jst rndm scrt lne',
 	resave: true,
+	saveUninitialized:false,
 	cookie : {
 		secure: false,
 		maxAge: 1000*60*60*24*7 // see below
