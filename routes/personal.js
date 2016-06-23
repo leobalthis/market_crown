@@ -34,16 +34,10 @@ function usernameReplacement(req,res, next){
 
 
 router.get('/me',function(req, res){
-	//if(process.env.NODE_ENV=='development'){
-	//	res.json({
-	//		displayName:'Vasily Petrov',
-	//		mc_username:'jeangrey',
-	//		photos:[{value:'assets/images/thumb.jpg'}]
-	//	});
-	//}else{
 		res.json(req.user);
-	//}
-//
+});
+router.post('/me',function(req, res){
+	res.json(req.user);
 });
 
 router.get('/avatar/:username',function(req, res){
@@ -69,9 +63,12 @@ router.all('*', function(req, res) {
 	//if(process.env.NODE_ENV=='development'){
 	//	req.user = {mc_username:'rooborn'};
 	//}else{
+	console.log('*')
 		if(!req.user){
+			console.log('* no user')
 			return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
 		}else if(!req.user.mc_username){
+			console.log('* no username')
 			return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
 		}
 	//}

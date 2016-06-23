@@ -126,11 +126,15 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 
 
-
+$scope.test = function(){
+	API.postHttp('/personal/me').then(function(data) {
+		console.log('me',data);
+	})
+}
 
 	$scope.getDefaultMicroblogs = function(user) {
-		API.getHttp('/personal/me').then(function(data) {
-		//API.postHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
+
+		API.postHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
 			console.log("Service Microblogs", data);
 
 			//$scope.microblogs.data = data.results;
