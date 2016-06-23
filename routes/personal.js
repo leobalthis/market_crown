@@ -63,7 +63,7 @@ router.all('*', function(req, res) {
 	//if(process.env.NODE_ENV=='development'){
 	//	req.user = {mc_username:'rooborn'};
 	//}else{
-	console.log('*')
+	console.log('*',req.user)
 		if(!req.user){
 			console.log('* no user')
 			return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
