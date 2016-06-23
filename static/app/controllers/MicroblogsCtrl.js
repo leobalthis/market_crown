@@ -134,32 +134,22 @@ $scope.test = function(){
 
 	$scope.getDefaultMicroblogs = function(user) {
 
-		API.postHttp('/personal/fe2ed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
-			console.log("Service Microblogs", data);
+		MicroblogsService.getMicroblogsService({user:user, market:"us", query_type:"default"})
+			.then(function(data) {
+				console.log("Service Microblogs", data);
 
-			//$scope.microblogs.data = data.results;
-			//$scope.microblogs.tstamp = data.tstamp;
-			//startPeriodicalRequests();
-			//processMessages($scope.microblogs.data);
-			//MicroblogsService.getRepliesCount($scope.microblogs.data);
-			//sortMessages();
-		});
-		//MicroblogsService.getMicroblogsService({user:user, market:"us", query_type:"default"})
-		//	.then(function(data) {
-		//		console.log("Service Microblogs", data);
-		//
-		//		$scope.microblogs.data = data.results;
-		//		$scope.microblogs.tstamp = data.tstamp;
-		//		startPeriodicalRequests();
-		//		processMessages($scope.microblogs.data);
-		//		MicroblogsService.getRepliesCount($scope.microblogs.data);
-		//		sortMessages();
-		//	}, function(error) {
-		//		// promise rejected, could log the error with: console.log('error', error);
-		//		console.log('Service Default Microblogs Error', error);
-		//	});
+				$scope.microblogs.data = data.results;
+				$scope.microblogs.tstamp = data.tstamp;
+				startPeriodicalRequests();
+				processMessages($scope.microblogs.data);
+				MicroblogsService.getRepliesCount($scope.microblogs.data);
+				sortMessages();
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Default Microblogs Error', error);
+			});
 	};
-	//$scope.getDefaultMicroblogs(currentUsername);
+	$scope.getDefaultMicroblogs(currentUsername);
 
 
 	$scope.getMicroblogs = function(data){

@@ -1,7 +1,7 @@
 App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 	return {
 		createTopic: function(user, message, market) {
-			return API.postHttp('/personal/feed/entry',
+			return API.postHttp('/personal/fe2ed/entry',
 			{
 					"theme_type" : "topic",
 					"user" : user,
@@ -13,7 +13,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 		},
 
 		getDefaultMicroblogsService: function(user, market, query_type) {
-			return API.postHttp('/personal/feed/query',
+			return API.postHttp('/personal/fe2ed/query',
 			{
 					"user" : user,
 					"market" : market,
@@ -23,7 +23,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 
 		getMicroblogsService: function(query) {
 			return $q(function(resolve, reject) {
-				API.postHttp('/personal/feed/query', query).then(function(res){
+				API.postHttp('/personal/fe2ed/query', query).then(function(res){
 					resolve(res)
 				},reject);
 			});
@@ -64,7 +64,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 		},
 
 		getOnlyMeMicroblogsService: function(user, market) {
-			return API.postHttp('/personal/feed/query',
+			return API.postHttp('/personal/fe2ed/query',
 				{
 					"user" : user,
 					"market" : market,
@@ -73,7 +73,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 		},
 
 		getRepliesService: function(user, market, theme_id) {
-			return API.postHttp('/personal/feed/query',{
+			return API.postHttp('/personal/fe2ed/query',{
 					"user" : user,
 					"market" : market,
 					"query_type" : "response",
@@ -82,7 +82,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 		},
 
 		sendReplyService: function(user, theme_id, replyData) {
-			return API.postHttp('/personal/feed/reply',{
+			return API.postHttp('/personal/fe2ed/reply',{
 					"theme_type" :"reply",
 					"theme_id" : theme_id,
 					"user" : user,
