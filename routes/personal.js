@@ -55,8 +55,8 @@ router.get('/avatar/:username',function(req, res){
 	//}
 });
 
-
-var allpath = '/:w1/:w2*?/:w4*?/:w5*?'
+router.post('/feed/query',proxy);
+var allpath = '*'
 router.get(allpath,proxy);
 router.post(allpath,proxy);
 router.put(allpath,proxy);
