@@ -129,7 +129,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 
 	$scope.getDefaultMicroblogs = function(user) {
-		API.getHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
+		API.postHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
 			console.log("Service Microblogs", data);
 
 			$scope.microblogs.data = data.results;

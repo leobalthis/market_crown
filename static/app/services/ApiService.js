@@ -28,6 +28,7 @@ console.log(window.location.host)
 
 
 	function request(req,ignoreLoadingBar){
+		console.log('\n\n REQ',req.url);
 		return $q(function(resolve, reject) {
 			$http(req,{ignoreLoadingBar:ignoreLoadingBar}).then(function (res) {
 				if (!res || !res.data) {
