@@ -57,10 +57,10 @@ router.get('/avatar/:username',function(req, res){
 
 router.post('/feed/query',proxy);
 var allpath = '*'
-router.get(allpath,proxy);
+//router.get(allpath,proxy);
 //router.post(allpath,proxy);
-router.put(allpath,proxy);
-router.delete(allpath,proxy);
+//router.put(allpath,proxy);
+//router.delete(allpath,proxy);
 
 
 function proxy(req, res) {
