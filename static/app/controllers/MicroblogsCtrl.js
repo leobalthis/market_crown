@@ -129,7 +129,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 
 	$scope.getDefaultMicroblogs = function(user) {
-		API.postHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
+		API.getHttp('/personal/feed/query', {user:user, market:"us", query_type:"default"}).then(function(data) {
 			console.log("Service Microblogs", data);
 
 			$scope.microblogs.data = data.results;
@@ -154,7 +154,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		//		console.log('Service Default Microblogs Error', error);
 		//	});
 	};
-	//$scope.getDefaultMicroblogs(currentUsername);
+	$scope.getDefaultMicroblogs(currentUsername);
 
 
 	$scope.getMicroblogs = function(data){
