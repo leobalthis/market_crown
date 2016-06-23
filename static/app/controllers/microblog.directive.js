@@ -6,7 +6,7 @@ App.directive('microblog', ['APIService','UserDetailsService',function (API,User
 		controller:"MicroblogsCtrl",
 		templateUrl:'controllers/microblog.tmpl.html',
 		link: function (scope, elem, attrs) {
-			console.log('\n\n****\n\n');
+
 		}
 	}
 }]);
