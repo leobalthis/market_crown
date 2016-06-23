@@ -312,7 +312,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
 		//_.each(data,function(item){
 
-			API.getHttp('/personal/avatar/'+message.user).then(function(avatar){
+			API.getHttp('/personal/avatar/'+String(message.user).toLowerCase()).then(function(avatar){
 				message.avatar = avatar.avatar;
 			})
 		//})
