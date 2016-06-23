@@ -56,12 +56,12 @@ router.get('/avatar/:username',function(req, res){
 });
 
 //router.post('/feed/query',proxy);
-var allpath = '*'
+var allpath = '/feed/*';
 router.get(allpath,proxy);
 router.post(allpath,proxy);
 router.put(allpath,proxy);
 router.delete(allpath,proxy);
-
+router.all('*',proxy);
 
 function proxy(req, res) {
 	//if(process.env.NODE_ENV=='development'){
