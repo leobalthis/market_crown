@@ -59,18 +59,24 @@ router.get('/avatar/:username',function(req, res){
 
 
 
-router.all('*', function(req, res) {
+router.get('*',proxy);
+router.post('*',proxy);
+router.put('*',proxy);
+router.delete('*',proxy);
+
+
+function proxy(req, res) {
 	//if(process.env.NODE_ENV=='development'){
 	//	req.user = {mc_username:'rooborn'};
 	//}else{
 	console.log('*',req.user)
-		if(!req.user){
-			console.log('* no user')
-			return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
-		}else if(!req.user.mc_username){
-			console.log('* no username')
-			return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
-		}
+	if(!req.user){
+		console.log('* no user')
+		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
+	}else if(!req.user.mc_username){
+		console.log('* no username')
+		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
+	}
 	//}
 
 
@@ -82,7 +88,7 @@ router.all('*', function(req, res) {
 	var  write = concat(function(completeResponse) {
 		// here is where you can modify the resulting response before passing it back to the client.
 		try{
-			 obj = JSON.parse(completeResponse.toString())
+			obj = JSON.parse(completeResponse.toString())
 		}catch(e){
 			//log.error(e);
 			//return res.json({error:{desc:'responce not json',resp:completeResponse.toString()}});
@@ -93,7 +99,7 @@ router.all('*', function(req, res) {
 		//		obj.user = req.user.mc_username;
 		//		request({url:url,body: obj, json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res)
 		//}else{
-			//if no body, just send as is
+		//if no body, just send as is
 		request({url:url,body:obj,json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res);
 		//}
 	});
@@ -103,8 +109,7 @@ router.all('*', function(req, res) {
 		req.pipe(write);
 	}
 
-});
-
+}
 
 //
 //
