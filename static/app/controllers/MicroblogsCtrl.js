@@ -127,7 +127,7 @@ App.controller ('MicroblogsCtrl',['$scope', '$http', 'MicroblogsService', 'Gener
 
 
 $scope.test = function(){
-	API.postHttp('/personal/feed/quer2y').then(function(data) {
+	API.postHttp('/personal/f2eed/quer2y').then(function(data) {
 		console.log('me',data);
 	})
 }
