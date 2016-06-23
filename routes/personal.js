@@ -59,10 +59,10 @@ router.get('/avatar/:username',function(req, res){
 
 
 
-router.get('*',proxy);
-router.post('*',proxy);
-router.put('*',proxy);
-router.delete('*',proxy);
+router.get('/:url',proxy);
+router.post('/:url',proxy);
+router.put('/:url',proxy);
+router.delete('/:url',proxy);
 
 
 function proxy(req, res) {
