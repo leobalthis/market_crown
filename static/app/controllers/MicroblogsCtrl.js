@@ -213,9 +213,8 @@ $scope.test = function(){
 				$scope.microblogs.new.message = "";
 				$scope.microblogs.formFocused = false;
 				console.log("Service New Topic Response",  $scope.microblogs.data);
-				$scope.getDefaultMicroblogs(currentUsername, "us", "default");
-
-
+				//$scope.getDefaultMicroblogs(currentUsername, "us", "default");
+				$scope.submitFilters();
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
 				console.log('Service New Topic Error', error);
@@ -227,6 +226,7 @@ $scope.test = function(){
 			.then(function(data) {
 				// promise fulfilled
 				$scope.microblogs.replies = data.results;
+				processMessages($scope.microblogs.replies);
 				console.log("Service Microblogs Replies",  $scope.microblogs.data);
 				_.each($scope.microblogs.replies,function(reply){
 					API.getHttp('/personal/avatar/'+reply.user).then(function(avatar){
@@ -298,6 +298,7 @@ $scope.test = function(){
 
 
 	function processMessages(messages){
+		console.log('\n P M ',messages)
 		_.each(messages,function(message){
 			processMessage(message);
 		});
@@ -308,12 +309,11 @@ $scope.test = function(){
 	function processMessage(message){
 		message.message =  String(message.message).replace(reBold,"<strong>$1</strong>");
 		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
-		//_.each(data,function(item){
-
+		message.reply =  String(message.reply).replace(reBold,"<strong>$1</strong>");
+		message.reply =  String(message.reply).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
 			API.getHttp('/personal/avatar/'+String(message.user).toLowerCase()).then(function(avatar){
 				message.avatar = avatar.avatar;
 			})
-		//})
 	}
 
 	function doPeriodicalRequest(){
@@ -321,7 +321,7 @@ $scope.test = function(){
 			if(res.results && !_.isEmpty(res.results)){
 				processMessages(res.results);
 				$scope.microblogs.data = _.unionBy($scope.microblogs.data,res.results,'theme_id');
-				sortMessages()
+				sortMessages();
 			};
 			$scope.microblogs.tstamp = res.tstamp;
 		});

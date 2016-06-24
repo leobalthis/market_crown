@@ -35,13 +35,13 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 			if(type=='default'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp;
 			}else if(type=='symbols'){
-				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.symbol]);
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.symbol);
 			}else if(type=='onlyme'){
-				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify([data.username]);
+				path = '/personal/push/' + market + '/' + tstamp+'/id='+data.username;
 			}else if(type=='userlist'){
-				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify([data.userlist]);
+				path = '/personal/push/' + market + '/' + tstamp+'/id='+JSON.stringify(data.userlist);
 			}else if(type=='sectors'){
-				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify([data.sector]);
+				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.sector);
 			}else if(type=='response'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp+'/id='+JSON.stringify(data.response);
 			}

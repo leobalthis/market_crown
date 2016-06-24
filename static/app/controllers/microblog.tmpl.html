@@ -162,11 +162,13 @@
                                         <!--</p>-->
                                     </div>
 
-                                    <div class="col-sm-9">
-                                        <p class="message">{{reply.reply}}</p>
+                                    <div class="col-sm-10">
+                                        <p class="message" ng-bind-html="reply.reply"></p>
+                                        <p class="text-left author pull-right" >{{reply.created}}</p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
+
                             </div>
                         </div>
 
