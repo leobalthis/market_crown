@@ -326,6 +326,7 @@ $scope.test = function(){
 				sortMessages();
 			};
 			$scope.microblogs.tstamp = res.tstamp;
+			periodicalRequestParams.tstamp = res.tstamp;
 		});
 		MicroblogsService.getRepliesCount($scope.microblogs.data);
 
