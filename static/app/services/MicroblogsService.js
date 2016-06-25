@@ -48,6 +48,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 			return API.getHttp(path,null,true);
 		},
 		getRepliesCount: function(data){
+			if(!data[0] || !data[0].market){return;}
 				API.postHttp('/personal/message/reply/count', {
 					message_ids:_.chain(data).map('theme_id'),
 					market:data[0].market
