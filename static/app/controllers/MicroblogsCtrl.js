@@ -216,7 +216,7 @@ $scope.test = function(){
 				$scope.microblogs.formFocused = false;
 				console.log("Service New Topic Response",  $scope.microblogs.data);
 				//$scope.getDefaultMicroblogs(currentUsername, "us", "default");
-				$scope.submitFilters();
+				//$scope.submitFilters();
 			}, function(error) {
 				// promise rejected, could log the error with: console.log('error', error);
 				console.log('Service New Topic Error', error);
