@@ -63,7 +63,11 @@ app.use(CONFIG.API_PREFIX+'/personal',		personal);
 app.use(CONFIG.API_PREFIX+'/auth',			auth);
 
 app.get(CONFIG.LANDING_PREFIX, function(req,res){
-	res.sendFile(__dirname + '/static/landing/marketcrown.html')
+	if(req.user && req.user.mc_username){
+		res.redirect(CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP);
+	}else {
+		res.sendFile(__dirname + '/static/landing/marketcrown.html')
+	}
 });
 app.get(CONFIG.LANDING_PREFIX+'/personalInfo', function(req,res){
 	if(!req.user){

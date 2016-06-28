@@ -87,28 +87,7 @@
 	//	})
 	//;
 
-	$('#finishForm').submit(function(e) {
-		$(".form-error").hide();
-		$.ajax({
-			url: $('#finishForm').attr('action'),
-			type: 'POST',
-			data: $('#finishForm').serialize(),
-			success: function (a) {
-				console.log('form submitted.',a);
-				if(a.error){
-					$(".form-error").show(500);
-				}else{
-					window.location.href = a.redirect;
-				}
-			},
-			error:function (a) {
-				console.log('form not submitted.',a);
-				$(".form-error").show(500);
-			}
-		});
-		console.log('e', e);
-		return false;
-	});
+
 	//console.log('sad');
 	 $.ajax({
 		 method: "GET",
@@ -124,25 +103,65 @@
 			console.log( "complete" );
 		});
 
+	document.getElementById("myBtn").onclick = submitform;
 
 })();
 
+$(".form-error-nick").hide();
+$(".form-error-email").hide();
+
+function submitform(e){
+	e.preventDefault();
+	if(validateForm()) {
+		$(".form-error").hide();
+		$.ajax({
+			url:"/api/v1/auth/finish",
+			type: 'POST',
+			data: $('#finishForm').serialize(),
+			success: function (a) {
+				console.log('form submitted.', a);
+				if (a.error) {
+					$(".form-error").show(500);
+				} else {
+					window.location.href = a.redirect;
+				}
+			},
+			error: function (a) {
+				console.log('form not submitted.', a);
+				$(".form-error").show(500);
+			}
+		});
+
+		return false;
+	}
+};
 
 function validateForm(){
-	console.log('validation');
+
 	var form = document.forms["finishForm"];
 	var nick = form['username'].value;
 	var email = form['email'].value;
+
+	console.log('validation', email);
 	var re = /^\w+$/;
 	var remail = /^.+@.+\..+$/;
 	var errors = false;
-	if(!nick || nick.length<4 || nick=='admin' || nick=='all' || !re.test(nick)) {
+
+	if(!nick || nick=='' || nick.length<4 || nick=='admin' || nick=='all' || !re.test(nick)) {
 		$(".form-error-nick").show(500);
+		console.log('. nick');
 		errors = true;
-	}else if(!email || !remail.test(email)){
-		$(".form-error-email").show(500);
-		errors=true;
+	}else{
+		$(".form-error-nick").hide();
 	}
+	if(!email || email=='' || !remail.test(email)){
+		$(".form-error-email").show(500);
+		console.log('. mail');
+		errors=true;
+	}else{
+		$(".form-error-email").hide();
+	}
+	console.log('+ ', errors);
 	if(errors){
 		return false;
 	}else{

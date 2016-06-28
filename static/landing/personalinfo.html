@@ -21,6 +21,7 @@
     <![endif]-->
   </head>
   <body>
+
     <!--<div class = "mc-signup">-->
       <!--<div class = "container">-->
         <!--<div class = "mc-optui">-->
@@ -63,7 +64,7 @@
   <div class = "mc-personaldata">
     <div class = "container">
       <div class = "mc-optui">
-        <form method="post" name="finishForm" id="finishForm" action="/api/v1/auth/finish" onsubmit="return validateForm()">
+        <form " name="finishForm" id="finishForm"  >
           <h2 class = "mc-opttitle ">LAST STEP</h2>
           <div class = "mc-member" id="mc-member">
             <!--<span><p>Not yet a member?</p></span>-->
@@ -75,12 +76,12 @@
           <!--<a class="" href="#"><img class = "mc-smicons" src = "images/mc-gplus.png"></a>-->
         <!--</div>-->
         <!--<h4>or</h4>-->
-          <div class="form-error-nick">Enter valid username</div>
+          <div class="form-error-nick" >Enter valid username</div>
         <div class = "input-envelope">
           <span><img src = "images/user.png" ></span>
           <input type="text" id="form-username" name="username" placeholder = "Username">
         </div>
-          <div class="form-error-email">Enter valid email</div>
+          <div class="form-error-email" >Enter valid email</div>
           <div class = "input-envelope">
           <span><img src = "images/pwicon.png" ></span>
           <input type="text" id="form-email" name="email" value="{{email}}" placeholder = "Email Address">
@@ -90,9 +91,11 @@
           <!--<input type="password" id="form-password" name="password" placeholder = "Password">-->
         <!--</div>-->
         <!--<a class="mc-forgot" href="#">Forgot your password?</a>-->
-        <button class = "btn  mc-loginbtn mc-pd-submit " type="submit">PROCEED</button>
+
+        <button id="myBtn" class = "btn  mc-loginbtn mc-pd-submit " >PROCEED</button>
         <!--<span class = "mc-back"><p>BACK</p></span>-->
       </form>
+
     </div>
   </div>
 </div>
