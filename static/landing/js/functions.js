@@ -109,6 +109,8 @@
 
 $(".form-error-nick").hide();
 $(".form-error-email").hide();
+$(".form-error-common").hide();
+
 
 function submitform(e){
 	e.preventDefault();
@@ -128,10 +130,10 @@ function submitform(e){
 			},
 			error: function (a) {
 				console.log('form not submitted.', a);
-				$(".form-error").show(500);
+				$(".form-error-common").show(500);
+				$(".form-error-common").text(a);
 			}
 		});
-
 		return false;
 	}
 };
