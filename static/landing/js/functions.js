@@ -103,7 +103,8 @@
 			console.log( "complete" );
 		});
 
-	document.getElementById("myBtn").onclick = submitform;
+	var btn = document.getElementById("myBtn")
+	if(btn){btn.onclick = submitform;}
 
 })();
 
@@ -123,7 +124,8 @@ function submitform(e){
 			success: function (a) {
 				console.log('form submitted.', a);
 				if (a.error) {
-					$(".form-error").show(500);
+					$(".form-error-common").show(500);
+					$(".form-error-common").text(a.error);
 				} else {
 					window.location.href = a.redirect;
 				}
