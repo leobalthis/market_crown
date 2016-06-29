@@ -124,15 +124,19 @@ function submitform(e){
 			success: function (a) {
 				console.log('form submitted.', a);
 				if (a.error) {
+					var msg = 'Server error, please try again';
+					if(a && a.error && a.error.error){
+						msg = a.error.error;
+					};
 					$(".form-error-common").show(500);
-					$(".form-error-common").text(a.error.error);
+					$(".form-error-common").text(msg);
 				} else {
 					window.location.href = a.redirect;
 				}
 			},
 			error: function (a) {
 				console.log('form not submitted.', a);
-				var msg = 'Server error';
+				var msg = 'Server error, please try again';
 				if(a && a.error && a.error.error){
 					msg = a.error.error;
 				};
