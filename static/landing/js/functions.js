@@ -125,7 +125,7 @@ function submitform(e){
 				console.log('form submitted.', a);
 				if (a.error) {
 					$(".form-error-common").show(500);
-					$(".form-error-common").text(a.error);
+					$(".form-error-common").text(a.error.error);
 				} else {
 					window.location.href = a.redirect;
 				}
