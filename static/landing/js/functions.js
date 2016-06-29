@@ -132,8 +132,12 @@ function submitform(e){
 			},
 			error: function (a) {
 				console.log('form not submitted.', a);
+				var msg = 'Server error';
+				if(a && a.error && a.error.error){
+					msg = a.error.error;
+				};
 				$(".form-error-common").show(500);
-				$(".form-error-common").text(a);
+				$(".form-error-common").text(msg);
 			}
 		});
 		return false;
