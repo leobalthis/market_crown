@@ -24,7 +24,7 @@
 						<div id="basic-queries" class="tab-pane fade in active">
 							<div id="basic-query" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 								<div class="row basic-query">
-									<div class="col-md-2">
+									<div class="col-md-2 selection-market">
 										<h4>Market</h4>
 										<div class="market-selection selection">
 											<ui-select ng-model="queryMarket.selected" theme="bootstrap" ng-disabled="disabled" on-select="changeMarket()">
@@ -51,7 +51,7 @@
 									</div>
 
 
-									<div class="col-md-4">
+									<div class="col-md-4 selection-date">
 										<h4>Period:</h4>
 										<div class="forecasts-from selection">
 											<ui-select ng-model="queryDate.selected" theme="bootstrap" ng-disabled="disabled" on-select="onDateRangeSelection()">
@@ -64,7 +64,7 @@
 										</div>
 									</div>
 
-									<div class="col-md-2">
+									<div class="col-md-2 submit">
 										<div class="btn-container">
 											<button class="btn submit" ng-click="getUpdatedQueries()">Submit</button>
 										</div>
@@ -88,7 +88,7 @@
 
 						<div id="custom-queries" class="tab-pane fade">
 							<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-2 market-select">
 									<h4>Market</h4>
 									<div class="market-selection selection">
 										<ui-select ng-model="queryMarket.selected" theme="bootstrap" ng-disabled="disabled" on-select="liveSearchSymbol()">
@@ -102,7 +102,7 @@
 								</div>
 
 
-								<div class="col-md-4">
+								<div class="col-md-4 query-name">
 									<h4>Query name</h4>
 									<div class="selection">
 										<ui-select ng-model="customQuery.type.selected" theme="bootstrap" ng-disabled="disabled">
@@ -117,7 +117,7 @@
 
 
 
-								<div class="col-md-2 symbols">
+								<div class="col-md-2 symbols time-of-day">
 									<h4>Time of Day</h4>
 									<ui-select multiple ng-model="customQuery.time" theme="bootstrap" ng-disabled="disabled">
 
@@ -129,7 +129,7 @@
 
 								</div>
 
-								<div class="col-md-2">
+								<div class="col-md-2 movement">
 									<h4>Movements</h4>
 									<div class="selection">
 										<ui-select ng-model="customQuery.movement.selected" theme="bootstrap" ng-disabled="disabled">
@@ -143,7 +143,7 @@
 								</div>
 
 
-								<div class="col-md-2">
+								<div class="col-md-2 submit">
 									<div class="btn-container">
 										<button class="btn submit" ng-click="getUpdatedCustomQueries()">Submit</button>
 									</div>
@@ -151,7 +151,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-md-2">
+								<div class="col-md-2 market-capit">
 									<h4>Market Capitalization</h4>
 
 									<ui-select multiple ng-model="customQuery.marketCapitalization" theme="bootstrap" ng-disabled="disabled">
@@ -164,7 +164,7 @@
 								</div>
 
 
-								<div class="col-md-2">
+								<div class="col-md-2 sector">
 									<h4>Sector</h4>
 
 									<ui-select multiple ng-model="customQuery.sector" theme="bootstrap">
@@ -175,7 +175,7 @@
 									</ui-select>
 								</div>
 
-								<div class="col-md-2 symbols">
+								<div class="col-md-2 symbols stock-pref">
 
 									<h4>Stock Preference</h4>
 									<ui-select multiple ng-model="customQuery.symbol" theme="bootstrap" ng-disabled="disabled">
@@ -188,7 +188,7 @@
 
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-3 user-base">
 									<h4>User Base</h4>
 									<div class="selection">
 										<ui-select ng-model="customQuery.community" theme="bootstrap" ng-disabled="disabled" on-select="onCommunitySelection()">
@@ -202,7 +202,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-3">
+								<div class="col-md-3 period">
 									<h4>Period:</h4>
 									<div class="selection">
 										<ui-select ng-model="queryDate.selected" theme="bootstrap" ng-disabled="disabled" on-select="onDateRangeSelection()">
@@ -218,7 +218,7 @@
 
 
 							<div class="row">
-								<div class="col-md-3 col-md-offset-6" ng-show="showGroups">
+								<div class="col-md-3 col-md-offset-6 groups" ng-show="showGroups">
 									<h4>Groups</h4>
 									<div class="selection">
 										<ui-select ng-model="customQuery.group" theme="bootstrap" ng-disabled="disabled" on-select="onDateRangeSelection()">
@@ -231,7 +231,7 @@
 									</div>
 								</div>
 
-								<div class="col-md-3 col-md-offset-6" ng-show="showUsers">
+								<div class="col-md-3 col-md-offset-6 users" ng-show="showUsers">
 									<h4>Users</h4>
 									<ui-select multiple ng-model="customQuery.user" theme="bootstrap" ng-disabled="disabled">
 										<ui-select-match placeholder="All...">{{$item}}</ui-select-match>
@@ -241,7 +241,7 @@
 									</ui-select>
 								</div>
 
-								<div class="col-md-3 pull-right" ng-show="queryDate.selected.call === 'custom'">
+								<div class="col-md-3 pull-right start-date" ng-show="queryDate.selected.call === 'custom'">
 									<h4>Start</h4>
 									<div class="date-picker selection">
 										<input type="text" ui-date ui-date-format="mm/dd/y" ng-model="customStartDate" ng-required="true" placeholder="From date...">
@@ -250,7 +250,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-md-3 pull-right" ng-show="queryDate.selected.call === 'custom'">
+								<div class="col-md-3 pull-right end-date" ng-show="queryDate.selected.call === 'custom'">
 									<h4>End</h4>
 									<div class="date-picker selection">
 										<input type="text" ui-date ui-date-format="mm/dd/y" ng-model="customEndDate" ng-required="true" placeholder="To date...">

@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row-regular">
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-7 new-market">
                                 <ui-select ng-model="microblogs.new.market" theme="bootstrap" ng-disabled="disabled" on-select="refreshSymbols()">
                                     <ui-select-match placeholder="Select a market"><img ng-src="assets/images/flags/{{$select.selected.flag}}" alt="">{{$select.selected.name}}</ui-select-match>
                                     <ui-select-choices repeat="market in microblogs.new.markets | filter: $select.search">
@@ -25,7 +25,7 @@
                                 </ui-select>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-5 submit-wrap">
                                 <div class="buttons">
                                     <button class="pull-right btn btn-success" type="submit">Submit</button>
                                     <p class="btn pull-right btn-cancel" ng-click="dismissCreateMicroblogForm()">Cancel</p>
@@ -44,7 +44,7 @@
     <div class="filter-microblogs">
         <div class="inner">
             <div class="row-regular">
-                <div class="col-md-6">
+                <div class="col-md-6 market_select">
                     <ui-select ng-model="microblogs.filter" theme="bootstrap" ng-disabled="disabled" >
                         <ui-select-match placeholder="Select a market">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="filter in microblogs.filters | filter: $select.search | limitTo:8">
@@ -53,7 +53,7 @@
                     </ui-select>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6 market_filter">
                     <ui-select ng-model="microblogs.filterMarket" theme="bootstrap" ng-disabled="disabled">
                         <ui-select-match placeholder="Select a market"><img ng-src="assets/images/flags/{{$select.selected.flag}}" alt="">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="market in microblogs.new.markets | filter: $select.search | limitTo:8">
@@ -132,11 +132,11 @@
                         <!--{{item.message}}-->
                     </p>
                     <div class="row-regular">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-lg-8">
                             <p class="text-left author">{{item.activity_time}}</p>
                             <!--<img src="assets/images/calendar-small.png" alt="">-->
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-lg-4">
                             <button ng-click="getClickedMicroblogElement(item)"
                                     ng-hide="item.theme_id == microblogs.clickedMicroblogElement.theme_id"
                                     style="    border: none;overflow: hidden;padding-bottom: 0px;padding-top: 0px;    line-height: 26px;"

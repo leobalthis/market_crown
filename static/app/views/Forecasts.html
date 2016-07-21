@@ -15,7 +15,7 @@
 
 				<div class="master-customization">
 					<div class="row">
-						<div class="col-lg-4">
+						<div class="col-lg-4 status">
 							<h4>Status</h4>
 							<div class="btn-group">
 								<label class="btn btn-primary" ng-model="forecastStatus" uib-btn-radio="'pending'">
@@ -44,7 +44,7 @@
 							</div>
 						</div>
 
-						<div class="col-lg-2">
+						<div class="col-lg-2 market">
 							<h4>Market</h4>
 							<div class="market-selection selection">
 								<ui-select ng-model="forecastMarket.selected" theme="bootstrap" ng-disabled="disabled" on-select="changeMarket()">
@@ -57,7 +57,7 @@
 							</div>
 						</div>
 
-						<div class="col-lg-3">
+						<div class="col-lg-3 forecast-source">
 							<h4>Show forecasts from:</h4>
 							<div class="forecasts-from selection">
 								<ui-select ng-model="forecastUserResult.selected" theme="bootstrap" ng-disabled="disabled" on-select="onSelect()">
@@ -70,7 +70,7 @@
 							</div>
 						</div>
 
-						<div class="col-lg-3">
+						<div class="col-lg-3 submit">
 							<div class="btn-container">
 								<button class="btn submit" ng-click="getUpdatedForecasts()">Submit</button>
 							</div>
@@ -91,7 +91,7 @@
 
 					<div class="custom" ng-show="showCustom">
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-3 users">
 								<h4>Users</h4>
 
 								<ui-select multiple ng-model="multiselect.users" theme="bootstrap">
@@ -118,7 +118,7 @@
 
 							</div>
 
-							<div class="col-lg-3">
+							<div class="col-lg-3 sectors">
 								<h4>Sectors</h4>
 								<ui-select multiple ng-model="multiselect.sectors" theme="bootstrap" ng-disabled="disabled">
 									<ui-select-match placeholder="All...">{{$item}}</ui-select-match>
@@ -130,7 +130,7 @@
 							</div>
 
 
-							<div class="col-lg-2">
+							<div class="col-lg-2 marketcaps">
 								<h4>Market Capitalization</h4>
 								<ui-select multiple ng-model="multiselect.marketCaps" theme="bootstrap" ng-disabled="disabled">
 									<ui-select-match placeholder="All...">{{$item}}</ui-select-match>
@@ -140,7 +140,7 @@
 								</ui-select>
 							</div>
 
-							<div class="col-lg-2">
+							<div class="col-lg-2 movements">
 								<h4>Movement</h4>
 								<ui-select multiple ng-model="multiselect.movements" theme="bootstrap" ng-disabled="disabled">
 									<ui-select-match placeholder="All...">{{$item}}</ui-select-match>
@@ -152,7 +152,7 @@
 						</div>
 
 						<div class="row">
-							<div class="col-lg-2">
+							<div class="col-lg-2 percentages">
 								<h4>Percentages:</h4>
 
 								<ui-select multiple ng-model="multiselect.percentages" theme="bootstrap" ng-disabled="disabled">
@@ -164,7 +164,7 @@
 
 							</div>
 
-							<div class="col-lg-2">
+							<div class="col-lg-2 timeofdays">
 								<h4>Time of Day</h4>
 
 								<ui-select multiple ng-model="multiselect.timeOfDays" theme="bootstrap" ng-disabled="disabled">
@@ -176,14 +176,14 @@
 
 							</div>
 
-							<div class="col-lg-3">
+							<div class="col-lg-3 startdate">
 								<h4>From</h4>
 								<div class="date-picker">
 									<input type="text" ui-date ui-date-format="mm/dd/y" ng-model="forecastDateStart" ng-required="true" placeholder="From date...">
 								</div>
 							</div>
 
-							<div class="col-lg-3">
+							<div class="col-lg-3 enddate">
 								<h4>To</h4>
 								<div class="date-picker">
 									<input type="text" ui-date ui-date-format="mm/dd/y" ng-model="forecastDateEnd" ng-required="true" placeholder="To date...">
@@ -191,7 +191,7 @@
 							</div>
 
 
-							<div class="col-lg-2" ng-show="forecastStatus == 'validated'">
+							<div class="col-lg-2 outcomes" ng-show="forecastStatus == 'validated'">
 								<h4>Outcome</h4>
 
 								<ui-select multiple ng-model="multiselect.outcomes" theme="bootstrap" ng-disabled="disabled">
