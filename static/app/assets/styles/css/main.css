@@ -12650,8 +12650,229 @@ footer {
 
 /*# sourceMappingURL=main.css.map */
 
+@media (min-width: 1280px) and (max-width: 1439px) {
+  #dashboard .dashboard-content-wrapper .row.content {
+    zoom: 0.8;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element .body .profile h5 {
+    text-transform: none;
+  }
+  #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .customization .market-selection .btn-group label.btn img {
+    margin-right: .1em;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element {
+    height: 330px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .top-element .body .col-lg-4 {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .top-element .body .col-lg-8 {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element-overlay .forecast-details-element .header .col-lg-5 {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .col-lg-2 {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .col-lg-10 {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .selection .ui-select-container .ui-select-match span.ui-select-toggle {
+    padding: 1em 5px;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization .selection .ui-select-container .ui-select-match span.ui-select-toggle {
+    padding: 1em 5px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .col-lg-2.market {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .header .enter-symbol .button button.btn {
+    padding: 6px;
+  }
+  #dashboard .dashboard-content-wrapper .user-info .user-info-elements .panel-group .panel .panel-body {
+    padding: 15px 0;
+    font-size: 12px;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .selection-market,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .query-selection,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .selection-date{
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .selection-market {
+    width: 18%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .selection-date {
+    width: 32%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .col-md-offset-6 {
+    margin-left: 51%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .market-select {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .market-select {
+    padding-right: 0;
+    width: 18%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .query-name {
+    width: 32%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .market-capit {
+    width: 21%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .sector {
+    width: 20%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .stock-pref {
+    width: 18%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .user-base {
+    width: 22%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .period {
+    width: 19%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .groups,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .users {
+    width: 23%;
+    margin-left: 58%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .start-date,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .end-date {
+    width: 19%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .query-name,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .time-of-day,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .movement {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .selection .ui-select-container .ui-select-match span.ui-select-toggle {
+    line-height: 1.246;
+    padding: 1em 5px !important;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .user-selection {
+    width: 18%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .group-selection {
+    width: 20%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .input-search input {
+    padding: .5em;
+  }
+  #dashboard .dashboard-content-wrapper .user-info {
+    margin-top: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-info-profile .table-container table.table td {
+    padding: .5em;
+  }
+}
+@media (min-width: 1440px) and (max-width: 1919px) {
+  #dashboard .dashboard-content-wrapper .row.content {
+    zoom: 0.9;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element {
+    height: 360px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .top-element .body .col-lg-4 {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .top-element .body .col-lg-8 {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element-overlay .forecast-details-element .header .col-lg-5 {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .col-lg-2 {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .col-lg-10 {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .selection .ui-select-container .ui-select-match span.ui-select-toggle {
+    padding: 1em 5px;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization .selection .ui-select-container .ui-select-match span.ui-select-toggle {
+    padding: 1em 5px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .col-lg-2.market {
+    padding: 0;
+  }
+  #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .header .enter-symbol .button button.btn {
+    padding: 6px;
+  }
+  #dashboard .dashboard-content-wrapper .user-info .user-info-elements .panel-group .panel .panel-body {
+    padding: 15px 0;
+    font-size: 12px;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .selection-market,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .query-selection,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .basic-query .selection-date{
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #basic-queries .market-select {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .market-capit {
+    width: 21%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .sector {
+    width: 20%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .stock-pref {
+    width: 18%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .user-base {
+    width: 22%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .period {
+    width: 19%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .groups,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .users {
+    width: 23%;
+    margin-left: 58%;
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .start-date,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .end-date {
+    width: 19%;
+  }
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .query-name,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .time-of-day,
+  #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization #custom-queries .movement {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .selection .ui-select-container .ui-select-match span.ui-select-toggle {
+    line-height: 1.246;
+    padding: 1em 5px !important;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .user-selection {
+    width: 18%;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .customization .group-selection {
+    width: 20%;
+  }
+  #dashboard .dashboard-content-wrapper .user-info {
+    margin-top: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-info-profile .table-container table.table td {
+    padding: .5em;
+  }
+}
 @media (min-width: 1280px) and (max-width: 1919px) {
-  #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .customization .market-selection .btn-group label.btn {
+  /*#dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .customization .market-selection .btn-group label.btn {
     padding: 1.02em 0;
   }
   #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .customization .market-selection .btn-group label.btn img {
@@ -12937,5 +13158,5 @@ footer {
   #dashboard .dashboard-content-wrapper .microblogs .create-microblog form .controls .row-regular .new-market,
   #dashboard .dashboard-content-wrapper .microblogs .create-microblog form .controls .row-regular .submit-wrap {
     width: 100%;
-  }
+  }*/
 }
