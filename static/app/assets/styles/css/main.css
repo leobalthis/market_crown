@@ -12466,6 +12466,7 @@ footer {
       margin-bottom: 1em; }
       #dashboard .dashboard-content-wrapper .user-page .following-users .element img {
         width: 8em;
+        height: 8em;
         padding: .7em;
         -webkit-border-radius: 100px;
         border-radius: 100px;
