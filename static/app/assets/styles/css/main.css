@@ -12651,6 +12651,11 @@ footer {
 
 /*# sourceMappingURL=main.css.map */
 
+#dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .showgroups {
+  margin-top: 1em;
+  margin-left: 50%;
+}
+
 @media (min-width: 1280px) and (max-width: 1439px) {
   #dashboard .dashboard-content-wrapper .row.content {
     zoom: 0.8;
@@ -13082,5 +13087,16 @@ footer {
   }
   #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .header .enter-symbol .input-field input {
     height: 42px !important;
+  }
+  #dashboard header {
+    margin-left: 19%;
+  }
+  #dashboard #sidebar {
+    width: 19%;
+    left: 19%;
+    margin-left: -19%;
+  }
+  #dashboard .dashboard-content-wrapper {
+    padding-left: 19%;
   }
 }
