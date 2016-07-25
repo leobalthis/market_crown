@@ -13067,7 +13067,7 @@ footer {
   }
   #dashboard .dashboard-content-wrapper .user-page #user-profile-content #forecasts .forecasts-elements .col-lg-4 .top-element .profile img{
     margin-top: 1em;
-    height: 260px;
+    width: 8em;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element .footer {
     padding: 1em 0em 1em .5em;
@@ -13098,5 +13098,8 @@ footer {
   }
   #dashboard .dashboard-content-wrapper {
     padding-left: 19%;
+  }
+  #dashboard .dashboard-content-wrapper .user-page .following-users .element img {
+    height: 8em;
   }
 }
