@@ -11820,6 +11820,7 @@ footer {
           background-clip: padding-box;
           /* stops bg color from leaking outside the border: */
           border: 3px solid #41b450;
+          height: 8em;
           max-width: 100%; }
       #dashboard .dashboard-content-wrapper .queries-page .queries-elements .element .details {
         margin: 0 0 3em 0; }
@@ -12664,7 +12665,7 @@ footer {
     margin-right: .1em;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element {
-    height: 330px;
+    height: 240px;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .top-element .body .col-lg-4 {
     padding: 0;
@@ -12770,7 +12771,7 @@ footer {
   #dashboard .dashboard-content-wrapper .user-page .customization .input-search input {
     padding: .5em;
   }
-  #dashboard .dashboard-content-wrapper .user-info {
+  #dashboard .dashboard-content-wrapper .user-page .user-info {
     margin-top: 0;
   }
   #dashboard .dashboard-content-wrapper .user-info-profile .table-container table.table td {
@@ -12796,7 +12797,7 @@ footer {
     font-size: 1.2em;
   }
   textarea, textarea.form-control, input.form-control, input[type="text"], input[type="password"], input[type="email"], input[type="number"], .form-control[type="text"], .form-control[type="password"], .form-control[type="email"], .form-control[type="tel"], .form-control[contenteditable]{
-    font-size: 14px;
+    font-size: 11px;
   }
   #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .header .enter-symbol .button button.btn {
     height: 42px;
@@ -12840,7 +12841,7 @@ footer {
     padding: 0.7em 2.3em;
   }
   #dashboard .dashboard-content-wrapper .queries-page .customization .master-customization .selection .ui-select-container .ui-select-match span.ui-select-toggle img {
-    width: 1.4em;
+    width: 1.2em;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .btn-group label.btn ul li {
     margin-left: 3px;
@@ -12855,7 +12856,9 @@ footer {
     height: 34px !important;
     padding: .3em 1em;
   }
-
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element .footer table tr td {
+    font-size: .7em !important;
+  }
 }
 
 @media (min-width: 1440px) and (max-width: 1919px) {
@@ -12867,7 +12870,7 @@ footer {
     font-size: 47px;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element {
-    height: 290px;
+    height: 250px;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .top-element .body .col-lg-4 {
     padding: 0;
@@ -12952,7 +12955,7 @@ footer {
   #dashboard .dashboard-content-wrapper .user-page .customization .group-selection {
     width: 20%;
   }
-  #dashboard .dashboard-content-wrapper .user-info {
+  #dashboard .dashboard-content-wrapper .user-page .user-info {
     margin-top: 0;
   }
   #dashboard .dashboard-content-wrapper .user-info-profile .table-container table.table td {
@@ -12979,7 +12982,7 @@ footer {
     font-size: 1.2em;
   }
   textarea, textarea.form-control, input.form-control, input[type="text"], input[type="password"], input[type="email"], input[type="number"], .form-control[type="text"], .form-control[type="password"], .form-control[type="email"], .form-control[type="tel"], .form-control[contenteditable]{
-    font-size: 14px;
+    font-size: 11px;
   }
   #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .header .enter-symbol .button button.btn {
     height: 42px;
@@ -13031,5 +13034,53 @@ footer {
   }
   #dashboard .dashboard-content-wrapper .user-page .customization .selection .ui-select-container input {
     padding: .5em 1em;
+  }
+  #dashboard #sidebar .make-a-forecast .field input {
+    height: 35px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .custom .date-picker input {
+    height: 35px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .users {
+    width: 21%;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .customization .marketcaps {
+    width: 20%;
+  }
+  #dashboard #sidebar .make-a-forecast .ui-select-container img {
+    width: 14px !important;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1919px) {
+  #dashboard .dashboard-content-wrapper .forecasts-page .headline {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .col-lg-4,
+  #dashboard .dashboard-content-wrapper .user-page #user-profile-content #forecasts .forecasts-elements .col-lg-4 {
+    padding-right: 0;
+  }
+  #dashboard .dashboard-content-wrapper .user-page #user-profile-content #forecasts .forecasts-elements .col-lg-4 .top-element .profile img{
+    margin-top: 1em;
+    height: 260px;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element .footer {
+    padding: 1em 0em 1em .5em;
+  }
+  #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element .footer table tr td {
+    font-size: .8em;
+  }
+  #dashboard #sidebar .make-a-forecast .field input {
+    height: 35px !important;
+  }
+  #dashboard #sidebar .make-a-forecast .field .field-img img {
+    width: 1.6em;
+    margin-top: .6em;
+  }
+  #dashboard #sidebar .make-a-forecast .field .field-img {
+    height: 35px;
+  }
+  #dashboard .dashboard-content-wrapper .stock-info-page .stock-info-details .header .enter-symbol .input-field input {
+    height: 42px !important;
   }
 }
