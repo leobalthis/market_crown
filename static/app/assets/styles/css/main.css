@@ -12546,6 +12546,9 @@ footer {
       text-align: center; }
       #dashboard .dashboard-content-wrapper .user-page .groups-container .body .member-element img.thumb {
         max-width: 64px;
+        max-height: 64px;
+        width: 8em;
+        height: 8em;
         margin-top: 1em;
         -webkit-border-radius: 100px;
         border-radius: 100px;
