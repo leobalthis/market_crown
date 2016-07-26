@@ -13057,7 +13057,6 @@ footer {
     width: 14px !important;
   }
 }
-
 @media (min-width: 1280px) and (max-width: 1919px) {
   #dashboard .dashboard-content-wrapper .forecasts-page .headline {
     padding-right: 0;
@@ -13102,5 +13101,10 @@ footer {
   }
   #dashboard .dashboard-content-wrapper .user-page .following-users .element img {
     height: 8em;
+  }
+}
+@media (min-width: 1920px) {
+  .dashboard-content-wrapper .col-lg-3.dashboard-element.microblogs > .microblogs-elements-feed > .element > .row > .col-lg-2{
+    padding: 0 5px;
   }
 }
