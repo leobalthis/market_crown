@@ -588,6 +588,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	};
 
 	$scope.resetInputs = function () {
+		finalUserResult = "all";
 		symbols = "all";
 		timeofday =  "all";
 		percentage = "all";
