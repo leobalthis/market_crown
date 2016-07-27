@@ -107,7 +107,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		{name: 'Users from a group', call: 'usersGroup'},
 		{name: 'Pods I am subscribed to', call: 'podsSubscribedTo'},
 		{name: 'Custom', call: 'custom'},
-		{name: '', call: 'all'}
+		{name: undefined, call: 'all'}
 		
 	];
 
@@ -207,7 +207,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 			console.log(finalUserResult);
 		}
 		
-		else if ($scope.forecastUserResult.selected.call == null) {
+		else if ($scope.forecastUserResult.selected.call == undefined) {
 			$scope.resetInputs();
 			finalUserResult = "all";
 			$scope.showGroups = false;
