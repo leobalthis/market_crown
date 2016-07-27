@@ -115,7 +115,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.forecastUserResult.selected = $scope.forecastUserResults[0];
 
 	//if requires get that gets this
-	/*$scope.getUserResultsFollowing = function(apiCallLink) {
+	$scope.getUserResultsFollowing = function(apiCallLink) {
 		API.getHttp(apiCallLink)
 			.then(function (data) {
 				$scope.resultsFollowing = data;
@@ -124,7 +124,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 			},function(){
 			console.log("Get Call Error");
 		});
-	};*/
+	};
 
 	$scope.getUserResultsFollowing("/personal/imfollowing/list/"+currentUsername);
 
