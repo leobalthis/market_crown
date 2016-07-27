@@ -279,6 +279,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 		else {
 			postCallLink = '/personal/masterquery/' + market + '/'+currentUsername; //current user will be here
+			finalUserResult = "all";
 		}
 
 		//assigning a default date range if not custom
@@ -297,8 +298,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 		API.postHttp( postCallLink,
 			{
-				//"user": finalUserResult,
-				"user": "all",
+				"user": finalUserResult,
 				"symbol": symbols,
 				"movement": movement,
 				"timeofday":timeofday,
