@@ -297,7 +297,8 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 		API.postHttp( postCallLink,
 			{
-				"user": finalUserResult,
+				//"user": finalUserResult,
+				"user": "all",
 				"symbol": symbols,
 				"movement": movement,
 				"timeofday":timeofday,
