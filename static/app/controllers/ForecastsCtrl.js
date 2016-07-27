@@ -207,7 +207,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 			console.log(finalUserResult);
 		}
 		
-		else if ($scope.forecastUserResult.selected.call == "") {
+		else if ($scope.forecastUserResult.selected.call == null) {
 			$scope.resetInputs();
 			finalUserResult = "all";
 			$scope.showGroups = false;
@@ -279,7 +279,6 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 		else {
 			postCallLink = '/personal/masterquery/' + market + '/'+currentUsername; //current user will be here
-			finalUserResult = "all";
 		}
 
 		//assigning a default date range if not custom
