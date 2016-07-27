@@ -106,7 +106,9 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		{name: 'Only me', call: 'me'},
 		{name: 'Users from a group', call: 'usersGroup'},
 		{name: 'Pods I am subscribed to', call: 'podsSubscribedTo'},
-		{name: 'Custom', call: 'custom'}
+		{name: 'Custom', call: 'custom'},
+		{name: '', call: 'all'}
+		
 	];
 
 	//assigning default value
