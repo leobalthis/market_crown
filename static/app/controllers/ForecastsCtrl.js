@@ -26,7 +26,8 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.forecastDateEnd = today;
 	var forecastId;
 	var clickedUser;
-	var finalUserResult = $scope.resultsFollowing;
+	//var finalUserResult = $scope.resultsFollowing;
+	var finalUserResult = "all";
 	var market = "us";
 	var symbols = "all";
 	var correct = "all";
