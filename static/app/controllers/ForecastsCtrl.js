@@ -204,6 +204,14 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 			$scope.showCustom = false;
 			console.log(finalUserResult);
 		}
+		
+		else if ($scope.forecastUserResult.selected.call == "") {
+			$scope.resetInputs();
+			finalUserResult = "all";
+			$scope.showGroups = false;
+			$scope.showCustom = false;
+			console.log(finalUserResult);
+		}
 
 		else if ($scope.forecastUserResult.selected.call == "following") {
 			$scope.resetInputs();
@@ -249,7 +257,6 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 		else if ($scope.forecastUserResult.selected.call == "custom") {
 			$scope.liveSearchSymbol();
-
 			$scope.showGroups = false;
 			$scope.showCustom = true;
 			console.log("Custom selected");
