@@ -99,7 +99,8 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	};
 
 	//users selection
-	$scope.forecastUserResult = {};
+	//$scope.forecastUserResult = {};
+	$scope.forecastUserResult = {name: 'All', call: 'all'};
 	$scope.forecastUserResults = [
 		{name: 'All', call: 'all'},
 		{name: 'Users I follow', call: 'following'},
