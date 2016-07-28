@@ -102,12 +102,12 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.forecastUserResult = {};
 	$scope.forecastUserResults = [
 		{name: 'All', call: 'all'},
+		{name: 'Everyone', call: 'all'}
 		{name: 'Users I follow', call: 'following'},
 		{name: 'Only me', call: 'me'},
 		{name: 'Users from a group', call: 'usersGroup'},
 		{name: 'Pods I am subscribed to', call: 'podsSubscribedTo'},
-		{name: 'Custom', call: 'custom'},
-		{name: undefined, call: 'all'}
+		{name: 'Custom', call: 'custom'}
 		
 	];
 
