@@ -102,7 +102,6 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.forecastUserResult = {};
 	$scope.forecastUserResults = [
 		{name: 'All', call: 'all'},
-		{name: 'All', call: 'all'},
 		{name: 'Users I follow', call: 'following'},
 		{name: 'Only me', call: 'me'},
 		{name: 'Users from a group', call: 'usersGroup'},
@@ -112,7 +111,8 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	];
 
 	//assigning default value
-	$scope.forecastUserResult.selected = $scope.forecastUserResults[0];
+	//$scope.forecastUserResult.selected = $scope.forecastUserResults[0];
+	$scope.forecastUserResult.selected = {name: 'All', call: 'all'};
 
 	//if requires get that gets this
 	$scope.getUserResultsFollowing = function(apiCallLink) {
