@@ -307,7 +307,7 @@ $scope.test = function(){
 	}
 
 	var reBold = /([\$\#\@]\S+)/ig;
-	var reLink = /((?:http:\/\/\S+\.\S+)|(?:w{3}\S+\.\S+)|(?:\S+\.(?:ru|com|net|png|jpg|jpeg|bmp)))/ig;
+	var reLink = /((?:http:\/\/\S+\.\S+)|(?:https:\/\/\S+\.\S+)|(?:w{3}\S+\.\S+)|(?:\S+\.(?:ru|com|net|png|jpg|jpeg|bmp)))/ig;
 	function processMessage(message){
 		message.message =  String(message.message).replace(reBold,"<strong>$1</strong>");
 		message.message =  String(message.message).replace(reLink,"<a href='$1' target='_blank'>$1</a>");
