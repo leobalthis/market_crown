@@ -270,7 +270,9 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		market = $scope.forecastMarket.selected.symbol;
 		var postCallLink;
 		correct = $scope.forecastStatus;
-
+		if ($scope.forecastUserResult.selected.call == undefined){
+			finalUserResult = "all";
+		}
 		//checking the correct api link
 		if ($scope.forecastUserResult.selected.call == "podsSubscribedTo") {
 			postCallLink = "/personal/pod/subscriptions/" + market +"/"+ currentUsername;//current user will be here
