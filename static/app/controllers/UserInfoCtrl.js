@@ -184,6 +184,40 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 	};
 
 
+	$scope.updateProfessionTagline = function() {
+		var apiUrl = "/personal/update/tagline";
+		API.postHttp(apiUrl,
+			{
+				"user": currentUsername,
+				"profession": $scope.basicUserInfo.profession,
+				"tagline": $scope.basicUserInfo.tagline
+			}).then(function(data){
+			console.log(data);
+		},function(err){
+			console.error(err);
+			//alert("Follow error");
+		});
+	};
+
+	$scope.dismisEditTag = function() {
+		$scope.getUserProfessionTagline();
+	};
+
+	$scope.getUserProfessionTagline = function() {
+		var url = "/personal/tagline/" + currentUsername;
+		UserDetailsService.getAtGlanceService(url)
+			.then(function(data) {
+				// promise fulfilled
+				$scope.basicUserInfo.profession = data.profession;
+				$scope.basicUserInfo.tagline = data.tagline;
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Get At Profession and tagline', error);
+			});
+	}
+
+	$scope.getUserProfessionTagline();
 
 	$scope.getAllData = function() {
 		//calling profile info functions

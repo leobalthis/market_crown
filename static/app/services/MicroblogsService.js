@@ -31,7 +31,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 
 		getPushMessages: function(type,market, tstamp, data){
 			var path = ''
-			console.log('type',type,data)
+			// console.log('type',type,data)
 			if(type=='default'){
 				path = '/personal/push/' + type + '/' + market + '/' + tstamp;
 			}else if(type=='symbols'){
@@ -53,7 +53,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 					message_ids:_.chain(data).map('theme_id'),
 					market:data[0].market
 				},true).then(function(res){
-					console.log('getRepliesCount+',res);
+					// console.log('getRepliesCount+',res);
 					_.each(res,function(rply){
 						var msg = _.find(data,{theme_id:rply.theme_id})
 						if(msg){
@@ -61,7 +61,7 @@ App.factory('MicroblogsService', ['APIService', '$q', function (API,$q) {
 						}
 					})
 				});
-			console.log('getRepliesCount',data);
+			// console.log('getRepliesCount',data);
 		},
 
 		getOnlyMeMicroblogsService: function(user, market) {

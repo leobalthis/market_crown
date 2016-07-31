@@ -180,7 +180,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		})
 			.then(function (data) {
 				$scope.atGlanceData = data;
-				console.log("user info got");
+				// console.log("user info got");
 			},function(){
 			console.log("Live search API error");
 		});
@@ -268,6 +268,9 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 	$scope.getUpdatedForecasts = function () {
 
+		if (angular.isArray(finalUserResult) && (finalUserResult.length == 0)) {
+			finalUserResult = "all";
+		}
 		market = $scope.forecastMarket.selected.symbol;
 		var postCallLink;
 		correct = $scope.forecastStatus;
@@ -341,14 +344,14 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		})
 				.then(function (data) {
 					$scope.forecastAnalysis = data;
-					console.log($scope.forecastAnalysis);
+					// console.log($scope.forecastAnalysis);
 					if ($scope.forecastAnalysis.length <= 0) {
 						console.log("Equals 0");
 						$scope.analysisOutput = false;
 					}
 
 					else {
-						console.log("Not zero");
+						// console.log("Not zero");
 						$scope.analysisOutput = true;
 					}
 				},function(){
@@ -358,7 +361,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 	$scope.cleanAnalysis = function () {
 		$scope.forecastAnalysis = "";
-		console.log("Cleaned!!");
+		// console.log("Cleaned!!");
 	};
 
 

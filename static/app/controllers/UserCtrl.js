@@ -218,10 +218,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		{name: 'Today', call: 'today'},
 		{name: 'Yesterday', call: 'yesterday'},
 		{name: 'Last 7 Days', call: 'last-7-days'},
-		{name: 'Last Week (Mon - Sun)', call: 'last-week'},
-		{name: 'Last Working Week (Mon - Fri)', call: 'last-working-week'},
  		{name: 'Last 14 Days', call: 'last-14-days'},
-		{name: 'This Month', call: 'this-month'},
 		{name: 'Last 30 Days', call: 'last-30-days'},
 		{name: 'Last Month', call: 'last-month'},
 		{name: 'All Time', call: 'all-time'},
@@ -229,7 +226,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	];
 
 	//default selected date is "All"
-	$scope.profileStats.date.selected = $scope.profileStats.dates[9];
+	$scope.profileStats.date.selected = $scope.profileStats.dates[6];
 	$scope.options.barChart = {
 		chart: {
 			type: 'discreteBarChart',
@@ -271,23 +268,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			dateRange.end = dashDate.today;
 		}
 
-		else if ($scope.profileStats.date.selected.call === "last-week") {
-			dateRange.start = dashDate.lastWeekMonday;
-			dateRange.end = dashDate.lastWeekSunday
-		}
-
-		else if ($scope.profileStats.date.selected.call === "last-working-week") {
-			dateRange.start = dashDate.lastWeekMonday;
-			dateRange.end = dashDate.lastWeekFriday;
-		}
-
 		else if ($scope.profileStats.date.selected.call === "last-14-days") {
 			dateRange.start = dashDate.last14Days;
-			dateRange.end = dashDate.today;
-		}
-
-		else if ($scope.profileStats.date.selected.call === "this-month") {
-			dateRange.start = dashDate.firstDayOfCurrentMonth;
 			dateRange.end = dashDate.today;
 		}
 
@@ -740,6 +722,19 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 	};
 
+	service.getProfessionTagline = function(url) {
+		UserDetailsService.getAtGlanceService(url)
+			.then(function(data) {
+				// promise fulfilled
+				$scope.profileStats.profession = data.profession;
+				$scope.profileStats.tagline = data.tagline;
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Get At Profession and tagline', error);
+			});
+	};
+
 	service.getAvatar = function(url){
 		APIService.getHttp(url).then(function(data){
 			$scope.profileStats.atGlance.avatar = data.avatar ||  '/userpics/$default.png';
@@ -970,6 +965,25 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		service.deleteGroup(groupId);
 	};
 
+	$scope.updateProfessionTagline = function() {
+		var apiUrl = "/personal/update/tagline";
+		APIService.postHttp(apiUrl,
+			{
+				"user": logginedUser,
+				"profession": $scope.profileStats.profession,
+				"tagline": $scope.profileStats.tagline
+			}).then(function(data){
+			console.log(data);
+		},function(err){
+			console.error(err);
+			//alert("Follow error");
+		});
+	};
+
+	$scope.dismisEditTag = function() {
+		service.getProfessionTagline("/personal/tagline/" + currentUsername);
+	};
+
 
 	//calling charts
 	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
@@ -979,10 +993,12 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	service.getForecastSentiment("/personal/sentiment/"+ currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getProfessionTagline("/personal/tagline/" + currentUsername);
 
 	//functions for refreshing data. Not called initially
 	$scope.refreshUserDetailsData = function() {
 		service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
+		service.getProfessionTagline("/personal/tagline/" + currentUsername);
 	};
 	$scope.refreshChartData = function() {
 		console.log("chart data refresh called");
