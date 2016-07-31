@@ -24,6 +24,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	$scope.isMyProfile = String(logginedUser).toLowerCase() == String(currentUsername).toLowerCase();
 	$scope.currentUsername=currentUsername;
 	console.log('currentUser',currentUsername);
+	var market = "us";
 	//pie chart options
 	$scope.options = {
 		chart: {
@@ -50,6 +51,9 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	$scope.username = {};
 	$scope.profileStats.chart = {};
 	$scope.group = {};
+
+	$scope.multiselect = {};
+	$scope.multiselect.users = [];
 
 	//line chart options
 	$scope.lineOptions = {
@@ -109,97 +113,29 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			}
 		}
 	};
-	$scope.lineData = sinAndCos();
-	/*Random Data Generator */
-	function sinAndCos() {
-		var user1 = [
-			{
-				x: 1,
-				y: 5,
-
-			},
-
-			{
-				x: 2,
-				y: 10
-			},
-			{
-				x: 3,
-				y: 10
-			},
-
-			{
-				x: 4,
-				y: 10
-			}
-		];
-		var user2 = [
-			{
-				x: 1,
-				y: 12
-			},
-
-			{
-				x: 2,
-				y: 5
-			},
-			{
-				x: 3,
-				y: 12
-			},
-
-			{
-				x: 4,
-				y: 4
-			}
-		];
-
-		var user3 = [
-			{
-				x: 1,
-				y: 4
-			},
-
-			{
-				x: 2,
-				y: 3
-			},
-			{
-				x: 3,
-				y: 2
-			},
-
-			{
-				x: 4,
-				y: 5
-			}
-		];
-
-
-		//Line chart data should be sent as an array of series objects.
-		return [
-			{
-				values: user1,      //values - represents the array of {x,y} data points
-				key: 'Sine Wave', //key  - the name of the series.
-				color: '#ff7f0e',  //color - optional: choose your own line color.
+	$scope.lineData = userCompareChart();
+	/*User Compare Chart */
+	function userCompareChart(data) {
+		var colors = ['#ff7f0e', '#2ca02c', '#7777ff'];
+		var user_data = [];
+		var ret_val = [];
+		var i = 0;
+		angular.forEach(data, function(value, key){
+			user_data = [];
+			angular.forEach(value, function(userValue){
+				user_data.push({'x': userValue.date, 'y':userValue.result});
+			});
+			ret_val.push({
+				values : user_data,
+				key: key,
+				color: colors[i],
 				strokeWidth: 2,
 				classed: 'dashed',
 				area: true
-
-			},
-			{
-				values: user2,
-				key: 'Cosine Wave',
-				color: '#2ca02c',
-				area: true
-			},
-			{
-				values: user3,
-				key: 'Another sine wave',
-				color: '#7777ff',
-				area: true
-			},
-		];
+			});
+			i ++;
+		});
+		return ret_val;
 	};
 
 
@@ -984,6 +920,27 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		service.getProfessionTagline("/personal/tagline/" + currentUsername);
 	};
 
+	$scope.changeMarket = function() {
+		market = $scope.profileStats.market.selected.symbol;
+	};
+
+	$scope.getCompareChart = function() {
+		var apiUrl = "/personal/crank/" + market + "/" + dateRange.start + "until" + dateRange.end;
+		APIService.postHttp(apiUrl,
+			{
+				"metric": "community rank",
+				"users":$scope.multiselect.users
+			}).then(function(data){
+				$scope.lineData = userCompareChart(data);
+		}, function(err){
+				console.error(err);
+		});
+	};
+
+	$scope.compareUserUpdate = function() {
+		$scope.getCompareChart();
+	};
+
 
 	//calling charts
 	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
@@ -994,6 +951,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	service.getProfessionTagline("/personal/tagline/" + currentUsername);
+	$scope.getCompareChart();
 
 	//functions for refreshing data. Not called initially
 	$scope.refreshUserDetailsData = function() {
@@ -1012,6 +970,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		service.getForecastSentiment("/personal/sentiment/"+ currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 		service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 		service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+
+		$scope.getCompareChart();
 	};
 	$scope.redirectToUser = function () {
 		console.log("redirected to user")

@@ -128,6 +128,11 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 		});
 	};
 
+	angular.element(document.querySelector('#fileInput')).on('change',function(){
+		console.log(document.getElementById('fileInput').files[0]);
+		API.postHttp('/personal/');
+	});
+
 	//$scope.getABasicUserInfo = function () {
 	//	API.getHttp("/personal/me/")
 	//		.then(function (data) {

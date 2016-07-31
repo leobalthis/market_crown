@@ -3,7 +3,12 @@
 <div class="dashboard-element">
 
 <div class="user-info-header">
-<img ng-src="{{basicUserInfo.photos[0].value || '/userpics/$default.png'}}" alt=""/>
+
+<label class="btn-file">
+    <img ng-src="{{basicUserInfo.photos[0].value || '/userpics/$default.png'}}" alt=""/>
+    <input type="file" style="display: none;" id="fileInput" ng-select="uploadAvatar($files)">
+</label>
+
 <h2>{{basicUserInfo.mc_username}}</h2>
 <h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfession=true;">{{basicUserInfo.profession}}<span class="edit profession"></span></h2>
 <div ng-show="isEditProfession">

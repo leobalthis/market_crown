@@ -12691,6 +12691,9 @@ footer {
 #dashboard .dashboard-content-wrapper .user-info .user-info-header .buttons {
   margin: 1em 0;
 }
+.btn-file {
+  cursor: pointer;
+}
 @media (min-width: 1280px) and (max-width: 1439px) {
   #dashboard .dashboard-content-wrapper .row.content {
     zoom: 0.8;

@@ -65,6 +65,10 @@ router.get('/avatar/:username',function(req, res){
 	//}
 });
 
+router.post('/avatar/:username', function(req, res){
+	var username = String(req.params.username).toLowerCase();
+	return res.json({error:body});
+});
 
 router.all('*',proxy);
 
