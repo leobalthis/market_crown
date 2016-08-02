@@ -274,7 +274,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		market = $scope.forecastMarket.selected.symbol;
 		var postCallLink;
 		correct = $scope.forecastStatus;
-		if ($scope.forecastUserResult.selected.call == undefined){
+		if (($scope.forecastUserResult.selected.call == undefined) || ($scope.forecastUserResult.selected.call == "all")){
 			finalUserResult = "all";
 		}
 		//checking the correct api link
@@ -299,7 +299,6 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		if ($scope.forecastUserResult.selected.call == "custom") {
 			$scope.callCustomData();
 		}
-
 
 		API.postHttp( postCallLink,
 			{
