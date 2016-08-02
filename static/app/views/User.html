@@ -592,8 +592,8 @@
 				<div class="user-info-header">
 					<img ng-src="{{profileStats.atGlance.avatar || '/userpics/$default.png'}}" alt=""/>
 					<h2>{{profileStats.atGlance.user || upercase}}</h2>
-					<h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfession=true;">{{profileStats.profession}}<span class="edit profession"></span></h2>
-					<div ng-show="isEditProfession">
+					<h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfessionCheck();">{{profileStats.profession}}<span class="edit profession" ng-show="profileStats.atGlance.user.mc_username==currentUsername"></span></h2>
+					<div ng-show="isEditProfession && profileStats.atGlance.user.mc_username==currentUsername">
 						<input type="text" name="profession" ng-model="profileStats.profession" />
 						<div class="buttons">
                             <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditProfession=false;">Submit</button>
@@ -601,8 +601,10 @@
                             <div class="clearfix"></div>
                         </div>
 					</div>
-					<p ng-show="!isEditTagline" ng-click="isEditTagline=true;">{{profileStats.tagline}}<span class="edit tagline"></span></p>
-					<div ng-show="isEditTagline">
+					<p ng-show="!isEditTagline" ng-click="isEditTaglineCheck();">{{profileStats.tagline}}
+						<span class="edit tagline" ng-show="profileStats.atGlance.user.mc_username==currentUsername"></span>
+					</p>
+					<div ng-show="isEditTagline && profileStats.atGlance.user.mc_username==currentUsername">
 						<input type="text" name="profession" ng-model="profileStats.tagline" />
 						<div class="buttons">
                             <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditTagline=false;">Submit</button>

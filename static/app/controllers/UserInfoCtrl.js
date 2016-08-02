@@ -13,7 +13,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 	var currentUsername = UserDetailsService.getUser().mc_username;
 	$scope.currentUsername=currentUsername;
 
-	$scope.basicUserInfo = UserDetailsService.getUser()
+	$scope.basicUserInfo = UserDetailsService.getUser();
 
 
 
@@ -251,6 +251,17 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 
 	$scope.dismisEditTag = function() {
 		$scope.getUserProfessionTagline();
+	};
+
+	$scope.isEditProfessionCheck = function() {
+		if ($scope.basicUserInfo.mc_username == $scope.currentUsername) {
+			$scope.isEditProfession=true;
+		}
+	};
+	$scope.isEditTaglineCheck = function() {
+		if ($scope.basicUserInfo.mc_username == $scope.currentUsername) {
+			$scope.isEditTagline=true;
+		}
 	};
 
 	$scope.getUserProfessionTagline = function() {

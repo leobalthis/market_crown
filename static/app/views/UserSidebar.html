@@ -17,8 +17,8 @@
   {{errorMsg}}
 
 <h2>{{basicUserInfo.mc_username}}</h2>
-<h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfession=true;">{{basicUserInfo.profession}}<span class="edit profession"></span></h2>
-<div ng-show="isEditProfession">
+<h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfessionCheck();">{{basicUserInfo.profession}}<span class="edit profession" ng-show="basicUserInfo.mc_username==currentUsername"></span></h2>
+<div ng-show="isEditProfession && basicUserInfo.mc_username==currentUsername">
 	<input type="text" name="profession" ng-model="basicUserInfo.profession" />
 	<div class="buttons">
         <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditProfession=false;">Submit</button>
@@ -26,8 +26,10 @@
         <div class="clearfix"></div>
     </div>
 </div>
-<p ng-show="!isEditTagline" ng-click="isEditTagline=true;">{{basicUserInfo.tagline}}<span class="edit tagline"></span></p>
-<div ng-show="isEditTagline">
+<p ng-show="!isEditTagline" ng-click="isEditTaglineCheck();">{{basicUserInfo.tagline}}
+    <span class="edit tagline" ng-show="basicUserInfo.mc_username==currentUsername"></span>
+</p>
+<div ng-show="isEditTagline && basicUserInfo.mc_username==currentUsername">
 	<input type="text" name="profession" ng-model="basicUserInfo.tagline" />
 	<div class="buttons">
         <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditTagline=false;">Submit</button>

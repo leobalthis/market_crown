@@ -941,6 +941,17 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		$scope.getCompareChart();
 	};
 
+	$scope.isEditProfessionCheck = function() {
+		if ($scope.profileStats.atGlance.user.mc_username == $scope.currentUsername) {
+			$scope.isEditProfession=true;
+		}
+	};
+	$scope.isEditTaglineCheck = function() {
+		if ($scope.profileStats.atGlance.user.mc_username == $scope.currentUsername) {
+			$scope.isEditTagline=true;
+		}
+	};
+
 
 	//calling charts
 	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
