@@ -162,16 +162,26 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 		  }).progress(function(event) {
 		    $scope.uploadProgress = Math.floor(event.loaded / event.total);
 		  }).success(function(data, status, headers, config) {
-		  	$scope.basicUserInfo.photos[0].value = data.success;
-			API.postHttp("/personal/update/avatar",{
-				"user": currentUsername,
-				"url" : data.success
-			})
-			.then(function(data){
-				console.log(data);
-			},function(){
-				console.log("uploading avatar error");
-			});
+		  	console.log(data);
+			  $timeout(function(){
+				  API.getHttp('/personal/getS3link/' + currentUsername)
+					.then(function(data){
+						console.log(data);
+						console.log($scope.basicUserInfo);
+						$scope.basicUserInfo.photos[0].value = data.success;
+							API.postHttp("/personal/update/avatar",{
+								"user": currentUsername,
+								"url" : data.success
+							})
+							.then(function(data){
+								console.log(data);
+							},function(){
+								console.log("uploading avatar error");
+							});
+					}, function(err){
+						console.log(err);
+					});
+			  }, 25000);
 		  }).error(function(err) {
 		    $scope.uploadInProgress = false;
 		    console.log('Error uploading file: ' + err);

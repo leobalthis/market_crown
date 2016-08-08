@@ -114,14 +114,33 @@ router.post('/avatar/:username', function(req, res){
 		});
 
 		uploader.on('end', function(url) {
-			var s3s = new aws.S3();
-			var sparams = {Bucket: 'marketcrown-avatars', Key: username};
-			var url = s3s.getSignedUrl('getObject', sparams);
+			// var s3s = new aws.S3();
+			// var sparams = {Bucket: 'marketcrown-avatars', Key: username};
+			// var url = s3s.getSignedUrl('getObject', sparams);
 			res.json({success:url});
 		});
 
     });
 
+});
+
+router.get('/getS3link/:username',function(req, res){
+	var username = String(req.params.username).toLowerCase();
+	aws.config.update(
+	  {
+		accessKeyId: "AKIAIAHSPCV7HDQHZQAA",
+		secretAccessKey: "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",
+		region: 'us-west-2'
+	  }
+	);
+	var s3s = new aws.S3();
+	var options = {
+		Bucket    : 'marketcrown-avatars',
+		Key    : username
+	};
+	var url = s3s.getSignedUrl('getObject', options);
+	console.log("signedURL:"+url);
+	res.json({success:url});
 });
 
 router.all('*',proxy);
