@@ -313,7 +313,7 @@
 
 								<div class="col-lg-5">
 									<div class="btn-container">
-										<button class="btn submit" ng-click="compareUserUpdate();">Submit</button>
+										<button class="btn submit">Submit</button>
 									</div>
 								</div>
 							</div>
@@ -592,26 +592,8 @@
 				<div class="user-info-header">
 					<img ng-src="{{profileStats.atGlance.avatar || '/userpics/$default.png'}}" alt=""/>
 					<h2>{{profileStats.atGlance.user || upercase}}</h2>
-					<h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfessionCheck();">{{profileStats.profession}}<span class="edit profession" ng-show="profileStats.atGlance.user.mc_username==currentUsername"></span></h2>
-					<div ng-show="isEditProfession && profileStats.atGlance.user.mc_username==currentUsername">
-						<input type="text" name="profession" ng-model="profileStats.profession" />
-						<div class="buttons">
-                            <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditProfession=false;">Submit</button>
-                            <button class="btn pull-right btn-cancel" ng-click="isEditProfession=false;dismisEditTag();">Cancel</button>
-                            <div class="clearfix"></div>
-                        </div>
-					</div>
-					<p ng-show="!isEditTagline" ng-click="isEditTaglineCheck();">{{profileStats.tagline}}
-						<span class="edit tagline" ng-show="profileStats.atGlance.user.mc_username==currentUsername"></span>
-					</p>
-					<div ng-show="isEditTagline && profileStats.atGlance.user.mc_username==currentUsername">
-						<input type="text" name="profession" ng-model="profileStats.tagline" />
-						<div class="buttons">
-                            <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditTagline=false;">Submit</button>
-                            <button class="btn pull-right btn-cancel" ng-click="isEditTagline=false;dismisEditTag();">Cancel</button>
-                            <div class="clearfix"></div>
-                        </div>
-					</div>
+					<h2 class="subtitle">{{profileStats.atGlance.profession}}</h2>
+					<p>{{profileStats.atGlance.tagline}}</p>
 
 					<div class="btn-container">
 						<button  ng-hide="isMyProfile" class="btn btn-primary" ng-click="followUser(profileStats.atGlance)">

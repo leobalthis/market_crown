@@ -17,14 +17,13 @@ const admin				= require('./routes/admin.js');
 const db				= require('./db/db.js');
 
 const CONFIG			= require('./config.js');
-const sessionsecret		= 'jst rndm scrt lne';
-var bodyParser = require('body-parser');
+const sessionsecret		= 'jst rndm scrt lne'
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+//app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
-app.use(bodyParser.json())
+//app.use(bodyParser.json())
 // cookieParser('jst rndm scrt lne',{secure:true, maxAge:60*60*24*7})
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -35,8 +34,6 @@ app.use(CONFIG.LANDING_PREFIX, express.static(__dirname + '/static/landing'));
 app.use('/userpics', express.static(__dirname + '/static/userpics'));
 //app.use(CONFIG.APP_PREFIX, [checkIfAuthed, express.static(__dirname + '/static/app')]);
 app.use(CONFIG.APP_PREFIX,  express.static(__dirname + '/static/app'));
-app.use(bodyParser({uploadDir:__dirname+'/static'}));
-
 app.use(cookieParser(sessionsecret));
 app.use(session({
 	secret:sessionsecret,

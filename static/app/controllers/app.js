@@ -9,8 +9,7 @@ var App = angular.module('App', ['ngSanitize',
 	'angularUtils.directives.dirPagination',
 	'angular-loading-bar',
 	'ui-notification',
-	'nvd3',
-	'ngFileUpload'
+	'nvd3'
 ]);
 
 App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'NotificationProvider', function($urlRouterProvider, $stateProvider, $httpProvider,NotificationProvider) {

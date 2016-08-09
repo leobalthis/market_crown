@@ -9,13 +9,7 @@ const User 				= require('../db/user.model.js');
 var request				= require('request');
 var concat				= require('concat-stream');
 var CONFIG				= require('../config.js');
-var qs 					= require('querystring');
-var path				= require('path');
-var tempDir 			= path.join('.', 'static');
-var s3 = require('./aws');
-var aws = require('aws-sdk');
-var multiparty = require('multiparty');
-var uuid = require('uuid');
+var qs 					= require('querystring')
 
 //router.use(usernameReplacement);
 var pattern = '$$username$$';
@@ -71,77 +65,6 @@ router.get('/avatar/:username',function(req, res){
 	//}
 });
 
-router.post('/avatar/:username', function(req, res){
-
-	var username = String(req.params.username).toLowerCase();
-	var s3Client = s3.createClient({
-		  maxAsyncS3: 20,     // this is the default
-		  s3RetryCount: 3,    // this is the default
-		  s3RetryDelay: 1000, // this is the default
-		  multipartUploadThreshold: 20971520, // this is the default (20 MB)
-		  multipartUploadSize: 15728640, // this is the default (15 MB)
-		  s3Options: {
-		    accessKeyId: "AKIAIAHSPCV7HDQHZQAA",
-		    secretAccessKey: "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",
-		    region: "us-west-2",
-		  },
-		});
-	var form = new multiparty.Form();
-    form.parse(req, function(err, fields, files) {
-      var file = files.file[0];
-      var contentType = file.headers['content-type'];
-      var extension = file.path.substring(file.path.lastIndexOf('.'));
-
-      var headers = {
-        'x-amz-acl': 'public-read',
-        'Content-Length': file.size,
-        'Content-Type': contentType
-      };
-
-		var params = {
-		  localFile: file.path,
-
-		  s3Params: {
-		    Bucket: "marketcrown-avatars",
-		    Key: username,
-		  },
-		};
-		var uploader = s3Client.uploadFile(params);
-
-		uploader.on('error', function(err) {
-			//TODO handle this
-			res.json({error:err});
-		});
-
-		uploader.on('end', function(url) {
-			// var s3s = new aws.S3();
-			// var sparams = {Bucket: 'marketcrown-avatars', Key: username};
-			// var url = s3s.getSignedUrl('getObject', sparams);
-			res.json({success:url});
-		});
-
-    });
-
-});
-
-router.get('/getS3link/:username',function(req, res){
-	var username = String(req.params.username).toLowerCase();
-	aws.config.update(
-	  {
-		accessKeyId: "AKIAIAHSPCV7HDQHZQAA",
-		secretAccessKey: "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",
-		region: 'us-west-2'
-	  }
-	);
-	var s3s = new aws.S3();
-	var options = {
-		Bucket    : 'marketcrown-avatars',
-		Key    : username
-	};
-	var url = s3s.getSignedUrl('getObject', options);
-	console.log("signedURL:"+url);
-	res.json({success:url});
-});
 
 router.all('*',proxy);
 
