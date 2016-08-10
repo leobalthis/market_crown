@@ -268,10 +268,13 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 	$scope.getUpdatedForecasts = function () {
 
+		if (angular.isArray(finalUserResult) && (finalUserResult.length == 0)) {
+			finalUserResult = "all";
+		}
 		market = $scope.forecastMarket.selected.symbol;
 		var postCallLink;
 		correct = $scope.forecastStatus;
-		if ($scope.forecastUserResult.selected.call == undefined){
+		if (($scope.forecastUserResult.selected.call == undefined) || ($scope.forecastUserResult.selected.call == "all")){
 			finalUserResult = "all";
 		}
 		//checking the correct api link

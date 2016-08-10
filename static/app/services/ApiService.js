@@ -1,8 +1,8 @@
 App.service('APIService', ['$http','$q','Notification', function ($http,$q,Notification) {
 
 	var headers = {'Content-Type': 'application/json'};
-	// var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
-	var urlBase = (window.location.host=='192.168.1.33:3000')?'http://192.168.1.33:3000/api/v1':'https://marketcrown.com/api/v1';
+	var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
+	// var urlBase = (window.location.host=='192.168.1.33:3000')?'http://192.168.1.33:3000/api/v1':'https://marketcrown.com/api/v1';
 
 console.log(window.location.host)
 	function getHttp(url,data,ignoreLoadingBar){
