@@ -10645,13 +10645,13 @@ footer {
         margin-bottom: .5em;
         border-bottom: 1px solid #D5E8E0; }
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container {
-          -webkit-border-radius: 300px;
-          border-radius: 300px;
           background-clip: padding-box;
           /* stops bg color from leaking outside the border: */
-          border: 1px solid #41b450;
           overflow: hidden; }
           #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container img {
+            -webkit-border-radius: 300px;
+            border-radius: 300px;
+            border: 1px solid #41b450;
             width: 47px;
             height: 47px; }
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element p.theme {
