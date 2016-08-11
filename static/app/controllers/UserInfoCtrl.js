@@ -156,7 +156,12 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 					.then(function(data){
 						console.log(data);
 						console.log($scope.basicUserInfo);
-						$scope.basicUserInfo.photos[0].value = data.success;
+						if ($scope.basicUserInfo.photos.length > 0) {
+							$scope.basicUserInfo.photos[0].value = data.success;
+						} else {
+							var photo = {"value":data.success};
+							$scope.basicUserInfo.photos.push(photo);
+						}
 							API.postHttp("/personal/update/avatar",{
 								"user": currentUsername,
 								"url" : data.success

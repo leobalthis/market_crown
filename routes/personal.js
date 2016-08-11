@@ -11,11 +11,11 @@ var concat				= require('concat-stream');
 var CONFIG				= require('../config.js');
 var qs 					= require('querystring')
 var path				= require('path');
-var s3 = require('./aws');
-var aws = require('aws-sdk');
-var multiparty = require('multiparty');
-var uuid = require('uuid');
-var async = require("async");
+var s3 					= require('./aws');
+var aws 				= require('aws-sdk');
+var multiparty 			= require('multiparty');
+var uuid 				= require('uuid');
+var async 				= require("async");
 
 
 //router.use(usernameReplacement);
