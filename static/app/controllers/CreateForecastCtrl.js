@@ -77,7 +77,7 @@ App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, Gen
 			// then() called when son gets back
 			.then(function(data) {
 				// promise fulfilled
-				console.log("Service Create Forecasts",  data);
+				// console.log("Service Create Forecasts",  data);
 				Notification.success("Forecast Successfully Created");
 				$scope.newForecast.symbol = "";
 				//$scope.newForecast.marketMovement = "";
@@ -99,7 +99,7 @@ App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, Gen
 	// then() called when son gets back
 	.then(function(data) {
 		// promise fulfilled
-		console.log("Service Symbols",  data);
+		// console.log("Service Symbols",  data);
 		$scope.symbols = data;
 
 	}, function(error) {
@@ -113,7 +113,7 @@ App.controller ('CreateForecastCtrl', function StockInfoCtrl ($scope, $http, Gen
 			// then() called when son gets back
 			.then(function(data) {
 				// promise fulfilled
-				console.log("Service Symbols",  data);
+				// console.log("Service Symbols",  data);
 				$scope.symbols = data;
 				$scope.newForecast.symbol = "";
 

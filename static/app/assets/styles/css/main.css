@@ -10652,7 +10652,8 @@ footer {
           border: 1px solid #41b450;
           overflow: hidden; }
           #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container img {
-            width: 100%; }
+            width: 47px;
+            height: 47px; }
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element p.theme {
           font-size: 1.25em;
           font-weight: 600;
@@ -10958,6 +10959,7 @@ footer {
         background-clip: padding-box;
         /* stops bg color from leaking outside the border: */
         width: 10em;
+        height: 10em;
         border: 5px solid #41b450; }
       #dashboard .dashboard-content-wrapper .user-info .user-info-header h2 {
         font-size: 2em;

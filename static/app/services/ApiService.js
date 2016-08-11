@@ -40,7 +40,7 @@ console.log(window.location.host)
 					console.error('Responce error',res.data.error);
 					reject(res.data.error)
 				} else {
-					console.log('>>[',req.method,'] ' ,req.url ,'\n <<',res.data);
+					// console.log('>>[',req.method,'] ' ,req.url ,'\n <<',res.data);
 					resolve(res.data)
 
 				}

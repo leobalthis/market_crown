@@ -3,7 +3,19 @@
 <div class="dashboard-element">
 
 <div class="user-info-header">
-<img ng-src="{{basicUserInfo.photos[0].value || '/userpics/$default.png'}}" alt=""/>
+
+<label class="btn-file">
+    <img ng-src="{{basicUserInfo.photos[0].value || '/userpics/$default.png'}}" alt=""/>
+    <input type="file" id="fileInput" name="avatar" style="display:none;" ngf-select="uploadFiles($file)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+</label>
+<div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+      <span class="progress" ng-show="f.progress >= 0">
+          <div style="width:{{f.progress}}%"  
+               ng-bind="f.progress + '%'"></div>
+      </span>
+  </div>     
+  {{errorMsg}}
+
 <h2>{{basicUserInfo.mc_username}}</h2>
 <h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfessionCheck();">{{basicUserInfo.profession}}<span class="edit profession" ng-show="basicUserInfo.mc_username==currentUsername"></span></h2>
 <div ng-show="isEditProfession && basicUserInfo.mc_username==currentUsername">
