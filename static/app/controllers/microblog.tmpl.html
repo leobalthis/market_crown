@@ -150,7 +150,7 @@
                         <div class="replies">
                             <div class="reply-element" ng-repeat="reply in microblogs.replies">
                                 <div class="row-regular">
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
 
                                         <div class="img-container" popover-placement="bottom" uib-popover="{{reply.user}}" popover-trigger="mouseenter"  ng-click="gotoProfile(reply.user)">
                                             <img ng-src="{{reply.avatar }}" alt="">
@@ -162,7 +162,7 @@
                                         <!--</p>-->
                                     </div>
 
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-9">
                                         <p class="message" ng-bind-html="reply.reply"></p>
                                         <p class="text-left author pull-right" >{{reply.created}}</p>
                                     </div>
