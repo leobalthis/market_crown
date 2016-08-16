@@ -15,6 +15,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 
 	$scope.basicUserInfo = UserDetailsService.getUser();
 	console.log($scope.basicUserInfo);
+	$scope.errorUpload = false;
 
 
 
@@ -158,6 +159,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 							var photo = {"value":data.success};
 							$scope.basicUserInfo.photos.push(photo);
 						}
+						$scope.errorUpload = false;
 						console.log(currentUsername);
 						console.log(data.success);
 						API.postHttp("/personal/update/avatar",{
@@ -175,6 +177,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 			  }, 2000);
 		  },function(err) {
 		    $scope.uploadInProgress = false;
+		    $scope.errorUpload = true;
 		    console.log('Error uploading file: ' + err);
 		  });
     };

@@ -1165,6 +1165,10 @@ p {
   font-size: 14px;
   font-weight: 300;
   line-height: 1.4; }
+.error-upload {
+  display: block;
+  color: #f00;
+}
 
 @media (min-width: 768px) {
   .lead {
