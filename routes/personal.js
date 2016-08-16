@@ -16,7 +16,21 @@ var aws 				= require('aws-sdk');
 var multiparty 			= require('multiparty');
 var uuid 				= require('uuid');
 var async 				= require("async");
+var multer = require('multer');
 
+
+var storage = multer.diskStorage({ //multers disk storage settings
+        destination: function (req, file, cb) {
+            cb(null, './uploads/')
+        },
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+        }
+    });
+var uploadServer = multer({ //multer settings
+	storage: storage
+}).single('file');
 
 //router.use(usernameReplacement);
 var pattern = '$$username$$';
@@ -61,7 +75,7 @@ router.get('/avatar/:username',function(req, res){
 	//}else{
 		var username = String(req.params.username).toLowerCase();
 		var regex = new RegExp('^'+username+'$','i');
-		console.log('ava',username,regex);
+		//console.log('ava',username,regex);
 		User.findOne({mc_username:regex}, function(err, user) {
 			if(!user){
 				res.json({avatar:'/userpics/$default.png',reason:'no user found'});
@@ -91,40 +105,42 @@ router.post('/avatar/:username', function(req, res){
 
 	async.waterfall([
 		function parse(callback) {
-			var form = new multiparty.Form();
-		    form.parse(req, function(err, fields, files) {
-			    var file = files.file[0];
-			    callback(null, file);
-			});
-		},
-		function upload(file, callback) {
-		    var contentType = file.headers['content-type'];
-		    var extension = file.path.substring(file.path.lastIndexOf('.'));
-			var headers = {
-				'x-amz-acl': 'public-read',
-				'Content-Length': file.size,
-				'Content-Type': contentType
-			};		    
-			var params = {
-			  localFile: file.path,
+			uploadServer(req,res,function(err){
+				if(err){
+					 callback(err, null)
+				} else if (req.file) {
+					var file = req.file;
+					var contentType = "image/jpeg";
+					var extension = file.path.substring(file.path.lastIndexOf('.'));
+					var headers = {
+						'x-amz-acl': 'public-read',
+						'Content-Length': file.size,
+						'Content-Type': contentType
+					};		    
+					var params = {
+					  localFile: file.path,
 
-			  s3Params: {
-			    Bucket: "marketcrown-avatars",
-			    Key: username,
-			  },
-			};
-			var uploader = s3Client.uploadFile(params);
+					  s3Params: {
+						Bucket: "marketcrown-avatars",
+						Key: username,
+					  },
+					};
+					var uploader = s3Client.uploadFile(params);
 
-			uploader.on('error', function(err) {
-				//TODO handle this
-				// res.json({error:err});
-				callback(err, null);
-			});
+					uploader.on('error', function(err) {
+						//TODO handle this
+						// res.json({error:err});
+						callback(err, null);
+					});
 
-			uploader.on('end', function(url) {
-				// res.json({success:url});
-				callback(null, url);
-			});
+					uploader.on('end', function(url) {
+						// res.json({success:url});
+						callback(null, url);
+					});
+				} else {
+					callback('unexpected error', null);
+				}
+			})
 		}
 	], function(err, result) {
 		if (err) {
@@ -160,12 +176,12 @@ function proxy(req, res) {
 	if(process.env.NODE_ENV=='development'){
 		req.user = {mc_username:'rooborn'};
 	}
-	console.log('*',req.user)
+	//console.log('*',req.user)
 	if(!req.user){
-		console.log('* no user')
+		//console.log('* no user')
 		return res.redirect(CONFIG.REDIRECT_AUTH_FAIL)
 	}else if(!req.user.mc_username){
-		console.log('* no username')
+		//console.log('* no username')
 		return res.redirect(CONFIG.REDIRECT_AUTH_SUCCESS)
 	}
 	//}
@@ -175,8 +191,8 @@ function proxy(req, res) {
 	var url = 'http://'+CONFIG.PYTHON_API.HOST+':'+_.sample(CONFIG.PYTHON_API.PORTS) + _.replace(req.url,'fe2ed','feed');
 	// ***
 	//IMPORTANT we have to change "feed" bacouse problem with desorialization if url contains "feed"  (!)
-	log.info('request  > [%s] %s(%s)   payload:(%s)',req.method,req.url, req.originalUrl,req.body);
-	log.info('request goes to endpoint: %s ',url);
+	//log.info('request  > [%s] %s(%s)   payload:(%s)',req.method,req.url, req.originalUrl,req.body);
+	//log.info('request goes to endpoint: %s ',url);
 	var obj;
 	var  write = concat(function(completeResponse) {
 		// here is where you can modify the resulting response before passing it back to the client.
@@ -187,7 +203,7 @@ function proxy(req, res) {
 			//return res.json({error:{desc:'responce not json',resp:completeResponse.toString()}});
 			obj = qs.parse(completeResponse.toString());
 		}
-		console.log('python>',obj);
+		//console.log('python>',obj);
 		if(!obj){obj = {}};
 		//		obj.user = req.user.mc_username;
 		//		request({url:url,body: obj, json:true,method:req.method,headers: {'mc-username':req.user.mc_username}}).pipe(res)

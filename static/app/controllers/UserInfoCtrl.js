@@ -136,8 +136,9 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
         $scope.uploadInProgress = true;
 		  $scope.uploadProgress = 0;
 
+		  var $file;
 		  if (angular.isArray(file)) {
-		    file = file[0];
+		    $file = file[0];
 		  }
 
 		  $scope.upload = Upload.upload({
@@ -147,35 +148,32 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 		      type: 'profile'
 		    },
 		    file: file
-		  }).progress(function(event) {
-		    $scope.uploadProgress = Math.floor(event.loaded / event.total);
-		  }).success(function(data, status, headers, config) {
-		  	console.log(data);
+		  }).then(function(data) {
 			  $timeout(function(){
 				  API.getHttp('/personal/getS3link/' + currentUsername)
 					.then(function(data){
-						console.log(data);
-						console.log($scope.basicUserInfo);
 						if ($scope.basicUserInfo.photos.length > 0) {
 							$scope.basicUserInfo.photos[0].value = data.success;
 						} else {
 							var photo = {"value":data.success};
 							$scope.basicUserInfo.photos.push(photo);
 						}
-							API.postHttp("/personal/update/avatar",{
-								"user": currentUsername,
-								"url" : data.success
-							})
-							.then(function(data){
-								console.log(data);
-							},function(){
-								console.log("uploading avatar error");
-							});
+						console.log(currentUsername);
+						console.log(data.success);
+						API.postHttp("/personal/update/avatar",{
+							"user": currentUsername,
+							"url" : data.success
+						})
+						.then(function(data){
+							console.log(data);
+						},function(){
+							console.log("uploading avatar error");
+						});
 					}, function(err){
 						console.log(err);
 					});
 			  }, 2000);
-		  }).error(function(err) {
+		  },function(err) {
 		    $scope.uploadInProgress = false;
 		    console.log('Error uploading file: ' + err);
 		  });
