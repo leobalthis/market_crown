@@ -150,7 +150,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 		    },
 		    file: file
 		  }).then(function(data) {
-			  $timeout(function(){
+			  /*$timeout(function(){
 				  API.getHttp('/personal/getS3link/' + currentUsername)
 					.then(function(data){
 						if ($scope.basicUserInfo.photos.length > 0) {
@@ -174,10 +174,28 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 					}, function(err){
 						console.log(err);
 					});
-			  }, 2000);
+			  }, 2000);*/
+			  var s3_url = 'https://s3-us-west-1.amazonaws.com/marketcrown-avatars/' + currentUsername.toLowerCase();
+			  console.log(s3_url);
+			  if ($scope.basicUserInfo.photos.length > 0) {
+					$scope.basicUserInfo.photos[0].value = s3_url;
+				} else {
+					var photo = {"value":s3_url};
+					$scope.basicUserInfo.photos.push(photo);
+				}
+				$scope.errorUpload = false;
+				API.postHttp("/personal/update/avatar",{
+					"user": currentUsername,
+					"url" : s3_url
+				})
+				.then(function(data){
+					console.log(data);
+				},function(){
+					console.log("uploading avatar error");
+				});
 		  },function(err) {
 		    $scope.uploadInProgress = false;
-		    $scope.errorUpload = true;
+			$scope.errorUpload = true;
 		    console.log('Error uploading file: ' + err);
 		  });
     };
