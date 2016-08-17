@@ -6,6 +6,7 @@
 
 <label class="btn-file">
     <img ng-src="{{basicUserInfo.photos[0].value || '/userpics/$default.png'}}" alt=""/>
+	<span class="edit avatar" ng-show="basicUserInfo.mc_username==currentUsername"></span>
     <input type="file" id="fileInput" name="avatar" style="display:none;" ngf-select="uploadFiles($file)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
 </label>
 <label class="error-upload" ng-show="errorUpload">Error in uploading avatar, try again</label>

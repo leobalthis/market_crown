@@ -86,9 +86,9 @@ router.get('/avatar/:username',function(req, res){
 	//}
 });
 
-router.post('/avatar/:username', function(req, res){
+router.post('/avatar/:key', function(req, res){
 
-	var username = String(req.params.username).toLowerCase();
+	var custtomKey = String(req.params.key);
 	var s3Client = s3.createClient({
 		  maxAsyncS3: 50,     // this is the default
 		  s3RetryCount: 3,    // this is the default
@@ -98,7 +98,7 @@ router.post('/avatar/:username', function(req, res){
 		  s3Options: {
 		    accessKeyId: "AKIAIAHSPCV7HDQHZQAA",
 		    secretAccessKey: "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",
-		    region: "us-west-2",
+		    region: "us-west-2"
 		  },
 		});
 
@@ -122,7 +122,8 @@ router.post('/avatar/:username', function(req, res){
 
 					  s3Params: {
 						Bucket: "marketcrown-avatars",
-						Key: username,
+						ACL: 'public-read',
+						Key: custtomKey
 					  },
 					};
 					var uploader = s3Client.uploadFile(params);

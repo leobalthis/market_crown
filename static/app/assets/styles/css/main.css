@@ -12675,6 +12675,13 @@ footer {
   margin-top: -20px;
   margin-right: 30px;
 }
+#dashboard .dashboard-content-wrapper .user-info .user-info-header span.edit.avatar {
+	display: block;
+    top: 10px;
+    margin-top: 0;
+    right: 110px;
+    margin-right: 0;
+}
 #dashboard .dashboard-content-wrapper .user-info .user-info-header h2.subtitle:hover,
 #dashboard .dashboard-content-wrapper .user-info .user-info-header p:hover {
   cursor: pointer;

@@ -141,9 +141,11 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 		  if (angular.isArray(file)) {
 		    $file = file[0];
 		  }
+		  
+		  var key = currentUsername.toLowerCase() + new Date().getTime();
 
 		  $scope.upload = Upload.upload({
-		    url: urlBase + '/personal/avatar/' + currentUsername,
+		    url: urlBase + '/personal/avatar/' + key,
 		    method: 'POST',
 		    data: {
 		      type: 'profile'
@@ -175,7 +177,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 						console.log(err);
 					});
 			  }, 2000);*/
-			  var s3_url = 'https://s3-us-west-1.amazonaws.com/marketcrown-avatars/' + currentUsername.toLowerCase();
+			  var s3_url = 'https://s3-us-west-1.amazonaws.com/marketcrown-avatars/' + key;
 			  console.log(s3_url);
 			  if ($scope.basicUserInfo.photos.length > 0) {
 					$scope.basicUserInfo.photos[0].value = s3_url;
