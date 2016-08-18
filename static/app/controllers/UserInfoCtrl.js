@@ -152,31 +152,6 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 		    },
 		    file: file
 		  }).then(function(data) {
-			  /*$timeout(function(){
-				  API.getHttp('/personal/getS3link/' + currentUsername)
-					.then(function(data){
-						if ($scope.basicUserInfo.photos.length > 0) {
-							$scope.basicUserInfo.photos[0].value = data.success;
-						} else {
-							var photo = {"value":data.success};
-							$scope.basicUserInfo.photos.push(photo);
-						}
-						$scope.errorUpload = false;
-						console.log(currentUsername);
-						console.log(data.success);
-						API.postHttp("/personal/update/avatar",{
-							"user": currentUsername,
-							"url" : data.success
-						})
-						.then(function(data){
-							console.log(data);
-						},function(){
-							console.log("uploading avatar error");
-						});
-					}, function(err){
-						console.log(err);
-					});
-			  }, 2000);*/
 			  var s3_url = 'https://s3-us-west-1.amazonaws.com/marketcrown-avatars/' + key;
 			  console.log(s3_url);
 			  var old_avatar = '';
@@ -193,7 +168,6 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 					"url" : s3_url
 				})
 				.then(function(data){
-					console.log(data);
 					if (old_avatar != '') {
 						var splits = old_avatar.split("/");
 						var keyname = splits[splits.length-1];

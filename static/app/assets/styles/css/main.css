@@ -12679,7 +12679,7 @@ footer {
 	display: block;
     top: 10px;
     margin-top: 0;
-    right: 110px;
+    right: -20px;
     margin-right: 0;
 }
 #dashboard .dashboard-content-wrapper .user-info .user-info-header h2.subtitle:hover,
@@ -12706,6 +12706,7 @@ footer {
 }
 .btn-file {
   cursor: pointer;
+  position: relative;
 }
 .thumb {
     width: 24px;
