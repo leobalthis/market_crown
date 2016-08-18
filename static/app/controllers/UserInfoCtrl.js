@@ -179,7 +179,9 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 			  }, 2000);*/
 			  var s3_url = 'https://s3-us-west-1.amazonaws.com/marketcrown-avatars/' + key;
 			  console.log(s3_url);
+			  var old_avatar = '';
 			  if ($scope.basicUserInfo.photos.length > 0) {
+					old_avatar = $scope.basicUserInfo.photos[0].value;
 					$scope.basicUserInfo.photos[0].value = s3_url;
 				} else {
 					var photo = {"value":s3_url};
@@ -192,6 +194,19 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 				})
 				.then(function(data){
 					console.log(data);
+					if (old_avatar != '') {
+						var splits = old_avatar.split("/");
+						var keyname = splits[splits.length-1];
+						console.log(keyname);
+						API.postHttp("/personal/removeOldavatar/" + keyname, {
+							
+						})
+						.then(function(data){
+							console.log(data);
+						}, function(err) {
+							console.log(err);
+						});
+					}
 				},function(){
 					console.log("uploading avatar error");
 				});

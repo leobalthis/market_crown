@@ -88,7 +88,7 @@ router.get('/avatar/:username',function(req, res){
 
 router.post('/avatar/:key', function(req, res){
 
-	var custtomKey = String(req.params.key);
+	var customKey = String(req.params.key);
 	var s3Client = s3.createClient({
 		  maxAsyncS3: 50,     // this is the default
 		  s3RetryCount: 3,    // this is the default
@@ -123,7 +123,7 @@ router.post('/avatar/:key', function(req, res){
 					  s3Params: {
 						Bucket: "marketcrown-avatars",
 						ACL: 'public-read',
-						Key: custtomKey
+						Key: customKey
 					  },
 					};
 					var uploader = s3Client.uploadFile(params);
@@ -149,6 +149,42 @@ router.post('/avatar/:key', function(req, res){
 		} else {
 			res.json({success:result});
 		}
+	});
+});
+
+router.post('/removeOldavatar/:key', function(req, res){
+
+	var customKey = String(req.params.key);
+	var s3Client = s3.createClient({
+		  maxAsyncS3: 50,     // this is the default
+		  s3RetryCount: 3,    // this is the default
+		  s3RetryDelay: 1000, // this is the default
+		  multipartUploadThreshold: 20971520, // this is the default (20 MB)
+		  multipartUploadSize: 15728640, // this is the default (15 MB)
+		  s3Options: {
+		    accessKeyId: "AKIAIAHSPCV7HDQHZQAA",
+		    secretAccessKey: "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",
+		    region: "us-west-2"
+		  },
+		});
+	var params = {
+		Bucket: "marketcrown-avatars",
+		Delete: {
+			Objects: [
+				{
+					Key: customKey
+				}
+			]
+		}
+	};
+	var deleteRes = s3Client.deleteObjects(params);
+	deleteRes.on('error', function(err) {
+		//TODO handle this
+		res.json({error: err});
+	});
+
+	deleteRes.on('end', function(success) {
+		res.json({success: success});
 	});
 });
 
