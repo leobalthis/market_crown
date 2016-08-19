@@ -12362,6 +12362,8 @@ footer {
             background-clip: padding-box;
             /* stops bg color from leaking outside the border: */
             border: 2px solid #41b450;
+			width: 79px;
+			height:79px;
             max-width: 100%; }
           #dashboard .dashboard-content-wrapper .user-page .forecasts-elements .element .body .profile h5 {
             font-size: 1.0em;
