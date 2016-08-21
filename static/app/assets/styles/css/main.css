@@ -10962,8 +10962,8 @@ footer {
         border-radius: 250px;
         background-clip: padding-box;
         /* stops bg color from leaking outside the border: */
-        width: 10em;
-        height: 10em;
+        width: 15em;
+        height: 15em;
         border: 5px solid #41b450; }
       #dashboard .dashboard-content-wrapper .user-info .user-info-header h2 {
         font-size: 2em;
@@ -13184,5 +13184,12 @@ form .progress {
 @media (min-width: 1920px) {
   .dashboard-content-wrapper .col-lg-3.dashboard-element.microblogs > .microblogs-elements-feed > .element > .row > .col-lg-2{
     padding: 0 5px;
+  }
+  #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container img {
+	  width: 67px;
+	  height: 67px;
+  }
+  #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container {
+	  overflow: visible;
   }
 }
