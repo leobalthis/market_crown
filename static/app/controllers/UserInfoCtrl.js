@@ -1,7 +1,10 @@
-App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',function StockInfoCtrl ($scope, API,UserDetailsService){
+App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','UserDetailsService',function StockInfoCtrl ($scope,Upload,$timeout, API,UserDetailsService){
 
 	var stock_info_market = "us";   	//default market value
 	var stock_info_symbol = "googl";	//default symbol values
+
+	var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
+	// var urlBase = (window.location.host=='192.168.1.33:3000')?'http://192.168.1.33:3000/api/v1':'https://marketcrown.com/api/v1';
 
 	//default get call
 	var stock_info_full_link = "default info call";
@@ -10,7 +13,9 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 	var currentUsername = UserDetailsService.getUser().mc_username;
 	$scope.currentUsername=currentUsername;
 
-	$scope.basicUserInfo = UserDetailsService.getUser()
+	$scope.basicUserInfo = UserDetailsService.getUser();
+	console.log($scope.basicUserInfo);
+	$scope.errorUpload = false;
 
 
 
@@ -128,6 +133,63 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 		});
 	};
 
+	$scope.uploadFiles = function(file, errFiles) {
+        $scope.uploadInProgress = true;
+		  $scope.uploadProgress = 0;
+
+		  var $file;
+		  if (angular.isArray(file)) {
+		    $file = file[0];
+		  }
+		  
+		  var key = currentUsername.toLowerCase() + new Date().getTime();
+
+		  $scope.upload = Upload.upload({
+		    url: urlBase + '/personal/avatar/' + key,
+		    method: 'POST',
+		    data: {
+		      type: 'profile'
+		    },
+		    file: file
+		  }).then(function(data) {
+			  var s3_url = 'https://s3-us-west-1.amazonaws.com/marketcrown-avatars/' + key;
+			  console.log(s3_url);
+			  var old_avatar = '';
+			  if ($scope.basicUserInfo.photos.length > 0) {
+					old_avatar = $scope.basicUserInfo.photos[0].value;
+					$scope.basicUserInfo.photos[0].value = s3_url;
+				} else {
+					var photo = {"value":s3_url};
+					$scope.basicUserInfo.photos.push(photo);
+				}
+				$scope.errorUpload = false;
+				API.postHttp("/personal/update/avatar",{
+					"user": currentUsername,
+					"url" : s3_url
+				})
+				.then(function(data){
+					if (old_avatar != '') {
+						var splits = old_avatar.split("/");
+						var keyname = splits[splits.length-1];
+						console.log(keyname);
+						API.postHttp("/personal/removeOldavatar/" + keyname, {
+							
+						})
+						.then(function(data){
+							console.log(data);
+						}, function(err) {
+							console.log(err);
+						});
+					}
+				},function(){
+					console.log("uploading avatar error");
+				});
+		  },function(err) {
+		    $scope.uploadInProgress = false;
+			$scope.errorUpload = true;
+		    console.log('Error uploading file: ' + err);
+		  });
+    };
 	//$scope.getABasicUserInfo = function () {
 	//	API.getHttp("/personal/me/")
 	//		.then(function (data) {
@@ -183,7 +245,51 @@ App.controller ('UserInfoCtrl', ['$scope','APIService','UserDetailsService',func
 
 	};
 
+	$scope.updateProfessionTagline = function() {
+		var apiUrl = "/personal/update/tagline";
+		API.postHttp(apiUrl,
+			{
+				"user": currentUsername,
+				"profession": $scope.basicUserInfo.profession,
+				"tagline": $scope.basicUserInfo.tagline
+			}).then(function(data){
+			console.log(data);
+		},function(err){
+			console.error(err);
+			//alert("Follow error");
+		});
+	};
 
+	$scope.dismisEditTag = function() {
+		$scope.getUserProfessionTagline();
+	};
+
+	$scope.isEditProfessionCheck = function() {
+		if ($scope.basicUserInfo.mc_username == $scope.currentUsername) {
+			$scope.isEditProfession=true;
+		}
+	};
+	$scope.isEditTaglineCheck = function() {
+		if ($scope.basicUserInfo.mc_username == $scope.currentUsername) {
+			$scope.isEditTagline=true;
+		}
+	};
+
+	$scope.getUserProfessionTagline = function() {
+		var url = "/personal/tagline/" + currentUsername;
+		UserDetailsService.getAtGlanceService(url)
+			.then(function(data) {
+				// promise fulfilled
+				$scope.basicUserInfo.profession = data.profession;
+				$scope.basicUserInfo.tagline = data.tagline;
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Get At Profession and tagline', error);
+			});
+	}
+
+	$scope.getUserProfessionTagline();
 
 	$scope.getAllData = function() {
 		//calling profile info functions

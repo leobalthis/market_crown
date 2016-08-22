@@ -18,7 +18,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	var firstDayOfLastMonth = Date.parse('- 1months').moveToFirstDayOfMonth().toString('MM/dd/yy');
 	var lastDayOfLastMonth = Date.parse('- 1months').moveToLastDayOfMonth().toString('MM/dd/yy');
 	var yearFromNow = Date.today().addYears(1).toString('MM/dd/yy');
-	console.log("Years from now " + yearFromNow);
+	// console.log("Years from now " + yearFromNow);
 
 
 
@@ -26,7 +26,8 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.forecastDateEnd = today;
 	var forecastId;
 	var clickedUser;
-	var finalUserResult = $scope.resultsFollowing;
+	//var finalUserResult = $scope.resultsFollowing;
+	var finalUserResult = "all";
 	var market = "us";
 	var symbols = "all";
 	var correct = "all";
@@ -61,14 +62,14 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 				"startdate" :"09/15/15",
 				"enddate": "01/17/25"
 			}).then(function(data){
-				console.log(data);
+				// console.log(data);
 			_.each(data,function(item){
 				API.getHttp('/personal/avatar/'+item.user).then(function(avatar){
 					item.avatar = avatar.avatar;
 				})
 			})
 				$scope.forecastsData = data;
-				console.log(dateStart);
+				// console.log(dateStart);
 			},function(){
 				console.log("initial forecast unsuccessfull")
 			});
@@ -94,11 +95,12 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.changeMarket = function() {
 		market = $scope.forecastMarket.selected.symbol;
 		$scope.liveSearchSymbol();
-		console.log(market);
+		// console.log(market);
 	};
 
 	//users selection
-	$scope.forecastUserResult = {};
+	//$scope.forecastUserResult = {};
+	$scope.forecastUserResult = {name: 'All', call: 'all'};
 	$scope.forecastUserResults = [
 		{name: 'All', call: 'all'},
 		{name: 'Users I follow', call: 'following'},
@@ -106,10 +108,12 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		{name: 'Users from a group', call: 'usersGroup'},
 		{name: 'Pods I am subscribed to', call: 'podsSubscribedTo'},
 		{name: 'Custom', call: 'custom'}
+		
 	];
 
 	//assigning default value
-	$scope.forecastUserResult.selected = $scope.forecastUserResults[0];
+	//$scope.forecastUserResult.selected = $scope.forecastUserResults[0];
+	$scope.forecastUserResult.selected = {name: 'All', call: 'all'};
 
 	//if requires get that gets this
 	$scope.getUserResultsFollowing = function(apiCallLink) {
@@ -117,7 +121,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 			.then(function (data) {
 				$scope.resultsFollowing = data;
 				finalUserResult = $scope.resultsFollowing;
-				console.log("Successfull get user results call");
+				// console.log("Successfull get user results call");
 			},function(){
 			console.log("Get Call Error");
 		});
@@ -132,7 +136,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		API.postHttp( apiCallLink,{
 				"owner": currentUsername
 			}).then(function(data){
-				console.log(data);
+				// console.log(data);
 				$scope.forecastUserGroupsResults = data;
 				$scope.forecastUserGroupResult.selected = $scope.forecastUserGroupsResults[0];
 				finalUserResult = $scope.forecastUserGroupResult.selected.members;
@@ -144,7 +148,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 	$scope.getSelectedGroup = function() {
 		finalUserResult = $scope.forecastUserGroupResult.selected.members;
-		console.log(" $scope.getSelectedGroup() selected: " + finalUserResult);
+		// console.log(" $scope.getSelectedGroup() selected: " + finalUserResult);
 	};
 
 	$scope.getUserResultsPods = function(apiCallLink) {
@@ -160,7 +164,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 				"startdate" :"10/13/14",
 				"enddate": "12/30/37"
 			}).then(function(data){
-				console.log(data);
+				// console.log(data);
 				$scope.userResultsPods = data;
 				finalUserResult = $scope.userResultsPods;
 			},function(){
@@ -176,7 +180,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		})
 			.then(function (data) {
 				$scope.atGlanceData = data;
-				console.log("user info got");
+				// console.log("user info got");
 			},function(){
 			console.log("Live search API error");
 		});
@@ -186,7 +190,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 		API.getHttp("/personal/profile/" + market + "/" + clickedUser)
 			.then(function (data) {
 				$scope.atGlanceData = data;
-				console.log("user info got");
+				// console.log("user info got");
 			},function(){
 			console.log("Live search API error");
 		});
@@ -195,8 +199,16 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	$scope.getForecasts();
 
 	$scope.onSelect = function (){
-		console.log($scope.forecastUserResult.selected.name);
+		// console.log($scope.forecastUserResult.selected.name);
 		if ($scope.forecastUserResult.selected.call == "all") {
+			$scope.resetInputs();
+			finalUserResult = "all";
+			$scope.showGroups = false;
+			$scope.showCustom = false;
+			console.log(finalUserResult);
+		}
+		
+		else if ($scope.forecastUserResult.selected.call == undefined) {
 			$scope.resetInputs();
 			finalUserResult = "all";
 			$scope.showGroups = false;
@@ -248,7 +260,6 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 		else if ($scope.forecastUserResult.selected.call == "custom") {
 			$scope.liveSearchSymbol();
-
 			$scope.showGroups = false;
 			$scope.showCustom = true;
 			console.log("Custom selected");
@@ -257,13 +268,18 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 
 	$scope.getUpdatedForecasts = function () {
 
+		if (angular.isArray(finalUserResult) && (finalUserResult.length == 0)) {
+			finalUserResult = "all";
+		}
 		market = $scope.forecastMarket.selected.symbol;
 		var postCallLink;
 		correct = $scope.forecastStatus;
-
+		if (($scope.forecastUserResult.selected.call == undefined) || ($scope.forecastUserResult.selected.call == "all")){
+			finalUserResult = "all";
+		}
 		//checking the correct api link
 		if ($scope.forecastUserResult.selected.call == "podsSubscribedTo") {
-			postCallLink = "/personal/pod/subscriptions/" + market + "/sonic";//current user will be here
+			postCallLink = "/personal/pod/subscriptions/" + market +"/"+ currentUsername;//current user will be here
 			finalUserResult = "all";
 		}
 
@@ -578,6 +594,7 @@ App.controller ('ForecastsCtrl', ['$scope','APIService','UserDetailsService',fun
 	};
 
 	$scope.resetInputs = function () {
+		finalUserResult = "all";
 		symbols = "all";
 		timeofday =  "all";
 		percentage = "all";

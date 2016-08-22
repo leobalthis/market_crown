@@ -28,6 +28,21 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-google-plus": "^0.5.1",
     "passport-twitter": "^1.0.4",
-    "request": "^2.69.0"
+    "request": "^2.69.0",
+    "aws-sdk": "~2.4.9",
+    "graceful-fs": "~4.1.4",
+    "rimraf": "~2.2.8",
+    "findit2": "~2.2.3",
+    "pend": "~1.2.0",
+    "mkdirp": "~0.5.0",
+    "fd-slicer": "~1.0.0",
+    "mime": "~1.2.11",
+    "streamsink": "~1.2.0",
+    "fileupload":"~1.0.0",
+    "multiparty":"~4.1.2",
+    "uuid":"~2.0.0",
+    "async": "~2.0.0",
+  "fs": "0.0.2",
+  "multer": "1.1.0"
   }
 }

@@ -7,8 +7,7 @@ const session 			= require('express-session');
 const MongoStore 		= require('connect-mongo')(session);
 const passport 			= require('passport');
 const mustacheExpress 	= require('mustache-express');
-var cookieParser 		= require('cookie-parser')
-
+var cookieParser 		= require('cookie-parser');
 
 const common 			= require('./routes/common.js');
 const personal			= require('./routes/personal.js');

@@ -24,6 +24,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	$scope.isMyProfile = String(logginedUser).toLowerCase() == String(currentUsername).toLowerCase();
 	$scope.currentUsername=currentUsername;
 	console.log('currentUser',currentUsername);
+	var market = "us";
 	//pie chart options
 	$scope.options = {
 		chart: {
@@ -51,6 +52,9 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	$scope.profileStats.chart = {};
 	$scope.group = {};
 
+	$scope.multiselect = {};
+	$scope.multiselect.users = [];
+
 	//line chart options
 	$scope.lineOptions = {
 		chart: {
@@ -74,7 +78,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			xAxis: {
 				axisLabel: 'Dates',
 				tickFormat: function(d) {
-					return d3.time.format('%x')(new Date(new Date() - (20000 * 86400000) + (d * 86400000)));
+					// return d3.time.format('%x')(new Date(new Date() - (20000 * 86400000) + (d * 86400000)));
+					return d3.time.format('%x')(new Date(d*1000));
 				},
 				showMaxMin: false
 			},
@@ -109,98 +114,32 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			}
 		}
 	};
-	$scope.lineData = sinAndCos();
-	/*Random Data Generator */
-	function sinAndCos() {
-		var user1 = [
-			{
-				x: 1,
-				y: 5,
 
-			},
-
-			{
-				x: 2,
-				y: 10
-			},
-			{
-				x: 3,
-				y: 10
-			},
-
-			{
-				x: 4,
-				y: 10
-			}
-		];
-		var user2 = [
-			{
-				x: 1,
-				y: 12
-			},
-
-			{
-				x: 2,
-				y: 5
-			},
-			{
-				x: 3,
-				y: 12
-			},
-
-			{
-				x: 4,
-				y: 4
-			}
-		];
-
-		var user3 = [
-			{
-				x: 1,
-				y: 4
-			},
-
-			{
-				x: 2,
-				y: 3
-			},
-			{
-				x: 3,
-				y: 2
-			},
-
-			{
-				x: 4,
-				y: 5
-			}
-		];
-
-
-		//Line chart data should be sent as an array of series objects.
-		return [
-			{
-				values: user1,      //values - represents the array of {x,y} data points
-				key: 'Sine Wave', //key  - the name of the series.
-				color: '#ff7f0e',  //color - optional: choose your own line color.
+	$scope.lineData = userCompareChart();
+	/*User Compare Chart */
+	function userCompareChart(data) {
+		var colors = ['#ff7f0e', '#2ca02c', '#7777ff'];
+		var user_data = [];
+		var ret_val = [];
+		var i = 0;
+		angular.forEach(data, function(value, key){
+			user_data = [];
+			angular.forEach(value, function(userValue){
+				user_data.push({'x': userValue.date, 'y':userValue.result});
+			});
+			ret_val.push({
+				values : user_data,
+				key: key,
+				color: colors[i],
 				strokeWidth: 2,
 				classed: 'dashed',
 				area: true
-
-			},
-			{
-				values: user2,
-				key: 'Cosine Wave',
-				color: '#2ca02c',
-				area: true
-			},
-			{
-				values: user3,
-				key: 'Another sine wave',
-				color: '#7777ff',
-				area: true
-			},
-		];
+			});
+			i ++;
+		});
+		return ret_val;
 	};
+
 
 
 	//market selection
@@ -218,10 +157,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		{name: 'Today', call: 'today'},
 		{name: 'Yesterday', call: 'yesterday'},
 		{name: 'Last 7 Days', call: 'last-7-days'},
-		{name: 'Last Week (Mon - Sun)', call: 'last-week'},
-		{name: 'Last Working Week (Mon - Fri)', call: 'last-working-week'},
-		{name: 'Last 14 Days', call: 'last-14-days'},
-		{name: 'This Month', call: 'this-month'},
+ 		{name: 'Last 14 Days', call: 'last-14-days'},
 		{name: 'Last 30 Days', call: 'last-30-days'},
 		{name: 'Last Month', call: 'last-month'},
 		{name: 'All Time', call: 'all-time'},
@@ -229,7 +165,7 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	];
 
 	//default selected date is "All"
-	$scope.profileStats.date.selected = $scope.profileStats.dates[9];
+	$scope.profileStats.date.selected = $scope.profileStats.dates[6];
 	$scope.options.barChart = {
 		chart: {
 			type: 'discreteBarChart',
@@ -271,23 +207,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 			dateRange.end = dashDate.today;
 		}
 
-		else if ($scope.profileStats.date.selected.call === "last-week") {
-			dateRange.start = dashDate.lastWeekMonday;
-			dateRange.end = dashDate.lastWeekSunday
-		}
-
-		else if ($scope.profileStats.date.selected.call === "last-working-week") {
-			dateRange.start = dashDate.lastWeekMonday;
-			dateRange.end = dashDate.lastWeekFriday;
-		}
-
 		else if ($scope.profileStats.date.selected.call === "last-14-days") {
 			dateRange.start = dashDate.last14Days;
-			dateRange.end = dashDate.today;
-		}
-
-		else if ($scope.profileStats.date.selected.call === "this-month") {
-			dateRange.start = dashDate.firstDayOfCurrentMonth;
 			dateRange.end = dashDate.today;
 		}
 
@@ -740,6 +661,19 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 
 	};
 
+	service.getProfessionTagline = function(url) {
+		UserDetailsService.getAtGlanceService(url)
+			.then(function(data) {
+				// promise fulfilled
+				$scope.profileStats.profession = data.profession;
+				$scope.profileStats.tagline = data.tagline;
+
+			}, function(error) {
+				// promise rejected, could log the error with: console.log('error', error);
+				console.log('Service Get At Profession and tagline', error);
+			});
+	};
+
 	service.getAvatar = function(url){
 		APIService.getHttp(url).then(function(data){
 			$scope.profileStats.atGlance.avatar = data.avatar ||  '/userpics/$default.png';
@@ -970,7 +904,55 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		service.deleteGroup(groupId);
 	};
 
+	$scope.updateProfessionTagline = function() {
+		var apiUrl = "/personal/update/tagline";
+		APIService.postHttp(apiUrl,
+			{
+				"user": logginedUser,
+				"profession": $scope.profileStats.profession,
+				"tagline": $scope.profileStats.tagline
+			}).then(function(data){
+			console.log(data);
+		},function(err){
+			console.error(err);
+			//alert("Follow error");
+		});
+	};
 
+	$scope.dismisEditTag = function() {
+		service.getProfessionTagline("/personal/tagline/" + currentUsername);
+	};
+
+	$scope.changeMarket = function() {
+		market = $scope.profileStats.market.selected.symbol;
+	};
+
+	$scope.getCompareChart = function() {
+		var apiUrl = "/personal/crank/" + market + "/" + dateRange.start + "until" + dateRange.end;
+		APIService.postHttp(apiUrl,
+			{
+				"metric": "community rank",
+				"users":$scope.multiselect.users
+			}).then(function(data){
+				$scope.lineData = userCompareChart(data);
+		}, function(err){
+				console.error(err);
+		});
+	};
+
+	$scope.compareUserUpdate = function() {
+		$scope.getCompareChart();
+	};
+	$scope.isEditProfessionCheck = function() {
+		if ($scope.profileStats.atGlance.user.mc_username == $scope.currentUsername) {
+			$scope.isEditProfession=true;
+		}
+	};
+	$scope.isEditTaglineCheck = function() {
+		if ($scope.profileStats.atGlance.user.mc_username == $scope.currentUsername) {
+			$scope.isEditTagline=true;
+		}
+	};
 	//calling charts
 	service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
 	service.getUserSectorPreference("/personal/sector/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
@@ -979,10 +961,13 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 	service.getForecastSentiment("/personal/sentiment/"+ currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 	service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+	service.getProfessionTagline("/personal/tagline/" + currentUsername);
+	$scope.getCompareChart();
 
 	//functions for refreshing data. Not called initially
 	$scope.refreshUserDetailsData = function() {
 		service.getAtGlance("/personal/profile/" + $scope.profileStats.market.selected.symbol + "/" + currentUsername);
+		service.getProfessionTagline("/personal/tagline/" + currentUsername);
 	};
 	$scope.refreshChartData = function() {
 		console.log("chart data refresh called");
@@ -996,6 +981,8 @@ App.controller ('UserCtrl', function ($scope, $http, $location, $q, UserChartsSe
 		service.getForecastSentiment("/personal/sentiment/"+ currentUsername + "/"+ $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 		service.getForecastPendingSentiment("/personal/sentiment_pending/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
 		service.getTimeOfDayPreference("/personal/timeofday/" + currentUsername + "/" + $scope.profileStats.market.selected.symbol + "/" + dateRange.start + "until" + dateRange.end);
+
+		$scope.getCompareChart();
 	};
 	$scope.redirectToUser = function () {
 		console.log("redirected to user")

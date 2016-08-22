@@ -1796,8 +1796,21 @@ footer {
 					color: $color-dark;
 
 					&.subtitle {
-						font-size: 1.3em;
+						font-size: 1.9em;
 						margin-top: 0;
+						span {
+							&.edit {
+								background : url(../../images/edit-icon.png) no-repeat;
+								width: 16px;
+								height: 16px;
+								display: none;
+							}
+						}
+						&:hover {
+							.edit {
+								display: block;
+							}
+						}
 					}
 				}
 

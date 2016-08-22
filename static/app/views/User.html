@@ -96,7 +96,7 @@
 					<div class="row">
 						<div class="title clearfix">
 
-							<div class="col-lg-2">
+							<div class="col-lg-2 user-selection">
 								<div class="selection search-switch-selection">
 									<ui-select ng-model="profileStats.usersSelection.active" theme="bootstrap" ng-disabled="disabled">
 										<ui-select-match placeholder="All users">{{$select.selected.name}}</ui-select-match>
@@ -136,7 +136,7 @@
 								<!--</div>-->
 							</div>
 
-							<div class="col-lg-2" ng-show="profileStats.usersSelection.active.call === 'group'">
+							<div class="col-lg-2 group-selection" ng-show="profileStats.usersSelection.active.call === 'group'">
 								<div class="selection search-switch-selection">
 									<ui-select ng-model="profileStats.usersGroup.chosen" theme="bootstrap" ng-disabled="disabled" on-select="changeMarket()">
 										<ui-select-match placeholder="Group selection">{{$select.selected.name}}</ui-select-match>
@@ -154,7 +154,7 @@
 								<img ng-src="assets/images/search-icon.png" alt="">
 							</div>
 
-							<div class="col-lg-3" ng-show="profileStats.usersSelection.active.call === 'group'">
+							<div class="col-lg-3 select-user" ng-show="profileStats.usersSelection.active.call === 'group'">
 								<div class="selection search-switch-selection">
 									<ui-select ng-model="username.search" theme="bootstrap" ng-disabled="disabled" on-select="redirectToUser()">
 										<ui-select-match placeholder="Select user">{{$select.selected}}</ui-select-match>
@@ -166,7 +166,7 @@
 								</div>
 							</div>
 
-							<div class="col-lg-4">
+							<div class="col-lg-4 user-info">
 								<h1>
 									{{username.display}} <span>profile details</span>
 								</h1>
@@ -175,7 +175,7 @@
 					</div>
 					<div class="master-customization">
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-3 market">
 								<h4>Market</h4>
 								<div class="market-selection selection">
 									<ui-select ng-model="profileStats.market.selected" theme="bootstrap" ng-disabled="disabled" on-select="changeMarket()">
@@ -188,7 +188,7 @@
 								</div>
 							</div>
 
-							<div class="col-lg-3">
+							<div class="col-lg-3 period">
 								<h4>Period:</h4>
 								<div class="forecasts-from selection">
 									<ui-select ng-model="profileStats.date.selected" theme="bootstrap" ng-disabled="disabled" on-select="profileStats.dateSelection()">
@@ -201,28 +201,28 @@
 								</div>
 							</div>
 
-							<div class="col-lg-2 " ng-show="profileStats.date.selected.call === 'custom'">
+							<div class="col-lg-2 start-date" ng-show="profileStats.date.selected.call === 'custom'">
 								<div class="date-picker">
 									<h4>Start Date:</h4>
 									<input type="text" ui-date ui-date-format="mm-dd-y" ng-model="profileStats.customDateStart" ng-required="true" placeholder="From date...">
 								</div>
 							</div>
 
-							<div class="col-lg-2" ng-show="profileStats.date.selected.call === 'custom'">
+							<div class="col-lg-2 end-date" ng-show="profileStats.date.selected.call === 'custom'">
 								<div class="date-picker">
 									<h4>End Date</h4>
 									<input type="text" ui-date ui-date-format="mm-dd-y" ng-model="profileStats.customDateEnd" ng-required="true" placeholder="From date...">
 								</div>
 							</div>
 
-							<div class="col-lg-6" ng-class="{ collg2 : profileStats.date.selected.call === 'custom' }">
+							<div class="col-lg-6 submit" ng-class="{ collg2 : profileStats.date.selected.call === 'custom' }">
 								<div class="btn-container">
 									<button ng-click="refreshChartData(); refreshUserDetailsData()" class="btn submit">Submit</button>
 								</div>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="row tabs">
 							<div class="col-lg-12">
 								<ul class="nav nav-tabs">
 									<li class="active"><a href="#stats" data-toggle="tab" aria-expanded="true" target="_self">Statistics</a></li>
@@ -313,7 +313,7 @@
 
 								<div class="col-lg-5">
 									<div class="btn-container">
-										<button class="btn submit">Submit</button>
+										<button class="btn submit" ng-click="compareUserUpdate();">Submit</button>
 									</div>
 								</div>
 							</div>
@@ -592,9 +592,26 @@
 				<div class="user-info-header">
 					<img ng-src="{{profileStats.atGlance.avatar || '/userpics/$default.png'}}" alt=""/>
 					<h2>{{profileStats.atGlance.user || upercase}}</h2>
-					<h2 class="subtitle">{{profileStats.atGlance.profession}}</h2>
-					<p>{{profileStats.atGlance.tagline}}</p>
-
+					<h2 class="subtitle" ng-show="!isEditProfession" ng-click="isEditProfessionCheck();">{{profileStats.profession}}<span class="edit profession" ng-show="profileStats.atGlance.user.mc_username==currentUsername"></span></h2>
+					<div ng-show="isEditProfession && profileStats.atGlance.user.mc_username==currentUsername">
+						<input type="text" name="profession" ng-model="profileStats.profession" />
+						<div class="buttons">
+                            <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditProfession=false;">Submit</button>
+                            <button class="btn pull-right btn-cancel" ng-click="isEditProfession=false;dismisEditTag();">Cancel</button>
+                            <div class="clearfix"></div>
+                        </div>
+					</div>
+					<p ng-show="!isEditTagline" ng-click="isEditTaglineCheck();">{{profileStats.tagline}}
+						<span class="edit tagline" ng-show="profileStats.atGlance.user.mc_username==currentUsername"></span>
+					</p>
+					<div ng-show="isEditTagline && profileStats.atGlance.user.mc_username==currentUsername">
+						<input type="text" name="profession" ng-model="profileStats.tagline" />
+						<div class="buttons">
+                            <button class="pull-right btn btn-success" type="button" ng-click="updateProfessionTagline();isEditTagline=false;">Submit</button>
+                            <button class="btn pull-right btn-cancel" ng-click="isEditTagline=false;dismisEditTag();">Cancel</button>
+                            <div class="clearfix"></div>
+                        </div>
+					</div>
 					<div class="btn-container">
 						<button  ng-hide="isMyProfile" class="btn btn-primary" ng-click="followUser(profileStats.atGlance)">
 							{{followButton}}

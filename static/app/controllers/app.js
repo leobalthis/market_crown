@@ -9,7 +9,8 @@ var App = angular.module('App', ['ngSanitize',
 	'angularUtils.directives.dirPagination',
 	'angular-loading-bar',
 	'ui-notification',
-	'nvd3'
+	'nvd3',
+	'ngFileUpload'
 ]);
 
 App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'NotificationProvider', function($urlRouterProvider, $stateProvider, $httpProvider,NotificationProvider) {
@@ -163,12 +164,12 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 								var user = {};
 								return $q(function(resolve,reject){
 									APIService.getHttp('/personal/profile/us/'+$stateParams.username).then(function(data){
-										console.log('user!',data);
+										// console.log('user!',data);
 										user = data;
 										APIService.getHttp('/personal/tagline/'+$stateParams.username).then(function(data){
 											user.tagline = data.tagline;
 											user.profession = data.profession;
-											console.log('tagling',user);
+											// console.log('tagling',user);
 											resolve(user)
 										},reject);
 									},reject);
