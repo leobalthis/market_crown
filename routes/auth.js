@@ -124,7 +124,10 @@ router.post('/finish',urlencodedParser, function(req,res){
 		body:obj,
 		json:true
 	},function (error, response, body) {
-			console.log('body',body);
+			console.log('Python says [body]',body);
+			console.log('Python says [response]',response);
+			console.log('Python says [error]',error);
+
 			if(error){
 				return res.json({error:body})
 			}
