@@ -10651,13 +10651,13 @@ footer {
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container {
           background-clip: padding-box;
           /* stops bg color from leaking outside the border: */
-          overflow: hidden; }
+          overflow: visible; }
           #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element .img-container img {
             -webkit-border-radius: 300px;
             border-radius: 300px;
             border: 1px solid #41b450;
-            width: 47px;
-            height: 47px; }
+            width: 57px;
+            height: 57px; }
         #dashboard .dashboard-content-wrapper .microblogs .microblogs-elements-feed .element p.theme {
           font-size: 1.25em;
           font-weight: 600;
@@ -13145,7 +13145,8 @@ form .progress {
   }
   #dashboard .dashboard-content-wrapper .user-page #user-profile-content #forecasts .forecasts-elements .col-lg-4 .top-element .profile img{
     margin-top: 1em;
-    width: 8em;
+    width: 78px;
+	height: 78px;
   }
   #dashboard .dashboard-content-wrapper .forecasts-page .forecasts-elements .element .footer {
     padding: 1em 0em 1em .5em;
