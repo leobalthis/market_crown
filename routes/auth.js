@@ -131,8 +131,14 @@ router.post('/finish',urlencodedParser, function(req,res){
 			}
 			if(body=="User successfully added"){
 				req.user.saveMcUsername(req.body.username,req.body.email,function(err){
-					User.deleteAllNonfinished();
-					return res.json({redirect:CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP});
+					if(err){
+						console.error(err);
+						res.json({error:err})
+					}else{
+						User.deleteAllNonfinished();
+						return res.json({redirect:CONFIG.REDIRECT_URL_AFTER_SUCCESS_SIGNUP});
+					}
+
 				});
 			}else{
 				return res.json({error:body})
