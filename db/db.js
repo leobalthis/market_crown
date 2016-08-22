@@ -8,6 +8,7 @@ var mongoose 			= require('mongoose');
 var db;
 var exp = {
 	init:function(done){
+		mongoose.Promise = global.Promise;
 		mongoose.connect(CONFIG.USER_MONGO.URL);
 		console.log('CONFIG.USER_MONGO.URL',CONFIG.USER_MONGO.URL);
 		db = mongoose.connection;
