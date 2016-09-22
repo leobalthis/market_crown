@@ -4,7 +4,7 @@ App.controller ('UserInfoCtrl', ['$scope','Upload','$timeout','APIService','User
 	var stock_info_symbol = "googl";	//default symbol values
 
 	var urlBase = (window.location.host=='192.168.99.100:3000')?'http://192.168.99.100:3000/api/v1':'https://marketcrown.com/api/v1';
-	// var urlBase = (window.location.host=='192.168.1.33:3000')?'http://192.168.1.33:3000/api/v1':'https://marketcrown.com/api/v1';
+	// var urlBase = (window.location.host=='192.168.0.33:3000')?'http://192.168.0.33:3000/api/v1':'https://marketcrown.com/api/v1';
 
 	//default get call
 	var stock_info_full_link = "default info call";

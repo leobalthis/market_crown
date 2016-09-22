@@ -106,7 +106,7 @@ App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'Notificati
 					}
 				},
 				'sidebar': {
-					templateUrl: 'views/Sidebar.html',
+					templateUrl: 'views/noSidebar.html',
 					resolve:{
 						currentUser:function(UserDetailsService){
 							return UserDetailsService.getUser(true);
