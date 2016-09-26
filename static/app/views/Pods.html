@@ -69,8 +69,9 @@
 								<a href="#" class="btn btn-success pull-right">Submit</a>
 							</div>
 						</div>
-						<div class="col-lg-8">
-							<div class="pods-elements">
+						<div class="col-lg-8 padding-right-0">
+							<div class="row pods-elements">
+								<div class="microblogs-header"></div>
 								<div class="col-lg-4">
 									<div class="element-wrapper">
 										<div class="element" ng-mouseenter="getHoveredObject(query)">
@@ -275,9 +276,6 @@
 										<h5>subscribers: 10</h5>
 										<h5>price: $15/month</h5>
 										<h5>gross estimate: $150/month</h5>
-										<h5>sectors: technology, healthcare</h5>
-										<h5>marketcap: all</h5>
-										<h5>percentages: all</h5>
 										<h5>pod link: https://marketcrown.com/app/#/pods/greenlantern/mysuperpod/E39df3</h5>
 									</div>
 								</div>
@@ -583,7 +581,30 @@
 					My Subscription
 				</div>
 				<div class="tab-pane fade" id="myinfo">
-					My Info
+					<div class="col-lg-3">
+						<div class="user-info user-info-profile">
+							<div class="dashboard-element">
+								<div class="user-info-header">
+									<img ng-src="/userpics/$default.png" alt="" src="/userpics/$default.png">
+									<h2 class="ng-binding">my_name</h2>
+									<h5>Total created pods: 6</h5>
+									<h5>Total subscribers: 90</h5>
+									<h5>Estimated monthly payout: $985</h5>
+									<div class="btn-container">
+										<button class="btn btn-primary">
+											Update Personal Info
+										</button>
+									</div>
+									<div class="btn-container">
+										<button class="btn btn-primary">
+											Update Payout Info
+										</button>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1423,6 +1423,13 @@ pre code {
   padding-left: 15px;
   padding-right: 15px; }
 
+.padding-right-0 {
+  padding-right: 0 !important;
+}
+.padding-left-0 {
+  padding-left: 0;
+}
+
 @media (min-width: 768px) {
   .container {
     width: 750px; } }
@@ -10433,7 +10440,7 @@ footer {
       top: 1em;
       right: 1em;
       z-index: 9999; }
-    #dashboard .dashboard-content-wrapper .microblogs .microblogs-header {
+    .microblogs-header, #dashboard .dashboard-content-wrapper .microblogs .microblogs-header {
       margin: 0;
       padding: 1em 1em 0 1em; }
       #dashboard .dashboard-content-wrapper .microblogs .microblogs-header h3 {
@@ -11766,6 +11773,10 @@ footer {
   #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .row {
     margin: 10px 0;
   }
+  #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .row.pods-elements {
+    background-color: #fff;
+    margin-top: 0;
+  }
   #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .row .form-control {
     background-color: #fff;
     padding-left: 5px;
@@ -11845,6 +11856,14 @@ height: 60px;
         margin-right: .5em; }
 #dashboard .dashboard-content-wrapper .pods-page .pods-elements .top-element {
 position: relative; }
+  #dashboard .dashboard-content-wrapper #myinfo .user-info .user-info-header .btn-container {
+    display: block;
+    margin: 15px 0;
+  }
+  #dashboard .dashboard-content-wrapper .pods-page .customization .master-customization ul.nav-tabs li.active a {
+    background-color: #39464D;
+    color: #fff;
+  }
 /* end pod*/
 
   #dashboard .dashboard-content-wrapper .queries-page {
@@ -12501,8 +12520,12 @@ position: relative; }
           background-clip: padding-box;
           /* stops bg color from leaking outside the border: */
           padding: .4em .7em; }
+        #dashboard .dashboard-content-wrapper .pods-page .col-lg-12.headline {
+          padding: 0;
+        }
           #dashboard .dashboard-content-wrapper .pods-page .customization .master-customization ul.nav-tabs li a:hover {
             background-color: #39464D; }
+        }
         #dashboard .dashboard-content-wrapper .pods-page .customization .master-customization ul.nav-tabs li.active a {
           background-color: #39464D;
           color: #fff; }
