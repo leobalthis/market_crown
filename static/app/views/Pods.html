@@ -50,20 +50,28 @@
 								<h3>Create a new pod</h3>
 							</div>
 							<div class="row">
+								<div class="col-lg-4"><div class="pod_image"><img src=""></div></div>
+								<div class="col-lg-8"><button class="btn btn-primary">Upload image</button></div>
+							</div>
+							<div class="row">
 								<div class="col-lg-4">Name:</div>
 								<div class="col-lg-8"><input type="text" name="" placeholder="Pod name" class="form-control"></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-4">Description:</div>
-								<div class="col-lg-8"><textarea class="form-control"></textarea></div>
+								<div class="col-lg-8"><textarea class="form-control" placeholder="pod description"></textarea></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-4">Monthly price:</div>
-								<div class="col-lg-8"><input type="text" name="" placeholder="Price in dollars" class="form-control"></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-4"></div>
-								<div class="col-lg-8"><button class="btn btn-primary">Upload image</button></div>
+								<div class="col-lg-8">
+									<div class="row">
+										<div class="col-lg-6">
+											<select class="form-control">
+												<option ng-repeat="price in prices" ng-value="price">{{price}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="row">
 								<a href="#" class="btn btn-success pull-right">Submit</a>
@@ -72,7 +80,7 @@
 						<div class="col-lg-8 padding-right-0">
 							<div class="row pods-elements">
 								<div class="microblogs-header"></div>
-								<div class="col-lg-4">
+								<div class="col-lg-3">
 									<div class="element-wrapper">
 										<div class="element" ng-mouseenter="getHoveredObject(query)">
 											<div class="row body">
@@ -84,7 +92,7 @@
 
 														<div class="user-name">
 															<h5>
-																MySuperPod
+																<b>MySuperPod</b>
 															</h5>
 														</div>
 													</div>
@@ -94,11 +102,11 @@
 												<div class="col-lg-12">
 													<div class="details">
 														<ul>
-															<li>accuracy: 65%</li>
-															<li>forecasts: 24</li>
-															<li>subscribers: 10</li>
-															<li>created: 01/01/2016</li>
-															<li>price: $15/month</li>
+															<li><b>accuracy:</b> 65%</li>
+															<li><b>forecasts:</b> 24</li>
+															<li><b>subscribers:</b> 10</li>
+															<li><b>created:</b> 01/01/2016</li>
+															<li><b>price:</b> $15/month</li>
 														</ul>
 													</div>
 												</div>
@@ -110,7 +118,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-3">
 									<div class="element-wrapper">
 										<div class="element" ng-mouseenter="getHoveredObject(query)">
 											<div class="row body">
@@ -122,7 +130,7 @@
 
 														<div class="user-name">
 															<h5>
-																MySuperPod
+																<b>MySuperPod</b>
 															</h5>
 														</div>
 													</div>
@@ -132,11 +140,11 @@
 												<div class="col-lg-12">
 													<div class="details">
 														<ul>
-															<li>accuracy: 65%</li>
-															<li>forecasts: 24</li>
-															<li>subscribers: 10</li>
-															<li>created: 01/01/2016</li>
-															<li>price: $15/month</li>
+															<li><b>accuracy:</b> 65%</li>
+															<li><b>forecasts:</b> 24</li>
+															<li><b>subscribers:</b> 10</li>
+															<li><b>created:</b> 01/01/2016</li>
+															<li><b>price:</b> $15/month</li>
 														</ul>
 													</div>
 												</div>
@@ -147,7 +155,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-3">
 									<div class="element-wrapper">
 										<div class="element" ng-mouseenter="getHoveredObject(query)">
 											<div class="row body">
@@ -159,7 +167,7 @@
 
 														<div class="user-name">
 															<h5>
-																MySuperPod
+																<b>MySuperPod</b>
 															</h5>
 														</div>
 													</div>
@@ -169,11 +177,11 @@
 												<div class="col-lg-12">
 													<div class="details">
 														<ul>
-															<li>accuracy: 65%</li>
-															<li>forecasts: 24</li>
-															<li>subscribers: 10</li>
-															<li>created: 01/01/2016</li>
-															<li>price: $15/month</li>
+															<li><b>accuracy:</b> 65%</li>
+															<li><b>forecasts:</b> 24</li>
+															<li><b>subscribers:</b> 10</li>
+															<li><b>created:</b> 01/01/2016</li>
+															<li><b>price:</b> $15/month</li>
 														</ul>
 													</div>
 												</div>
@@ -184,7 +192,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-3">
 									<div class="element-wrapper">
 										<div class="element" ng-mouseenter="getHoveredObject(query)">
 											<div class="row body">
@@ -196,7 +204,7 @@
 
 														<div class="user-name">
 															<h5>
-																MySuperPod
+																<b>MySuperPod</b>
 															</h5>
 														</div>
 													</div>
@@ -206,11 +214,11 @@
 												<div class="col-lg-12">
 													<div class="details">
 														<ul>
-															<li>accuracy: 65%</li>
-															<li>forecasts: 24</li>
-															<li>subscribers: 10</li>
-															<li>created: 01/01/2016</li>
-															<li>price: $15/month</li>
+															<li><b>accuracy:</b> 65%</li>
+															<li><b>forecasts:</b> 24</li>
+															<li><b>subscribers:</b> 10</li>
+															<li><b>created:</b> 01/01/2016</li>
+															<li><b>price:</b> $15/month</li>
 														</ul>
 													</div>
 												</div>
@@ -221,7 +229,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-3">
 									<div class="element-wrapper">
 										<div class="element" ng-mouseenter="getHoveredObject(query)">
 											<div class="row body">
@@ -233,7 +241,7 @@
 
 														<div class="user-name">
 															<h5>
-																MySuperPod
+																<b>MySuperPod</b>
 															</h5>
 														</div>
 													</div>
@@ -243,11 +251,11 @@
 												<div class="col-lg-12">
 													<div class="details">
 														<ul>
-															<li>accuracy: 65%</li>
-															<li>forecasts: 24</li>
-															<li>subscribers: 10</li>
-															<li>created: 01/01/2016</li>
-															<li>price: $15/month</li>
+															<li><b>accuracy:</b> 65%</li>
+															<li><b>forecasts:</b> 24</li>
+															<li><b>subscribers:</b> 10</li>
+															<li><b>created:</b> 01/01/2016</li>
+															<li><b>price:</b> $15/month</li>
 														</ul>
 													</div>
 												</div>
@@ -268,15 +276,16 @@
 
 									<div class="user-info-header">
 										<img ng-src="/userpics/$default.png" alt="" src="/userpics/$default.png">
-										<h2 class="ng-binding">MySuperPod</h2>
-										<h2 class="subtitle ng-binding" >"The best picks curated from my research"</h2>
-										<h5>created: 01/01/2016</h5>
-										<h5>accuracy: 65%</h5>
-										<h5>forecasts: 24</h5>
-										<h5>subscribers: 10</h5>
-										<h5>price: $15/month</h5>
-										<h5>gross estimate: $150/month</h5>
-										<h5>pod link: https://marketcrown.com/app/#/pods/greenlantern/mysuperpod/E39df3</h5>
+										<h2 class="">MySuperPod</h2>
+										<h2 class="subtitle" >"The best picks curated from my research"</h2>
+										<h5 class="text-left"><b>created:</b> 01/01/2016</h5>
+										<h5 class="text-left"><b>accuracy:</b> 65%</h5>
+										<h5 class="text-left"><b>forecasts:</b> 24</h5>
+										<h5 class="text-left"><b>subscribers:</b> 10</h5>
+										<h5 class="text-left"><b>price:</b> $15/month</h5>
+										<h5 class="text-left"><b>gross estimate:</b> $150/month</h5>
+										<h5 class="text-left"><b>status:</b> </h5>
+										<h5 class="text-left"><b>pod link:</b> https://marketcrown.com/app/#/pods/greenlantern/mysuperpod/E39df3</h5>
 									</div>
 								</div>
 							</div>

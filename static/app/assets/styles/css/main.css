@@ -11812,6 +11812,9 @@ height: 60px;
       font-weight: 600; }
   #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element .body .details {
     padding-top: 1em; }
+  #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element .body .details ul li {
+    text-align: left;
+  }
     #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element .body .details img {
       width: 1.3em;
       margin-top: -.3em;
@@ -11864,6 +11867,10 @@ position: relative; }
     background-color: #39464D;
     color: #fff;
   }
+#dashboard .dashboard-content-wrapper #pods-content .user-info .user-info-header h2.subtitle {
+  font-weight: 100;
+  text-transform: none;
+}
 /* end pod*/
 
   #dashboard .dashboard-content-wrapper .queries-page {
@@ -12551,6 +12558,10 @@ position: relative; }
       -webkit-transition: all .1s;
       -moz-transition: all .1s;
       transition: all .1s; }
+      #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element:hover {
+        cursor: pointer;
+        opacity: .5;
+      }
       #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element:hover .overlay {
         visibility: visible;
         opacity: 1;

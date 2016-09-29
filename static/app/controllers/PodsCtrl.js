@@ -15,5 +15,10 @@ App.controller ('PodsCtrl', ['$scope','APIService','UserDetailsService',function
 	];
 	//assigning default value
 	$scope.podMarket.selected = $scope.podMarkets[0];
+
+	$scope.prices = [];
+	for (var i = 1; i <= 150; i++) {
+		$scope.prices.push(i);
+	}
 }
 ]);
