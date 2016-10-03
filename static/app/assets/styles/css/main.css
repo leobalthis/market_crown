@@ -11773,13 +11773,25 @@ footer {
   #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .row {
     margin: 10px 0;
   }
+  #dashboard .dashboard-content-wrapper .pods-page #pods-content .dashboard-element.create {
+    background-color: #263238;
+    color: #fff;
+  }
+  #dashboard .dashboard-content-wrapper .pods-page #pods-content .dashboard-element.create h3 {
+    color: #fff;
+  }
   #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .row.pods-elements {
     background-color: #fff;
     margin-top: 0;
   }
-  #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .row .form-control {
-    background-color: #fff;
-    padding-left: 5px;
+  #dashboard .dashboard-content-wrapper .pods-page #pods-content #mypods .dashboard-element.create .row .form-control {
+    width: 100%;
+    height: 40px;
+    padding: .5em;
+    background-color: #39464D;
+    color: #d4d0d0;
+    -webkit-box-shadow: inset 0 -1px 0 #475860;
+    box-shadow: inset 0 -1px 0 #475860;
   }
   #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element .header h3 {
     text-align: center;
