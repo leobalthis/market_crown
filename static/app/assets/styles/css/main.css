@@ -12560,7 +12560,12 @@ position: relative; }
       transition: all .1s; }
       #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element:hover {
         cursor: pointer;
-        opacity: .5;
+        background: #4caf50;
+        color: #fff;
+      }
+      #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element:hover h5,
+      #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element:hover h3 {
+        color: #fff;
       }
       #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element:hover .overlay {
         visibility: visible;
@@ -12618,6 +12623,13 @@ position: relative; }
             width: 1.8em;
             margin-left: 1em; }
           /* pods page */
+      #dashboard .dashboard-content-wrapper .pods-page .pods-elements .element-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        display: none;
+      }
       #dashboard .dashboard-content-wrapper .user-page .customization .master-customization .btn-container {
         text-align: left; }
         #dashboard .dashboard-content-wrapper .user-page .customization .master-customization .btn-container button.submit {
@@ -13160,7 +13172,9 @@ position: relative; }
           color: #39464D; }
 
 /*# sourceMappingURL=main.css.map */
-
+#dashboard .dashboard-content-wrapper .forecasts-page .col-lg-12.headline {
+  padding: 0;
+}
 #dashboard .dashboard-content-wrapper .forecasts-page .customization .master-customization .showgroups {
   margin-top: 1em;
   margin-left: 50%;

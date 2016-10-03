@@ -20,5 +20,6 @@ App.controller ('PodsCtrl', ['$scope','APIService','UserDetailsService',function
 	for (var i = 1; i <= 150; i++) {
 		$scope.prices.push(i);
 	}
+
 }
 ]);

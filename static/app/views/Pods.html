@@ -275,17 +275,25 @@
 								<div class="dashboard-element">
 
 									<div class="user-info-header">
-										<img ng-src="/userpics/$default.png" alt="" src="/userpics/$default.png">
+										<!-- <img ng-src="/userpics/$default.png" alt="" src="/userpics/$default.png"> -->
+										<label class="btn-file">
+										    <img ng-src="{{basicUserInfo.photos[0].value || '/userpics/$default.png'}}" alt=""/>
+											<span class="edit avatar"></span>
+										    <input type="file" id="fileInput" name="avatar" style="display:none;" ngf-select="uploadFiles($file)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+										</label>
+
 										<h2 class="">MySuperPod</h2>
 										<h2 class="subtitle" >"The best picks curated from my research"</h2>
-										<h5 class="text-left"><b>created:</b> 01/01/2016</h5>
-										<h5 class="text-left"><b>accuracy:</b> 65%</h5>
-										<h5 class="text-left"><b>forecasts:</b> 24</h5>
-										<h5 class="text-left"><b>subscribers:</b> 10</h5>
-										<h5 class="text-left"><b>price:</b> $15/month</h5>
-										<h5 class="text-left"><b>gross estimate:</b> $150/month</h5>
-										<h5 class="text-left"><b>status:</b> </h5>
-										<h5 class="text-left"><b>pod link:</b> https://marketcrown.com/app/#/pods/greenlantern/mysuperpod/E39df3</h5>
+										<p class="text-left"></p>
+										<p class="text-left"><b>created:</b> 01/01/2016</p>
+										<p class="text-left"><b>accuracy:</b> 65%</p>
+										<p class="text-left"><b>forecasts:</b> 24</p>
+										<p class="text-left"><b>subscribers:</b> 10</p>
+										<p class="text-left"><b>price:</b> $15/month</p>
+										<p class="text-left"><b>gross estimate:</b> $150/month</p>
+										<p class="text-left"><b>status:</b> </p>
+										<p class="text-left"><b>pod link:</b> https://marketcrown.com/app/#/pods/greenlantern/mysuperpod/E39df3</p>
+										<p class="text-left"><a href="#" class="btn btn-default">Make Pod Inactive</a></p>
 									</div>
 								</div>
 							</div>
@@ -389,7 +397,9 @@
 							<div class="pods-elements">
 								<div class="col-lg-6">
 									<div class="element-wrapper">
-										<div class="element" ng-mouseenter="getHoveredObject(query)">
+										<div class="element" ng-mouseenter="getHoveredObject($event)">
+											<!-- <div class="element-overlay">
+											</div> -->
 											<div class="row body">
 												<div class="top-element">
 													<div class="header">
