@@ -37,5 +37,5 @@ mongo:
   expose:
       - "27017"
   volumes:
-    - /mongo_db:/mongo/db
+    - ./mongo_db:/mongo_db
 
