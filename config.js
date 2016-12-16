@@ -40,6 +40,9 @@ var config_dev = {
 	PUBLIC_ADDRESS:'http://localhost:3000',
 };
 
+config.PUBLIC_ADDRESS = 'http://localhost:3000';
+config.PORT = 3000;
+
 if(process.env.NODE_ENV=='development'){
 	config = _.assign(config,config_dev);
 }

@@ -54,7 +54,7 @@ app.use(passport.session());
 
 
 
-
+log.warn(process.env.NODE_ENV);
 
 //app.use(CONFIG.API_PREFIX+'/common',		common);
 app.use(CONFIG.API_PREFIX+'/admin',			admin);

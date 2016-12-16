@@ -10,7 +10,8 @@ var App = angular.module('App', ['ngSanitize',
 	'angular-loading-bar',
 	'ui-notification',
 	'nvd3',
-	'ngFileUpload'
+	'ngFileUpload',
+	'infinite-scroll'
 ]);
 
 App.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', 'NotificationProvider', function($urlRouterProvider, $stateProvider, $httpProvider,NotificationProvider) {
